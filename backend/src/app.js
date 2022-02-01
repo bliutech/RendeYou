@@ -1,3 +1,8 @@
+const readenv = require("dotenv").config();
+
+if (readenv.error)
+    throw "You need a .env file! An empty one is fine for now.";
+
 const express = require("express");
 const db = require("./db.js");
 
