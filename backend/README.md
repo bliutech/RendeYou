@@ -11,8 +11,6 @@ somehow get modified, **do not push.** Reach out.
 Create a `.env`, which we will use to store secret URLs. Therefore, it is
 essential that you **not push** the `.env` to the remote.
 
-Create a `.env`. An empty one is fine for now, but we will be using it later to store secret keys. Therefore, it is essential that you **not push** the `.env` to the remote.
-
 ## Running
 
     npm start
