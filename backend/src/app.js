@@ -4,7 +4,7 @@ if (readenv.error)
     throw "You need a .env file!";
 
 const express = require("express");
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const app = express();
 const port = 8000;
