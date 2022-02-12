@@ -52,26 +52,34 @@ app.post("/register", async (req, res) => {
     const username = req.body["username"];
     const password = req.body["password"];
 
+    // Validate username and password
+    if (!username || !password) {
+        res.status(400) // 400 Bad Request
+        res.send({ register: "fail", reason: "Username and password are empty." });
+        return;
+    }
+
     // Check for username conflict
     const user = await User.findOne({ username: username });
-    if (!user) {
-        const salt = genSalt();
-        const passwordHash = hash(password, salt);
-        const newUser = new User({
-            username: username,
-            passwordHash: passwordHash,
-            salt: salt
-        });
-        await newUser.save();
-
-        // Create a new session on registration
-        req.session.userId = newUser._id;
-
-        res.send({ register: "success" });
-    } else {
+    if (user) {
         res.status(409); // 409 Conflict
-        res.send({ register: "fail", reason: "Username already exists" });
+        res.send({ register: "fail", reason: "Username already exists." });
+        return;
     }
+
+    const salt = genSalt();
+    const passwordHash = hash(password, salt);
+    const newUser = new User({
+        username: username,
+        passwordHash: passwordHash,
+        salt: salt
+    });
+    await newUser.save();
+
+    // Create a new session on registration
+    req.session.userId = newUser._id;
+
+    res.send({ register: "success" });
 });
 
 //==============================================================================
