@@ -3,15 +3,19 @@ const readenv = require("dotenv").config();
 if (readenv.error)
     throw "You need a .env file!";
 
-const express = require("express");
 const mongoose = require("mongoose");
+
+const express = require("express");
 const app = express();
 const port = 8000;
 const cors = require("cors");
+
 const { User } = require("./schemas");
-const crypt = require("./crypt");
+const { hash, genSalt } = require("./crypt");
+
 const session = require("express-session");
 const sessionLifetime = 1000 * 60 * 60; // One hour
+
 const cookieParser = require("cookie-parser");
 
 // Allow CORS
@@ -44,8 +48,8 @@ app.post("/register", async (req, res) => {
     // Check for username conflict
     const user = await User.findOne({ username: username });
     if (!user) {
-        const salt = crypt.genSalt();
-        const passwordHash = crypt.hash(password, salt);
+        const salt = genSalt();
+        const passwordHash = hash(password, salt);
         const newUser = new User({
             username: username,
             passwordHash: passwordHash,
