@@ -22,9 +22,10 @@ app.get("/", (req, res) => {
 });
 
 app.post("/register", async (req, res) => {
-    console.log(req.body);
     const username = req.body["username"];
     const password = req.body["password"];
+
+    // Check for username conflict
     const user = await User.findOne({ username: username });
     if (!user) {
         const salt = crypt.genSalt();
@@ -42,11 +43,12 @@ app.post("/register", async (req, res) => {
     }
 });
 
-// Main function - executed immediately
-(async () => {
+async function main() {
     await mongoose.connect(process.env.DB_URL, { dbName: process.env.DB_NAME });
 
     app.listen(port, () => {
         console.log(`Example app listening on port ${port}`);
     });
-})();
+}
+
+main();
