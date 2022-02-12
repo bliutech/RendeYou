@@ -9,7 +9,9 @@ const userSchema = new mongoose.Schema({
     username: String,
     email: String,
     hostedEvents: [ObjectId],
-    friends: [ObjectId]
+    friends: [ObjectId],
+    passwordHash: String,
+    salt: String
 });
 
 exports.User = mongoose.model("User", userSchema);

@@ -6,8 +6,10 @@ if (readenv.error)
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
-const cors = require("cors");
 const port = 8000;
+const cors = require("cors");
+const { User } = require("./schemas");
+const crypt = require("./crypt");
 
 // Enable CORS from any origin - change before deployment!
 app.use(cors());
@@ -19,9 +21,25 @@ app.get("/", (req, res) => {
     res.send("Hello World!");
 });
 
-app.post("/register", (req, res) => {
+app.post("/register", async (req, res) => {
     console.log(req.body);
-    res.send({ register: "Success", username: req.body["username"] });
+    const username = req.body["username"];
+    const password = req.body["password"];
+    const user = await User.findOne({ username: username });
+    if (!user) {
+        const salt = crypt.genSalt();
+        const passwordHash = crypt.hash(password, salt);
+        const newUser = new User({
+            username: username,
+            passwordHash: passwordHash,
+            salt: salt
+        });
+        await newUser.save();
+        res.send({ register: "success" });
+    } else {
+        res.status(409); // 409 Conflict
+        res.send({ register: "fail", reason: "Username already exists" });
+    }
 });
 
 // Main function - executed immediately
