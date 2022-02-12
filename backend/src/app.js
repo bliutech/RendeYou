@@ -14,7 +14,7 @@ const { User } = require("./schemas");
 const { hash, genSalt } = require("./crypt");
 
 const session = require("express-session");
-const sessionLifetime = 1000 * 60 * 60; // One hour
+const sessionLifetime = 1000 * 60 * 60; // 1h
 
 //==============================================================================
 // Express app settings
@@ -55,8 +55,8 @@ app.post("/register", async (req, res) => {
     }
 
     // Check for username conflict
-    const user = await User.findOne({ username: username });
-    if (user) {
+    const existingUser = await User.findOne({ username: username });
+    if (existingUser) {
         res.status(409); // 409 Conflict
         res.send({ register: "fail", reason: "Username already exists." });
         return;
