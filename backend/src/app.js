@@ -52,7 +52,10 @@ app.post("/register", async (req, res) => {
             salt: salt
         });
         await newUser.save();
-        session
+
+        // Create a new session on registration
+        req.session.userId = newUser._id;
+
         res.send({ register: "success" });
     } else {
         res.status(409); // 409 Conflict
