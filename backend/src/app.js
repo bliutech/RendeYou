@@ -55,7 +55,7 @@ app.post("/register", async (req, res) => {
     // Validate username and password
     if (!username || !password) {
         res.status(400) // 400 Bad Request
-        res.send({ register: "fail", reason: "Username or password are empty." });
+        res.send({ register: "fail", reason: "Username or password is empty." });
         return;
     }
 
