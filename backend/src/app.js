@@ -16,8 +16,6 @@ const { hash, genSalt } = require("./crypt");
 const session = require("express-session");
 const sessionLifetime = 1000 * 60 * 60; // One hour
 
-const cookieParser = require("cookie-parser");
-
 //==============================================================================
 // Express app settings
 // These define custom behaviors such as how Express expects to parse input.
@@ -28,9 +26,6 @@ app.use(cors());
 
 // Parse request bodies as JSON
 app.use(express.json());
-
-// Parse cookies from headers
-app.use(cookieParser());
 
 // Use session manager
 // TODO: Install a session store like connect-mongodb-session before production!
