@@ -10,7 +10,6 @@ More on crypto: https://nodejs.org/api/crypto.html
 
 const crypto = require("crypto");
 
-
 exports.hash = (password, salt) =>
     crypto.pbkdf2Sync(password, salt, 1000, 64, "sha256").toString("hex");
 
