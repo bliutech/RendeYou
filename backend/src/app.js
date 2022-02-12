@@ -54,6 +54,12 @@ app.post("/register", async (req, res) => {
         return;
     }
 
+    if (/\s/.test(username)) {
+        res.status(400) // 400 Bad Request
+        res.send({ register: "fail", reason: "Username contains whitespace." });
+        return;
+    }
+
     // Check for username conflict
     const existingUser = await User.findOne({ username: username });
     if (existingUser) {
