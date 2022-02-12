@@ -18,6 +18,10 @@ const sessionLifetime = 1000 * 60 * 60; // One hour
 
 const cookieParser = require("cookie-parser");
 
+//==============================================================================
+// Express app settings
+// These define custom behaviors such as how Express expects to parse input.
+
 // Allow CORS
 // TODO: Currently allows requests from any origin - change before production!
 app.use(cors());
@@ -36,6 +40,9 @@ app.use(session({
     resave: false,
     cookie: { maxAge: sessionLifetime }
 }));
+
+//==============================================================================
+// API routes
 
 app.get("/", (req, res) => {
     res.send("Hello World!");
@@ -66,6 +73,8 @@ app.post("/register", async (req, res) => {
         res.send({ register: "fail", reason: "Username already exists" });
     }
 });
+
+//==============================================================================
 
 async function main() {
     await mongoose.connect(process.env.DB_URL, { dbName: process.env.DB_NAME });
