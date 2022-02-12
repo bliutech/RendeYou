@@ -5,20 +5,23 @@ if (readenv.error)
 
 const express = require("express");
 const mongoose = require("mongoose");
+const app = express();
 const cors = require("cors");
+const port = 8000;
 
 // Enable CORS from any origin - change before deployment!
 app.use(cors());
 
-const app = express();
-const port = 8000;
+// Parse request bodies as JSON
+app.use(express.json());
 
 app.get("/", (req, res) => {
     res.send("Hello World!");
 });
 
-app.get("/register", (req, res) => {
-    res.send("register");
+app.post("/register", (req, res) => {
+    console.log(req.body);
+    res.send({ register: "Success", username: req.body["username"] });
 });
 
 // Main function - executed immediately
