@@ -1,0 +1,43 @@
+<!--
+  Temporary frontend to test backend endpoints.
+-->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<body>
+  <form id="register">
+    <p>/register</p>
+    <p><label>Username: <input></label></p>
+    <p><label>Password: <input type="password"></label></p>
+    <input type="submit">
+  </form>
+
+  <script>
+    function backend(endpoint) {
+      return "http://localhost:8000" + endpoint;
+    }
+
+    const registerForm = document.getElementById("register");
+    registerForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const data = {
+        username: registerForm.querySelector("input").value,
+        password: registerForm.querySelector("input[type=password]").value
+      }
+      fetch(backend("/register"), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
+    });
+  </script>
+</body>
+
+</html>
