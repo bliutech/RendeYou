@@ -5,6 +5,10 @@ if (readenv.error)
 
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
+
+// Enable CORS from any origin - change before deployment!
+app.use(cors());
 
 const app = express();
 const port = 8000;
