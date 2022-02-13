@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model("User", userSchema);
 
-// Strip sensitive fields from user object
+// Strip extraneous/sensitive fields from user object
 // user must be a regular JS object, not a document (i.e. use .lean() when
 // querying, or call .toObject() on an existing document).
 function stripUser(user) {

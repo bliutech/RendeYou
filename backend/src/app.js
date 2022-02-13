@@ -93,6 +93,7 @@ app.get("/user/:id", async (req, res) => {
         return;
     }
 
+    // .lean() makes the query return a JS object instead of a document
     const user = await User.findById(id).lean();
     if (user) {
         res.send(stripUser(user));
