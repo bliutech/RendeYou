@@ -85,13 +85,18 @@ app.post("/register", async (req, res) => {
 
 app.get("/user/:id", async (req, res) => {
     const id = req.params.id;
+
+    // .lean() converts Mongoose document to plain JS object
     const user = await User.findById(id).lean();
+
     if (user) {
+        // Remove extra/sensitive object data
         delete user.__v;
         delete user.passwordHash;
         delete user.salt;
         delete user._id;
         user.id = id;
+
         res.send(user);
     } else {
         res.status(404); // 404 Not Found
