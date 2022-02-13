@@ -178,8 +178,8 @@ app.put("/user/me", checkAuth, async (req, res) => {
     }
     // Checks if user ID has been modified
     if (user.id != update.id) {
-        res.status(403) // 403 Forbidden
-        res.send({ error: "User ID cannot be modified" });
+        res.status(409) // 409 Conflict
+        res.send({ error: "User ID doesn't match" });
         return;
     }
 
