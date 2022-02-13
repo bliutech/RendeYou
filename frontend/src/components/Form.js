@@ -33,6 +33,7 @@ class Form extends React.Component {
                 <input type="password" value={this.state.pass}
                 onChange={this.updatePass}
                 />
+                <br/>
                 <input type="submit" value="Submit"/>
             </form>
             
