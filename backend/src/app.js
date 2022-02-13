@@ -80,7 +80,7 @@ app.post("/register", async (req, res) => {
     // Create a new session on registration
     req.session.userId = newUser._id;
 
-    res.send(stripUser(newUser));
+    res.send(stripUser(newUser.toObject()));
 });
 
 app.get("/user/:id", async (req, res) => {
@@ -93,7 +93,7 @@ app.get("/user/:id", async (req, res) => {
         return;
     }
 
-    const user = await User.findById(id);
+    const user = await User.findById(id).lean();
     if (user) {
         res.send(stripUser(user));
     } else {
