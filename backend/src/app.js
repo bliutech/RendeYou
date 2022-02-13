@@ -50,13 +50,13 @@ app.post("/register", async (req, res) => {
     // Validate username and password
     if (!username || !password) {
         res.status(400) // 400 Bad Request
-        res.send({ register: "fail", reason: "Username or password is empty." });
+        res.send({ error: "Username or password is empty." });
         return;
     }
 
     if (/\s/.test(username)) {
         res.status(400) // 400 Bad Request
-        res.send({ register: "fail", reason: "Username contains whitespace." });
+        res.send({ error: "Username contains whitespace." });
         return;
     }
 
@@ -64,7 +64,7 @@ app.post("/register", async (req, res) => {
     const existingUser = await User.findOne({ username: username });
     if (existingUser) {
         res.status(409); // 409 Conflict
-        res.send({ register: "fail", reason: "Username already exists." });
+        res.send({ error: "Username already exists." });
         return;
     }
 
@@ -80,7 +80,7 @@ app.post("/register", async (req, res) => {
     // Create a new session on registration
     req.session.userId = newUser._id;
 
-    res.send({ register: "success" });
+    res.send();
 });
 
 app.get("/user/:id", async (req, res) => {
