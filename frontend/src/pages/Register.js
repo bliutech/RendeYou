@@ -20,12 +20,11 @@ export default function Login()
         });
         const res_j = await res.json();
         if (res.status >= 400) {
-            setErrMsg(res_j.reason);
+            setErrMsg(res_j.error);
         } else {
             setErrMsg("");
         }
     }
-    console.log(err_msg);
     return (
         <div className='content'>
             <h1> Register </h1>
