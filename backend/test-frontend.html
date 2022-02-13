@@ -116,6 +116,11 @@
       $("update-last").value = json.lastName;
       $("update-email").value = json.email;
     });
+
+    const deleteCurrentUserButton = $("delete-current-user");
+    deleteCurrentUserButton.addEventListener("click", function (e) {
+      fetch(backend("/user/me"), { method: "DELETE", credentials: "include" });
+    });
   </script>
 </body>
 
