@@ -95,13 +95,16 @@
       e.preventDefault();
       const data = {
         firstName: $("update-first").value,
-        lastName: $("updat-last").value,
+        lastName: $("update-last").value,
         email: $("update-email").value
       };
       fetch(backend("/user/me"), {
         method: "PUT",
         credentials: "include",
-        body: JSON.toString(data)
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
       });
     });
 
