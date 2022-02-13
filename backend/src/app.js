@@ -10,7 +10,8 @@ const app = express();
 const port = 8000;
 const cors = require("cors");
 
-const { User, stripUser } = require("./schemas");
+const { User } = require("./schemas");
+const { stripUser } = require("./util");
 const { hash, genSalt } = require("./crypt");
 
 const session = require("express-session");
