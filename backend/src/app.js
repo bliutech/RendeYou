@@ -11,7 +11,7 @@ const port = 8000;
 const cors = require("cors");
 
 const { User } = require("./schemas");
-const { stripUser } = require("./util");
+const { stripUser, escapeRegex } = require("./util");
 const { hash, genSalt } = require("./crypt");
 
 const session = require("express-session");
@@ -51,13 +51,13 @@ app.post("/register", async (req, res) => {
     // Validate username and password
     if (!username || !password) {
         res.status(400) // 400 Bad Request
-        res.send({ error: "Username or password is empty." });
+        res.send({ error: "Username or password is empty" });
         return;
     }
 
     if (/\s/.test(username)) {
         res.status(400) // 400 Bad Request
-        res.send({ error: "Username contains whitespace." });
+        res.send({ error: "Username contains whitespace" });
         return;
     }
 
@@ -65,7 +65,7 @@ app.post("/register", async (req, res) => {
     const existingUser = await User.findOne({ username: username });
     if (existingUser) {
         res.status(409); // 409 Conflict
-        res.send({ error: "Username already exists." });
+        res.send({ error: "Username already exists" });
         return;
     }
 
@@ -82,6 +82,44 @@ app.post("/register", async (req, res) => {
     req.session.userId = newUser._id;
 
     res.send(stripUser(newUser.toObject()));
+});
+
+app.get("/user", async (req, res) => {
+    const {ids, username, first, last} = req.query;
+
+    let users = User.find();
+
+    // Validate ids
+    if (ids) {
+        idArray = ids.split(",");
+        for (const id of idArray) {
+            if (!/[0-9a-f]{24}/.test(id)) {
+                res.status(400); // 400 Bad Request
+                res.send({ error: "ids are not not all 24-digit hexadecimal strings" });
+                return;
+            }
+        }
+        users = users.where("_id").in(idArray);
+    }
+
+    if (username) {
+        const usernameRegex = new RegExp("^" + escapeRegex(username), "i");
+        users = users.where("username").regex(usernameRegex);
+    }
+
+    if (first) {
+        const firstRegex = new RegExp("^" + escapeRegex(first), "i");
+        users = users.where("firstName").regex(firstRegex);
+    }
+
+    if (last) {
+        const lastRegex = new RegExp("^" + escapeRegex(last), "i");
+        users = users.where("lastName").regex(lastRegex);
+    }
+
+    users = await users.lean();
+
+    res.send(users);
 });
 
 app.get("/user/:id", async (req, res) => {

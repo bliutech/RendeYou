@@ -12,4 +12,11 @@ function stripUser(user) {
     return user;
 }
 
+// Escape str so that regex will search for str literally even if it contains
+// special characters.
+function escapeRegex(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+}
+
 exports.stripUser = stripUser;
+exports.escapeRegex = escapeRegex;

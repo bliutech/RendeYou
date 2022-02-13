@@ -12,20 +12,33 @@
 <body>
   <form id="register">
     <p>/register</p>
-    <p><label>Username: <input></label></p>
-    <p><label>Password: <input type="password"></label></p>
+    <p><label>username: <input></label></p>
+    <p><label>password: <input type="password"></label></p>
     <input type="submit">
   </form>
 
   <form id="get-user">
     <p>/user/[id]</p>
-    <p><label>Id: <input></label></p>
+    <p><label>id: <input></label></p>
+    <input type="submit">
+  </form>
+
+  <form id="search-users">
+    <p>/user</p>
+    <p><label>ids: <input id="search-ids"></label></p>
+    <p><label>username: <input id="search-username"></label></p>
+    <p><label>first: <input id="search-first"></label></p>
+    <p><label>last: <input id="search-last"></label></p>
     <input type="submit">
   </form>
 
   <script>
     function backend(endpoint) {
       return "http://localhost:8000" + endpoint;
+    }
+
+    function toQuery(obj) {
+      return new URLSearchParams(obj).toString();
     }
 
     const registerForm = document.getElementById("register");
@@ -49,6 +62,18 @@
       e.preventDefault();
       const id = getUserForm.querySelector("input").value;
       fetch(backend("/user/" + id));
+    });
+
+    const searchUsersForm = document.getElementById("search-users");
+    searchUsersForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const data = {
+        ids: document.getElementById("search-ids").value,
+        username: document.getElementById("search-username").value,
+        first: document.getElementById("search-first").value,
+        last: document.getElementById("search-last").value
+      };
+      fetch(backend("/user?" + toQuery(data)));
     });
   </script>
 </body>
