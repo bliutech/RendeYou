@@ -85,7 +85,7 @@ app.post("/register", async (req, res) => {
     await newUser.save();
 
     // Create a new session on registration
-    req.session.userId = newUser._id;
+    req.session.id = newUser._id;
 
     res.send(stripUser(newUser.toObject()));
 });
@@ -146,6 +146,50 @@ app.get("/user/:id", async (req, res) => {
         res.send();
     }
 });
+
+app.get("/user/me", checkAuth, async(req, res) => {
+    const id = req.session.id;
+
+    // .lean() makes the query return a JS object instead of a document
+    const user = await User.findById(id).lean();
+    if (user) {
+        res.send(stripUser(user));
+    } else {
+        res.status(404); // 404 Not Found
+        res.send();
+    }
+});
+
+app.put("/user/me", checkAuth, async (req, res) => {
+    const id = req.session.id;
+    const user = await User.findById(id);
+
+    const update = req.body;
+
+    // No validations; unsafe!
+    Object.assign(user, update);
+
+    await user.save();
+    res.send();
+});
+
+app.delete("/user/me", checkAuth, async (req, res) => {
+    await User.findByIdAndDelete(req.session.id);
+    req.session.destroy();
+    res.send();
+});
+
+//==============================================================================
+// Route handlers
+
+function checkAuth(req, res, next) {
+    if (req.session.id) {
+        next();
+    } else {
+        res.status(403); // 403 Forbidden
+        res.send();
+    }
+}
 
 //==============================================================================
 
