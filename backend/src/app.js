@@ -23,7 +23,13 @@ const sessionLifetime = 1000 * 60 * 60; // 1h
 
 // Allow CORS
 // TODO: Currently allows requests from any origin - change before production!
-app.use(cors());
+let corsOptions;
+if (process.env.ENV == "dev") {
+    corsOptions = { origin: "http://localhost:3000" };
+} else if (process.env.ENV == "production") {
+    // Production options
+}
+app.use(cors(corsOptions));
 
 // Parse request bodies as JSON
 app.use(express.json());
@@ -41,7 +47,7 @@ app.use(session({
 // API routes
 
 app.get("/", (req, res) => {
-    res.send("Hello World!");
+    res.sendFile("test-frontend.html", { root: "." });
 });
 
 app.post("/register", async (req, res) => {
