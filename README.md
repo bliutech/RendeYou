@@ -2,7 +2,7 @@
 
 _RendeYou_ is a **MERN Stack** full stack web application that connects users with an emphasis on immediate meetups with friends.
 
-[RendeYou Logo](https://raw.githubusercontent.com/bliutech/RendeYou/main/frontend/src/files/rende-you-logo.svg?token=GHSAT0AAAAAABRQSY2U6RQUULUKT2YKXNRKYQR7HYA)
+![RendeYou Logo](https://raw.githubusercontent.com/bliutech/RendeYou/main/frontend/src/files/rende-you-logo.svg?token=GHSAT0AAAAAABRQSY2U6RQUULUKT2YKXNRKYQR7HYA)
 
 ## Table of Contents
 - [Features](https://github.com/bliutech/RendeYou/#features)
