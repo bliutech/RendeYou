@@ -10,7 +10,7 @@ const app = express();
 const port = 8000;
 const cors = require("cors");
 
-const { User } = require("./schemas");
+const { User, stripUser } = require("./schemas");
 const { hash, genSalt } = require("./crypt");
 
 const session = require("express-session");
@@ -93,18 +93,9 @@ app.get("/user/:id", async (req, res) => {
         return;
     }
 
-    // .lean() converts Mongoose document to plain JS object
-    const user = await User.findById(id).lean();
-
+    const user = await User.findById(id);
     if (user) {
-        // Remove extra/sensitive object data
-        delete user.__v;
-        delete user.passwordHash;
-        delete user.salt;
-        delete user._id;
-        user.id = id;
-
-        res.send(user);
+        res.send(stripUser(user));
     } else {
         res.status(404); // 404 Not Found
         res.send();

@@ -25,4 +25,18 @@ const userSchema = new mongoose.Schema({
     salt: String
 });
 
-exports.User = mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema);
+
+// Converts a User document to a plain JS object and strips sensitive fields
+function stripUser(user) {
+    user = user.lean();
+    delete user.__v;
+    delete user.passwordHash;
+    delete user.salt;
+    user.id = user._id;
+    delete user._id;
+    return user;
+}
+
+exports.User = User;
+exports.stripUser = stripUser;
