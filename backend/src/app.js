@@ -11,6 +11,7 @@ const port = 8000;
 const cors = require("cors");
 
 const { User } = require("./schemas");
+const { stripUser, escapeRegex } = require("./util");
 const { hash, genSalt } = require("./crypt");
 
 const session = require("express-session");
@@ -44,19 +45,19 @@ app.get("/", (req, res) => {
 });
 
 app.post("/register", async (req, res) => {
-    const username = req.body["username"];
-    const password = req.body["password"];
+    const username = req.body.username;
+    const password = req.body.password;
 
     // Validate username and password
     if (!username || !password) {
         res.status(400) // 400 Bad Request
-        res.send({ register: "fail", reason: "Username or password is empty." });
+        res.send({ error: "Username or password is empty" });
         return;
     }
 
     if (/\s/.test(username)) {
         res.status(400) // 400 Bad Request
-        res.send({ register: "fail", reason: "Username contains whitespace." });
+        res.send({ error: "Username contains whitespace" });
         return;
     }
 
@@ -64,7 +65,7 @@ app.post("/register", async (req, res) => {
     const existingUser = await User.findOne({ username: username });
     if (existingUser) {
         res.status(409); // 409 Conflict
-        res.send({ register: "fail", reason: "Username already exists." });
+        res.send({ error: "Username already exists" });
         return;
     }
 
@@ -80,7 +81,64 @@ app.post("/register", async (req, res) => {
     // Create a new session on registration
     req.session.userId = newUser._id;
 
-    res.send({ register: "success" });
+    res.send(stripUser(newUser.toObject()));
+});
+
+app.get("/user", async (req, res) => {
+    let users = User.find();
+
+    const ids = req.query.ids;
+    if (ids) {
+        const idArray = ids.split(",");
+
+        // Validate ids
+        for (const id of idArray) {
+            if (!/[0-9a-f]{24}/.test(id)) {
+                res.status(400); // 400 Bad Request
+                res.send({ error: "ids are not not all 24-digit hexadecimal strings" });
+                return;
+            }
+        }
+
+        users = users.where("_id").in(idArray);
+    }
+
+    const names = {
+        username: req.query.username,
+        firstName: req.query.first,
+        lastName: req.query.last
+    };
+
+    for (const i in names) {
+        if (names[i]) {
+            const regex = new RegExp("^" + escapeRegex(names[i]), "i");
+            users = users.where(i).regex(regex);
+        }
+    }
+
+    users = await users.lean();
+
+    res.send(users);
+});
+
+app.get("/user/:id", async (req, res) => {
+    const id = req.params.id;
+
+    // Validate id
+    if (!/[0-9a-f]{24}/.test(id)) {
+        res.status(400); // 400 Bad Request
+        res.send({ error: "id is not a 24-digit hexadecimal string" });
+        return;
+    }
+
+    // .lean() makes the query return a JS object instead of a document
+    const user = await User.findById(id).lean();
+    if (user) {
+        res.send(stripUser(user));
+    } else {
+        res.status(404); // 404 Not Found
+        res.send();
+    }
 });
 
 //==============================================================================
