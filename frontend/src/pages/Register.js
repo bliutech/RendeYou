@@ -1,5 +1,6 @@
 import React from 'react';
 import Form from '../components/Form.js';
+import '../index.css';
 
 export default function Login()
 {
@@ -11,8 +12,7 @@ export default function Login()
     }
 
     return(
-        <div>
-            <title>RendeYou - Register</title>
+        <div className='content'>
             <h1> Register </h1>
             <p> Register your RendeYou account. </p>
             <Form onSubmit={handleSubmit}/>
