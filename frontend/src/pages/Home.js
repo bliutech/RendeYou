@@ -3,6 +3,7 @@ import '../index.css';
 
 export default function Home()
 {
+    document.title = 'Home | RendeYou';
     return(
         <div className='content'>
             <h1> Welcome to RendeYou! </h1>
