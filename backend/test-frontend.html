@@ -17,6 +17,12 @@
     <input type="submit">
   </form>
 
+  <form id="get-user">
+    <p>/user/:id</p>
+    <p><label>Id: <input></label></p>
+    <input type="submit">
+  </form>
+
   <script>
     function backend(endpoint) {
       return "http://localhost:8000" + endpoint;
@@ -36,6 +42,13 @@
         },
         body: JSON.stringify(data)
       });
+    });
+
+    const getUserForm = document.getElementById("get-user");
+    getUserForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const id = getUserForm.querySelector("input").value;
+      fetch(backend("/user/" + id));
     });
   </script>
 </body>

@@ -83,6 +83,21 @@ app.post("/register", async (req, res) => {
     res.send({ register: "success" });
 });
 
+app.get("/user/:id", async (req, res) => {
+    const id = req.params["id"];
+    const user = await User.findById(id).lean();
+    if (user) {
+        delete user["__v"];
+        delete user.passwordHash;
+        delete user.salt;
+        delete user._id;
+        user.id = id;
+        res.send(user);
+    } else {
+        res.status(404); // 404 Not Found
+    }
+});
+
 //==============================================================================
 
 async function main() {
