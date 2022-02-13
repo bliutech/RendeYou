@@ -1,7 +1,7 @@
 import React from 'react';
-import Links from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-export default NavBar()
+export default function NavBar()
 {
     return(
         <div>
