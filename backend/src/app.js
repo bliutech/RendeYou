@@ -86,6 +86,13 @@ app.post("/register", async (req, res) => {
 app.get("/user/:id", async (req, res) => {
     const id = req.params.id;
 
+    // Validate id
+    if (!/[0-9a-f]{24}/.test(id)) {
+        res.status(400); // 400 Bad Request
+        res.send({ error: "id is not a 24-digit hexadecimal string" });
+        return;
+    }
+
     // .lean() converts Mongoose document to plain JS object
     const user = await User.findById(id).lean();
 
@@ -100,6 +107,7 @@ app.get("/user/:id", async (req, res) => {
         res.send(user);
     } else {
         res.status(404); // 404 Not Found
+        res.send();
     }
 });
 
