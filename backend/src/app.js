@@ -124,6 +124,8 @@ app.get("/user", async (req, res) => {
 
     users = await users.lean();
 
+    users.map(user => stripUser(user));
+
     res.send(users);
 });
 
