@@ -85,13 +85,13 @@ app.post("/register", async (req, res) => {
 });
 
 app.get("/user", async (req, res) => {
-    const {ids, username, first, last} = req.query;
-
     let users = User.find();
 
-    // Validate ids
+    const ids = req.query.ids;
     if (ids) {
-        idArray = ids.split(",");
+        const idArray = ids.split(",");
+
+        // Validate ids
         for (const id of idArray) {
             if (!/[0-9a-f]{24}/.test(id)) {
                 res.status(400); // 400 Bad Request
@@ -99,22 +99,21 @@ app.get("/user", async (req, res) => {
                 return;
             }
         }
+
         users = users.where("_id").in(idArray);
     }
 
-    if (username) {
-        const usernameRegex = new RegExp("^" + escapeRegex(username), "i");
-        users = users.where("username").regex(usernameRegex);
-    }
+    const names = {
+        username: req.query.username,
+        firstName: req.query.first,
+        lastName: req.query.last
+    };
 
-    if (first) {
-        const firstRegex = new RegExp("^" + escapeRegex(first), "i");
-        users = users.where("firstName").regex(firstRegex);
-    }
-
-    if (last) {
-        const lastRegex = new RegExp("^" + escapeRegex(last), "i");
-        users = users.where("lastName").regex(lastRegex);
+    for (const i in names) {
+        if (names[i]) {
+            const regex = new RegExp("^" + escapeRegex(names[i]), "i");
+            users = users.where(i).regex(regex);
+        }
     }
 
     users = await users.lean();
