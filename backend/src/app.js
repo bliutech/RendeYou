@@ -80,7 +80,7 @@ app.post("/register", async (req, res) => {
     // Create a new session on registration
     req.session.userId = newUser._id;
 
-    res.send();
+    res.send(stripUser(newUser));
 });
 
 app.get("/user/:id", async (req, res) => {
