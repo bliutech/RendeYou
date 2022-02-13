@@ -3,8 +3,9 @@ import Form from '../components/Form.js';
 import backend from '../components/Util.js';
 import '../index.css';
 
-export default function Login()
+export default function Register()
 {
+    document.title = 'Register | RendeYou';
     const [err_msg, setErrMsg] = useState("");
     async function handleSubmit(uname, pass) {
         const data = {
