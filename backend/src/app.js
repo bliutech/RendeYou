@@ -44,8 +44,8 @@ app.get("/", (req, res) => {
 });
 
 app.post("/register", async (req, res) => {
-    const username = req.body["username"];
-    const password = req.body["password"];
+    const username = req.body.username;
+    const password = req.body.password;
 
     // Validate username and password
     if (!username || !password) {
@@ -84,10 +84,10 @@ app.post("/register", async (req, res) => {
 });
 
 app.get("/user/:id", async (req, res) => {
-    const id = req.params["id"];
+    const id = req.params.id;
     const user = await User.findById(id).lean();
     if (user) {
-        delete user["__v"];
+        delete user.__v;
         delete user.passwordHash;
         delete user.salt;
         delete user._id;
