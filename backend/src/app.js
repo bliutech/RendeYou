@@ -85,7 +85,7 @@ app.post("/register", async (req, res) => {
     await newUser.save();
 
     // Create a new session on registration
-    req.session.id = newUser._id;
+    req.session.userId = newUser._id;
 
     res.send(stripUser(newUser.toObject()));
 });
@@ -127,15 +127,8 @@ app.get("/user", async (req, res) => {
     res.send(users);
 });
 
-app.get("/user/:id", async (req, res) => {
+app.get("/user/:id([0-9a-f]{24})", async (req, res) => {
     const id = req.params.id;
-
-    // Validate id
-    if (!/[0-9a-f]{24}/.test(id)) {
-        res.status(400); // 400 Bad Request
-        res.send({ error: "id is not a 24-digit hexadecimal string" });
-        return;
-    }
 
     // .lean() makes the query return a JS object instead of a document
     const user = await User.findById(id).lean();
@@ -148,7 +141,7 @@ app.get("/user/:id", async (req, res) => {
 });
 
 app.get("/user/me", checkAuth, async(req, res) => {
-    const id = req.session.id;
+    const id = req.session.userId;
 
     // .lean() makes the query return a JS object instead of a document
     const user = await User.findById(id).lean();
@@ -161,7 +154,7 @@ app.get("/user/me", checkAuth, async(req, res) => {
 });
 
 app.put("/user/me", checkAuth, async (req, res) => {
-    const id = req.session.id;
+    const id = req.session.userId;
     const user = await User.findById(id);
 
     const update = req.body;
@@ -174,7 +167,7 @@ app.put("/user/me", checkAuth, async (req, res) => {
 });
 
 app.delete("/user/me", checkAuth, async (req, res) => {
-    await User.findByIdAndDelete(req.session.id);
+    await User.findByIdAndDelete(req.session.userId);
     req.session.destroy();
     res.send();
 });
@@ -183,7 +176,7 @@ app.delete("/user/me", checkAuth, async (req, res) => {
 // Route handlers
 
 function checkAuth(req, res, next) {
-    if (req.session.id) {
+    if (req.session.userId) {
         next();
     } else {
         res.status(403); // 403 Forbidden
