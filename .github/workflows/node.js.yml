@@ -12,20 +12,22 @@ on:
 jobs:
   build-frontend:
     runs-on: ubuntu-latest
-    
     defaults:
       run:
         working-directory: frontend
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version: [12.x, 14.x, 16.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        working-directory: frontend
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
+        working-directory: frontend
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
