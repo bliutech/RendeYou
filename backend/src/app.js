@@ -152,31 +152,61 @@ app.get("/user/:id", async (req, res) => {
 
 
 app.post("/login", async(req, res) => {
+    //get the username and password of the user trying to login
     const username = req.body.username;
     const password = req.body.password;
+    //retrieve that user from database
     const user = await User.findOne({ 
         username: username,
         password: password
     });
-    if (user) {
-        req.session.userId = user._id;
+    if (user) { //if the user is a valid user
+        req.session.userId = user._id; //then createa new session ID and return that user
         res.send(stripUser(user.toObject()));
-    } else {
+    } else { //otherwise, return an error status
         res.status(403);
         res.send({error: "Forbidden"});
     }
 });
 
 app.post("/logout", async(req, res) => {
-    const id = req.params.id;
+    const id = req.params.id;  //check to see if a valid user is logged in
     const user = await User.findById(id).lean();
-    if (user) {
+    if (user) { //if they area valid user, then destroy their session
         req.session.destroy();
         res.status(200);
-    } else {
+    } else { //otherwise, send 409 error
         res.status(409);
     }
 });
+
+app.get("/event/:id", async(req, res) => {
+    const eventID = req.params.id;
+    const event = await Event.findById(eventID).lean(); 
+    if (event) { //make sure the event is valid, and if it is, send it
+        res.send(event);
+    } else { //otherwise, send a 404 error
+        res.status(404);
+    }
+});
+
+app.put("/event/:id", async(req, res) => {
+    const eventID = req.params.id; 
+    const event = await Event.findById(eventID).lean(); //retrieve the event to be modified
+    const changes = req.body;
+    if (event) { //make sure the event is valid. If it is, set the input event to contain the needed changes
+        event.set(changes)
+        try {
+            await Event.save(); //save it, and if it doesn't save, send a 403 error
+            res.status(200); //send a 200 status if it does save
+        } catch (err) {
+            res.status(403);
+        }
+    } else {
+        res.status(404); //send a 404 error if the event is invalid
+    }
+});
+
 //==============================================================================
 
 async function main() {
