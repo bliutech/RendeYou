@@ -149,8 +149,6 @@ app.get("/user/:id", async (req, res) => {
 
 
 
-
-
 app.post("/login", async(req, res) => {
     //get the username and password of the user trying to login
     const username = req.body.username;
@@ -194,18 +192,51 @@ app.put("/event/:id", async(req, res) => {
     const eventID = req.params.id; 
     const event = await Event.findById(eventID).lean(); //retrieve the event to be modified
     const changes = req.body;
-    if (event) { //make sure the event is valid. If it is, set the input event to contain the needed changes
-        event.set(changes)
+
+    //need to make sure the changes are valid (i.e. the date is valid, etc.)
+    const title = req.body.title;
+    if (!title) {
+        res.status(400);
+        res.send({error: "Event name is empty"});
+        return;
+    }
+    if (/\s/.test(title)) {
+        res.status(400);
+        res.send({error: "Event name contains white space"});
+        return;
+    }
+
+    //make sure the event is valid. If it is, set the input event to contain the needed changes
+    if (event) {
+        event.set(changes);
         try {
-            await Event.save(); //save it, and if it doesn't save, send a 403 error
+            await Event.save(); //save it
             res.status(200); //send a 200 status if it does save
         } catch (err) {
-            res.status(403);
+            res.status(403); //and if it doesn't save, send a 403 error
         }
     } else {
         res.status(404); //send a 404 error if the event is invalid
     }
 });
+
+app.delete("/event/:id", async(req, res) => {
+    const eventID = req.params.id;
+    const event = await Event.findById(eventId).lean();
+    if (event) { //if the event is valid, delete it
+        Event.findByIdAndDelete(eventID, function(err) { //if there is some error in deleting it, then send a 403 error status
+            if (err) {
+                res.status(403);
+            } else {
+                res.status(200); //otherwise, send a successful 200 status
+            }
+        });
+    } else {
+        res.status(404); //send a 404 status if event wasn't found
+    }
+});
+
+
 
 //==============================================================================
 
