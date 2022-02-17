@@ -147,6 +147,36 @@ app.get("/user/:id", async (req, res) => {
     }
 });
 
+
+
+
+
+app.post("/login", async(req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+    const user = await User.findOne({ 
+        username: username,
+        password: password
+    });
+    if (user) {
+        req.session.userId = user._id;
+        res.send(stripUser(user.toObject()));
+    } else {
+        res.status(403);
+        res.send({error: "Forbidden"});
+    }
+});
+
+app.post("/logout", async(req, res) => {
+    const id = req.params.id;
+    const user = await User.findById(id).lean();
+    if (user) {
+        req.session.destroy();
+        res.status(200);
+    } else {
+        res.status(409);
+    }
+});
 //==============================================================================
 
 async function main() {
