@@ -187,7 +187,34 @@ app.get("/event/:id", async(req, res) => {
         res.status(404);
     }
 });
-
+app.post("/event/new", async(req, res) =>  {
+    //need to make sure the changes are valid (i.e. the date is valid, etc.)
+    const title = req.body.title;
+    if (!title) {
+        res.status(400);
+        res.send({error: "Event name is empty"});
+        return;
+    }
+    if (/\s/.test(title)) {
+        res.status(400);
+        res.send({error: "Event name contains white space"});
+        return;
+    }
+    const existingEvent = Event.findOne(req.body);
+    if (existingEvent) {
+        res.status(400);
+        res.send({error: "Event already exists"});
+        return;
+    }
+    const newEvent = new Event(req.body);
+    try {
+        await newEvent.save();
+        res.status(200);
+    } catch(err) {
+        res.status(403);
+    }
+ });
+ 
 app.put("/event/:id", async(req, res) => {
     const eventID = req.params.id; 
     const event = await Event.findById(eventID).lean(); //retrieve the event to be modified
