@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import Home from './pages/Home.js'
 import Login from './pages/Login.js'
@@ -11,26 +11,29 @@ import About from './pages/About.js'
 import NavBar from './components/NavBar.js'
 import PrivateRoute from './pages/PrivateRoute'
 import Dashboard from './pages/Dashboard'
+import UserContextProvider from './context/context.js'
 
 function App() {
-  let isLoggedin = false
+  const [userData, setUserData] = useState([])
+  const [isSignedIn, setIsSignedIn] = useState(false)
+
+  if (!isSignedIn) {
+    return <Login values={(setIsSignedIn, setUserData)} />
+  }
   return (
     <div>
-      <BrowserRouter>
-        <Switch>
-          <PrivateRoute path='/' exact={true}>
-            <Route path='/'>
+      <UserContextProvider>
+        <BrowserRouter>
+          <Switch>
+            <Route exact path='/'>
               <Dashboard></Dashboard>
             </Route>
-          </PrivateRoute>
-          <Route path='/login'>
-            <Login></Login>
-          </Route>
-          <Route path='*'>
-            <Error404></Error404>
-          </Route>
-        </Switch>
-      </BrowserRouter>
+            <Route path='*'>
+              <Error404></Error404>
+            </Route>
+          </Switch>
+        </BrowserRouter>
+      </UserContextProvider>
     </div>
   )
 }
