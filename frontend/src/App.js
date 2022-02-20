@@ -18,22 +18,27 @@ function App() {
   const [isSignedIn, setIsSignedIn] = useState(false)
 
   if (!isSignedIn) {
-    return <Login values={(setIsSignedIn, setUserData)} />
+    return (
+      <Login
+        updateUserData={setUserData}
+        updateSignedInStatus={setIsSignedIn}
+      />
+    )
   }
+
+  console.log(userData)
   return (
     <div>
-      <UserContextProvider>
-        <BrowserRouter>
-          <Switch>
-            <Route exact path='/'>
-              <Dashboard></Dashboard>
-            </Route>
-            <Route path='*'>
-              <Error404></Error404>
-            </Route>
-          </Switch>
-        </BrowserRouter>
-      </UserContextProvider>
+      <BrowserRouter>
+        <Switch>
+          <Route exact path='/'>
+            <Dashboard></Dashboard>
+          </Route>
+          <Route path='*'>
+            <Error404></Error404>
+          </Route>
+        </Switch>
+      </BrowserRouter>
     </div>
   )
 }

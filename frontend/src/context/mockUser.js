@@ -1,4 +1,4 @@
-export default {
+const mockUser = {
   id: 'bill_cob',
   firstName: 'Bill',
   lastName: 'Cob',
@@ -8,3 +8,5 @@ export default {
   hostedEvents: ['cobber_1', 'cobber_2'],
   friends: ['randall_guy', 'willy_wonka'],
 }
+
+export default mockUser
