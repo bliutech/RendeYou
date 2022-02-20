@@ -9,9 +9,7 @@ import Meetings from './pages/Meetings.js'
 import Error404 from './pages/Error404.js'
 import About from './pages/About.js'
 import NavBar from './components/NavBar.js'
-import PrivateRoute from './pages/PrivateRoute'
 import Dashboard from './pages/Dashboard'
-import UserContextProvider from './context/context.js'
 
 function App() {
   const [userData, setUserData] = useState([])
