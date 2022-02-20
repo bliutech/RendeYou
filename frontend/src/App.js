@@ -1,36 +1,38 @@
-import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Home from './pages/Home.js';
-import Login from './pages/Login.js';
-import Register from './pages/Register.js';
-import Logout from './pages/Logout.js';
-import Profile from './pages/Profile.js';
-import Meetings from './pages/Meetings.js';
-import Error404 from './pages/Error404.js';
-import About from './pages/About.js';
-import NavBar from './components/NavBar.js';
+import React from 'react'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import Home from './pages/Home.js'
+import Login from './pages/Login.js'
+import Register from './pages/Register.js'
+import Logout from './pages/Logout.js'
+import Profile from './pages/Profile.js'
+import Meetings from './pages/Meetings.js'
+import Error404 from './pages/Error404.js'
+import About from './pages/About.js'
+import NavBar from './components/NavBar.js'
+import PrivateRoute from './pages/PrivateRoute'
+import Dashboard from './pages/Dashboard'
 
-function App()
-{
-    let isLoggedin = false;
-    return(
-        <div>
-            <BrowserRouter>
-                <NavBar />
-                <Routes>
-                    <Route path='/' element={ (isLoggedin ? <Meetings /> : <Home />) } />
-                    <Route path='/home' element={<Home />} />
-                    <Route path='/meetings' element={ (isLoggedin ? <Meetings /> : <Home />)}/>
-                    <Route path='/login' element={ <Login />} />
-                    <Route path='/register' element={ <Register />} />
-                    <Route path='/logout' element={ <Logout /> } />
-                    <Route path='/profile' element={ <Profile /> } />
-                    <Route path='/about' element={ <About /> } />
-                    <Route path='/*' element={<Error404 />}/>
-                </Routes>
-            </BrowserRouter>
-        </div>
-    );
+function App() {
+  let isLoggedin = false
+  return (
+    <div>
+      <BrowserRouter>
+        <Switch>
+          <PrivateRoute path='/' exact={true}>
+            <Route path='/'>
+              <Dashboard></Dashboard>
+            </Route>
+          </PrivateRoute>
+          <Route path='/login'>
+            <Login></Login>
+          </Route>
+          <Route path='*'>
+            <Error404></Error404>
+          </Route>
+        </Switch>
+      </BrowserRouter>
+    </div>
+  )
 }
 
-export default App;
+export default App
