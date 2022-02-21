@@ -169,11 +169,13 @@ app.post("/login", async(req, res) => {
 });
 
 app.post("/logout", async(req, res) => {
-    try { //if they area valid user, then destroy their session
+    const id = req.session.userId;
+    const user = await User.findById(id).lean();
+    if (user) {
         req.session.destroy();
         res.status(200);
         res.send();
-    } catch(err) {//otherwise, send 409 error
+    } else {
         res.status(409);
         res.send();
     }
