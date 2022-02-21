@@ -1,23 +1,22 @@
-const EventCard = ({
-  id,
-  date, //format dd/mm/yyyy
-  title,
-  description,
-  time, //format hh:ss PM
-  location, //TODO: link with google maps
-  host,
-  members,
-}) => {
+const EventCard = ({ event, joinHandler, ...attributes }) => {
   return (
     <>
       <header>
-        <h2>{title}</h2>
+        <h2>{event.title}</h2>
         <div>
-          <h4>{host}</h4>
-          <h4>{date}</h4>
+          <h4>{event.host}</h4>
+          <h4>{event.date}</h4>
         </div>
       </header>
-      <p>description</p>
+      <p>{event.description}</p>
+      <div>
+        <h2>at: {event.location}</h2>
+        <h2>{event.time}</h2>
+      </div>
+      <div>
+        <h5>{event.members}</h5>
+        <button onClick={joinHandler}>Join</button>
+      </div>
     </>
   )
 }

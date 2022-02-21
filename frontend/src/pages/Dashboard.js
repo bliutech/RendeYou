@@ -1,9 +1,15 @@
 import NavBar from '../components/NavBar'
+import EventCard from '../components/EventCard'
+import mockEvents from '../context/mockEvents'
 
 const Dashboard = () => {
+  {
+  }
   return (
     <>
-      <h1>This is Dashboard</h1>
+      {mockEvents.map((event) => {
+        return <EventCard event={event} />
+      })}
     </>
   )
 }
