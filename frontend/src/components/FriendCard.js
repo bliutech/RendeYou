@@ -53,10 +53,11 @@ const FriendCard = ({  // Maybe profile pic?
     firstname,
     lastname,
     email,
+    image,
   }) => {
       return (
       <View style={styles.item}> 
-      <Image style={styles.image} source={{uri: 'https://reactnative.dev/img/tiny_logo.png',}}/>
+      <Image style={styles.image} source={{uri: image,}}/>
       <View style={styles.subitem}>
       <Text style={styles.title}>{firstname} {lastname}</Text>
       <Text style={styles.body}>{email}</Text>

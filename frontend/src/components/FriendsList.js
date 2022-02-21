@@ -8,24 +8,35 @@ const FriendsList = () => {
             firstname: "Bobber",
             lastname: "Cob",
             email: "jabbapen@gmail.com",
+            image: 'https://reactnative.dev/img/tiny_logo.png',
         },
         {
             id: "182637",
             firstname: "Bobber",
             lastname: "Cob",
             email: "jabbapen@gmail.com",
+            image: 'https://reactnative.dev/img/tiny_logo.png',
         },
         {
             id: "178237",
             firstname: "Bobber",
             lastname: "Cob",
             email: "jabbapen@gmail.com",
+            image: 'https://reactnative.dev/img/tiny_logo.png',
         },
         {
             id: "178637",
             firstname: "Bobber",
             lastname: "Cob",
             email: "jabbapen@gmail.com",
+            image: 'https://reactnative.dev/img/tiny_logo.png',
+        },
+        {
+            id: "178637",
+            firstname: "Bobber",
+            lastname: "Cob",
+            email: "jabbapen@gmail.com",
+            image: 'https://reactnative.dev/img/tiny_logo.png',
         },
     ];
 
@@ -46,7 +57,7 @@ const FriendsList = () => {
     });
 
     const renderItem = ({item}) => (
-        <FriendCard firstname={item.firstname} lastname={item.lastname} email={item.email}/>
+        <FriendCard firstname={item.firstname} lastname={item.lastname} email={item.email} image={item.image}/>
     );
 
     return (
