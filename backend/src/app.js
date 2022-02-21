@@ -162,25 +162,12 @@ app.put("/user/me", checkAuth, async (req, res) => {
 
     const update = req.body;
 
-    if (emailRegex.test(update.email)) {
+    if (!emailRegex.test(update.email)) {
         res.status(400);
         res.send({ error: "Not a valid email" });
         return;
     }
 
-    if (update.id !== user._id.toString()) {
-        res.status(400);
-        res.send({ error: "Tried to modify user id" });
-        return;
-    }
-
-    if (!update.username || /\s/.test(update.username)) {
-        res.status(400);
-        res.send({ error: "Invalid username" });
-        return;
-    }
-
-    user.username = update.username;
     user.email = update.email;
     user.firstName = update.firstName;
     user.lastName = update.lastName;
