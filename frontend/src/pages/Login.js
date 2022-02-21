@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Form from '../components/Form'
 import { useCookies } from 'react-cookie'
 import Register from './Register'
 import mockUser from '../context/mockUser'
 
 function Login({ updateUserData, updateSignedInStatus }) {
+  const [cookies, setCookie] = useCookies(['user']);
+  const [notice, setNotice] = useState('');
   function handleSubmit(uname, pass) {
     // TODO: Work with backend peeps to adapt this function to communicate with them
     if (uname === mockUser.username && pass === mockUser.password) {
@@ -12,11 +14,15 @@ function Login({ updateUserData, updateSignedInStatus }) {
       updateSignedInStatus(true)
     }
   }
+  const handle = () => {setCookie('user', mockUser.id, {path: '/'});};
+  const testFunc = () => {setNotice("Hi");};
   document.title = 'Login | RendeYou'
   return (
     <div className='content'>
       <h1> Login </h1>
       <p> Login to your RendeYou account. </p>
+      <button onClick={handle}>Display</button>
+      <p style={{color: '#00ff00'}}>{cookies.user}</p>
       <Form onSubmit={handleSubmit} />
     </div>
   )
