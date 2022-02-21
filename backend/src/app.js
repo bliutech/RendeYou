@@ -85,7 +85,7 @@ app.post("/register", async (req, res) => {
     await newUser.save();
 
     // Create a new session on registration
-    req.session.id = newUser._id;
+    req.session.userId = newUser._id;
 
     res.send(stripUser(newUser.toObject()));
 });
