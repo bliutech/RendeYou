@@ -155,6 +155,7 @@ app.get("/user/me", checkAuth, async (req, res) => {
     }
 });
 
+// Doesn't currently allow users to change their password
 app.put("/user/me", checkAuth, async (req, res) => {
     const id = req.session.userId;
     const user = await User.findById(id);
