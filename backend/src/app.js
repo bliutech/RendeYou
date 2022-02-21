@@ -4,7 +4,6 @@ if (readenv.error)
     throw "You need a .env file!";
 
 const mongoose = require("mongoose");
-const { ObjectId } = require("mongodb");
 
 const express = require("express");
 const app = express();
@@ -211,7 +210,7 @@ app.put("/user/me", checkAuth, async (req, res) => {
     user.email = update.email;
     user.firstName = update.firstName;
     user.lastName = update.lastName;
-    user.friends = update.friends.map(idString => new ObjectId(idString));
+    user.friends = update.friends.map(idString => new mongoose.Types.ObjectId(idString));
 
     await user.save();
     res.send();
