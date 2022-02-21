@@ -34,7 +34,7 @@
 
   <form id="current-user">
     <p>/user/me</p>
-    <p><label>username: <input id="update-username"></label></p>
+    <p>username: <span id="current-username"></span></p>
     <p><label>firstName: <input id="update-first"></label></p>
     <p><label>lastName: <input id="update-last"></label></p>
     <p><label>email: <input id="update-email"></label></p>
@@ -95,7 +95,6 @@
     currentUserForm.addEventListener("submit", function (e) {
       e.preventDefault();
       const data = {
-        username: $("update-username").value,
         firstName: $("update-first").value,
         lastName: $("update-last").value,
         email: $("update-email").value
@@ -114,7 +113,7 @@
     getCurrentUserButton.addEventListener("click", async function (e) {
       const res = await fetch(backend("/user/me"), { credentials: "include" });
       const json = await res.json();
-      $("update-username").value = json.username;
+      $("current-username").textContent = json.username;
       $("update-first").value = json.firstName;
       $("update-last").value = json.lastName;
       $("update-email").value = json.email;
