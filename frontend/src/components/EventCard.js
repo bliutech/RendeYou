@@ -1,22 +1,64 @@
+import Card from '@mui/material/Card'
+import AddIcon from '@mui/icons-material/Add'
+import { useTheme } from '@mui/material/styles'
+import { useState } from 'react'
+import {
+  CardContent,
+  CardActions,
+  Button,
+  CardHeader,
+  Typography,
+  IconButton,
+} from '@mui/material'
+import { Box } from '@mui/system'
+import { Grid } from '@mui/material'
+
 const EventCard = ({ event, joinHandler, ...attributes }) => {
   return (
     <>
-      <header>
-        <h2>{event.title}</h2>
-        <div>
-          <h4>{event.host}</h4>
-          <h4>{event.date}</h4>
-        </div>
-      </header>
-      <p>{event.description}</p>
-      <div>
-        <h2>at: {event.location}</h2>
-        <h2>{event.time}</h2>
-      </div>
-      <div>
-        <h5>{event.members}</h5>
-        <button onClick={joinHandler}>Join</button>
-      </div>
+      <Card
+        sx={{
+          maxWidth: '600px',
+        }}
+        variant='outlined'
+      >
+        <CardHeader
+          title={event.title}
+          subheader={'10/23/2022'}
+          style={{ backgroundColor: '#FC6A01' }}
+        />
+        <CardContent>
+          <Grid container spacing={2}>
+            <Grid item xs={8}>
+              <Typography variant='paragraph' component='paragraph'>
+                {event.description}
+              </Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography div>
+                <Typography variant='h6' component='h6'>
+                  {event.location}
+                </Typography>
+                <Typography h2>{event.time}</Typography>
+              </Typography>
+              <Typography div>
+                <Typography h5>{event.members}</Typography>
+              </Typography>
+            </Grid>
+          </Grid>
+        </CardContent>
+        <CardActions>
+          <Button
+            variant='contained'
+            onClick={joinHandler}
+            startIcon={<AddIcon />}
+            style={{ backgroundColor: '#FC6A01' }}
+          >
+            Join
+          </Button>
+          <Typography h5>{event.members.join(' ')}</Typography>
+        </CardActions>
+      </Card>
     </>
   )
 }
