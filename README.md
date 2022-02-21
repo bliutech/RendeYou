@@ -1,8 +1,8 @@
-# <img src="https://raw.githubusercontent.com/bliutech/RendeYou/main/frontend/src/files/rende-you-icon.svg?token=GHSAT0AAAAAABRQSY2VAX5KDTDIHQXSHINKYQR7JRA" width=30px />RendeYou <img src="https://raw.githubusercontent.com/bliutech/RendeYou/main/frontend/src/files/rende-you-icon.svg?token=GHSAT0AAAAAABRQSY2VAX5KDTDIHQXSHINKYQR7JRA" width=30px />
+# <img src="./frontend/src/files/rende-you-icon.svg" width=30px />RendeYou <img src="./frontend/src/files/rende-you-icon.svg" width=30px />
 
 _RendeYou_ is a **MERN Stack** full stack web application that connects users with an emphasis on immediate meetups with friends.
 
-![RendeYou Logo](https://raw.githubusercontent.com/bliutech/RendeYou/main/frontend/src/files/rende-you-logo.svg?token=GHSAT0AAAAAABRQSY2U6RQUULUKT2YKXNRKYQR7HYA)
+![RendeYou Logo](./frontend/src/files/rende-you-logo.svg)
 
 ## Table of Contents
 - [Features](https://github.com/bliutech/RendeYou/#features)
