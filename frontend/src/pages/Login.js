@@ -1,5 +1,6 @@
 import React from 'react'
 import Form from '../components/Form'
+import { useCookies } from 'react-cookie'
 import Register from './Register'
 import mockUser from '../context/mockUser'
 

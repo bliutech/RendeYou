@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { useCookies } from 'react-cookie'
 import Home from './pages/Home.js'
 import Login from './pages/Login.js'
 import Register from './pages/Register.js'
