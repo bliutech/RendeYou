@@ -23,7 +23,13 @@ const sessionLifetime = 1000 * 60 * 60; // 1h
 
 // Allow CORS
 // TODO: Currently allows requests from any origin - change before production!
-app.use(cors());
+let corsOptions;
+if (process.env.ENV == "dev") {
+    corsOptions = { origin: "http://localhost:3000" };
+} else if (process.env.ENV == "production") {
+    // Production options
+}
+app.use(cors(corsOptions));
 
 // Parse request bodies as JSON
 app.use(express.json());
@@ -41,7 +47,7 @@ app.use(session({
 // API routes
 
 app.get("/", (req, res) => {
-    res.send("Hello World!");
+    res.sendFile("test-frontend.html", { root: "." });
 });
 
 app.post("/register", async (req, res) => {
@@ -118,18 +124,13 @@ app.get("/user", async (req, res) => {
 
     users = await users.lean();
 
+    users.map(user => stripUser(user));
+
     res.send(users);
 });
 
-app.get("/user/:id", async (req, res) => {
+app.get("/user/:id([0-9a-f]{24})", async (req, res) => {
     const id = req.params.id;
-
-    // Validate id
-    if (!/[0-9a-f]{24}/.test(id)) {
-        res.status(400); // 400 Bad Request
-        res.send({ error: "id is not a 24-digit hexadecimal string" });
-        return;
-    }
 
     // .lean() makes the query return a JS object instead of a document
     const user = await User.findById(id).lean();
@@ -141,8 +142,8 @@ app.get("/user/:id", async (req, res) => {
     }
 });
 
-app.get("/user/me", checkAuth, async(req, res) => {
-    const id = req.session.id;
+app.get("/user/me", checkAuth, async (req, res) => {
+    const id = req.session.userId;
 
     // .lean() makes the query return a JS object instead of a document
     const user = await User.findById(id).lean();
@@ -155,7 +156,7 @@ app.get("/user/me", checkAuth, async(req, res) => {
 });
 
 app.put("/user/me", checkAuth, async (req, res) => {
-    const id = req.session.id;
+    const id = req.session.userId;
     const user = await User.findById(id);
 
     const update = req.body;
@@ -176,14 +177,20 @@ app.put("/user/me", checkAuth, async (req, res) => {
         res.send({ error: "Not a valid email" });
         return;
     }
-    // Checks if user ID has been modified
-    if (user.id != update.id) {
-        res.status(409) // 409 Conflict
-        res.send({ error: "User ID doesn't match" });
+
+    // Some validations, kinda-unsafe!
+    if (update.id !== user._id.toString()) {
+        res.status(400);
+        res.send({ error: "Tried to modify user id" });
+    }
+
+    if (!update.username || /\s/.test(update.username)) {
+        res.status(400) // 400 Bad Request
+        res.send({ error: "Invalid username" });
         return;
     }
 
-    // Some validations, kinda-unsafe!
+    // No validations; unsafe!
     Object.assign(user, update);
 
     await user.save();
@@ -191,7 +198,7 @@ app.put("/user/me", checkAuth, async (req, res) => {
 });
 
 app.delete("/user/me", checkAuth, async (req, res) => {
-    await User.findByIdAndDelete(req.session.id);
+    await User.findByIdAndDelete(req.session.userId);
     req.session.destroy();
     res.send();
 });
@@ -200,7 +207,7 @@ app.delete("/user/me", checkAuth, async (req, res) => {
 // Route handlers
 
 function checkAuth(req, res, next) {
-    if (req.session.id) {
+    if (req.session.userId) {
         next();
     } else {
         res.status(403); // 403 Forbidden

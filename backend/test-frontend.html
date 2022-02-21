@@ -32,6 +32,16 @@
     <input type="submit">
   </form>
 
+  <form id="current-user">
+    <p>/user/me</p>
+    <p><label>firstName: <input id="update-first"></label></p>
+    <p><label>lastName: <input id="update-last"></label></p>
+    <p><label>email: <input id="update-email"></label></p>
+    <input type="submit">
+  </form>
+  <input type="button" id="get-current-user" value="Get Current User">
+  <input type="button" id="delete-current-user" value="Delete Current User">
+
   <script>
     function backend(endpoint) {
       return "http://localhost:8000" + endpoint;
@@ -41,8 +51,12 @@
       return new URLSearchParams(obj).toString();
     }
 
-    const registerForm = document.getElementById("register");
-    registerForm.addEventListener("submit", function(e) {
+    function $(id) {
+      return document.getElementById(id);
+    }
+
+    const registerForm = $("register");
+    registerForm.addEventListener("submit", function (e) {
       e.preventDefault();
       const data = {
         username: registerForm.querySelector("input").value,
@@ -57,23 +71,55 @@
       });
     });
 
-    const getUserForm = document.getElementById("get-user");
-    getUserForm.addEventListener("submit", function(e) {
+    const getUserForm = $("get-user");
+    getUserForm.addEventListener("submit", function (e) {
       e.preventDefault();
       const id = getUserForm.querySelector("input").value;
       fetch(backend("/user/" + id));
     });
 
-    const searchUsersForm = document.getElementById("search-users");
+    const searchUsersForm = $("search-users");
     searchUsersForm.addEventListener("submit", function (e) {
       e.preventDefault();
       const data = {
-        ids: document.getElementById("search-ids").value,
-        username: document.getElementById("search-username").value,
-        first: document.getElementById("search-first").value,
-        last: document.getElementById("search-last").value
+        ids: $("search-ids").value,
+        username: $("search-username").value,
+        first: $("search-first").value,
+        last: $("search-last").value
       };
       fetch(backend("/user?" + toQuery(data)));
+    });
+
+    const currentUserForm = $("current-user");
+    currentUserForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const data = {
+        firstName: $("update-first").value,
+        lastName: $("update-last").value,
+        email: $("update-email").value
+      };
+      fetch(backend("/user/me"), {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
+    });
+
+    const getCurrentUserButton = $("get-current-user");
+    getCurrentUserButton.addEventListener("click", async function (e) {
+      const res = await fetch(backend("/user/me"), { credentials: "include" });
+      const json = await res.json();
+      $("update-first").value = json.firstName;
+      $("update-last").value = json.lastName;
+      $("update-email").value = json.email;
+    });
+
+    const deleteCurrentUserButton = $("delete-current-user");
+    deleteCurrentUserButton.addEventListener("click", function (e) {
+      fetch(backend("/user/me"), { method: "DELETE", credentials: "include" });
     });
   </script>
 </body>
