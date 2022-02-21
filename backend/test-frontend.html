@@ -43,6 +43,18 @@
   <input type="button" id="get-current-user" value="Get Current User">
   <input type="button" id="delete-current-user" value="Delete Current User">
 
+  <form id="login">
+    <p>/login</p>
+    <p><label>username: <input></label></p>
+    <p><label>password: <input type="password"></label></p>
+    <input type = "submit">
+  </form>
+  
+  <form id="logout">
+    <p>/logout</p>
+    <input type = "submit">
+  </form> 
+
   <script>
     function backend(endpoint) {
       return "http://localhost:8000" + endpoint;
@@ -102,6 +114,19 @@
       fetch(backend("/user/me"), {
         method: "PUT",
         credentials: "include",
+        body: JSON.stringify(data)
+      });
+    });
+
+    const getLoggedUser = document.getElementById("login");
+    getLoggedUser.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const data = {
+        username: getLoggedUser.querySelector("input").value,
+        password: getLoggedUser.querySelector("input[type=password]").value
+      }
+      fetch(backend("/login"), {
+        method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
@@ -122,6 +147,14 @@
     const deleteCurrentUserButton = $("delete-current-user");
     deleteCurrentUserButton.addEventListener("click", function (e) {
       fetch(backend("/user/me"), { method: "DELETE", credentials: "include" });
+    });
+    
+    const Logout = document.getElementById("logout");
+    Logout.addEventListener("submit", function(e) {
+      e.preventDefault();
+      fetch(backend("/logout"), {
+        method: "POST"
+      });
     });
   </script>
 </body>
