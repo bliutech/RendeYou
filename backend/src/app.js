@@ -49,10 +49,6 @@ app.use(session({
 app.get("/", (req, res) => {
     res.sendFile("test-frontend.html", { root: "." });
 });
-app.get('/', (req, res) => {
-    res.send("Hello World");
-});
-
 app.post("/register", async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
