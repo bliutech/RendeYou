@@ -152,10 +152,9 @@ app.post("/login", async(req, res) => {
     const password = req.body.password;
     //retrieve that user from database
     const user = await User.findOne({ 
-        username: username,
-        password: password
+        username: username
     }).lean();
-    if (user) { //if the user is a valid user
+    if (user && user.passwordHash == hash(password, user.salt)) { //if the user is a valid user
         req.session.userId = user._id; //then createa new session ID and return that user
         res.send(stripUser(user));
     } else { //otherwise, return an error status
@@ -177,6 +176,8 @@ app.post("/logout", async(req, res) => {
     }
 });
 
+
+ 
 
 
 //==============================================================================
