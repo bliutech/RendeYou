@@ -179,7 +179,10 @@ app.put("/user/me", checkAuth, async (req, res) => {
         return;
     }
 
-    Object.assign(user, update);
+    user.username = update.username;
+    user.email = update.email;
+    user.firstName = update.firstName;
+    user.lastName = update.lastName;
 
     await user.save();
     res.send();
