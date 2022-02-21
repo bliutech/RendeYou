@@ -11,7 +11,7 @@ const port = 8000;
 const cors = require("cors");
 
 const { User } = require("./schemas");
-const { stripUser, escapeRegex } = require("./util");
+const { stripUser, escapeRegex, emailRegex } = require("./util");
 const { hash, genSalt } = require("./crypt");
 
 const session = require("express-session");
@@ -161,6 +161,24 @@ app.put("/user/me", checkAuth, async (req, res) => {
 
     const update = req.body;
 
+    // Check first last name are valid
+    if (!/[A-Za-z]/.test(update.firstName)) {
+        res.status(400) // 400 Bad Request
+        res.send({ error: "First name contains non-alpha characters or whitespace" });
+        return;
+    } else if (!/[A-Za-z]/.test(update.lastName)){
+        res.status(400) // 400 Bad Request
+        res.send({ error: "Last name contains non-alpha characters or whitespace" });
+        return;
+    }
+    // Checks if email is valid
+    if (emailRegex.test(update.email)) {
+        res.status(400) // 400 Bad Request
+        res.send({ error: "Not a valid email" });
+        return;
+    }
+
+    // Some validations, kinda-unsafe!
     if (update.id !== user._id.toString()) {
         res.status(400);
         res.send({ error: "Tried to modify user id" });
