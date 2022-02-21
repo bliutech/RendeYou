@@ -16,8 +16,8 @@ function Login({ updateUserData, updateSignedInStatus }) {
   }
 
   async function handle() {
-    setCookie('user', mockUser.id, {path: '/', maxAge: 20});
-    setCookie('loggedin', true, {path: '/', maxAge: 20});
+    setCookie('user', mockUser.id, {path: '/', maxAge: 120});
+    setCookie('loggedin', true, {path: '/', maxAge: 120});
     console.log("Set user cookie");
   };
   function clearCookies() {
