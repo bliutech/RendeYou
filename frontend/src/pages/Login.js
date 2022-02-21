@@ -5,24 +5,32 @@ import Register from './Register'
 import mockUser from '../context/mockUser'
 
 function Login({ updateUserData, updateSignedInStatus }) {
-  const [cookies, setCookie] = useCookies(['user']);
   const [notice, setNotice] = useState('');
+  const [cookies, setCookie, removeCookie] = useCookies(['user', 'loggedin']);
   function handleSubmit(uname, pass) {
     // TODO: Work with backend peeps to adapt this function to communicate with them
     if (uname === mockUser.username && pass === mockUser.password) {
       updateUserData(mockUser)
       updateSignedInStatus(true)
+      handle();
     }
   }
-  const handle = () => {setCookie('user', mockUser.id, {path: '/'});};
+  async function handle() {
+    setCookie('user', mockUser.id, {path: '/', maxAge: 20});
+    setCookie('loggedin', true, {path: '/', maxAge: 20});
+    console.log("Set user cookie");
+  };
+  function clearCookies() {
+    removeCookie("user");
+  }
   const testFunc = () => {setNotice("Hi");};
   document.title = 'Login | RendeYou'
   return (
     <div className='content'>
       <h1> Login </h1>
       <p> Login to your RendeYou account. </p>
-      <button onClick={handle}>Display</button>
-      <p style={{color: '#00ff00'}}>{cookies.user}</p>
+      <button onClick={clearCookies}>clear</button>
+      <p style={{color: '#00ff00'}}>{cookies["user"]}</p>
       <Form onSubmit={handleSubmit} />
     </div>
   )

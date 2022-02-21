@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
-import { useCookies } from 'react-cookie'
+import { useCookies, Cookies, withCookies } from 'react-cookie'
 import Home from './pages/Home.js'
 import Login from './pages/Login.js'
 import Register from './pages/Register.js'
@@ -15,13 +15,16 @@ import Dashboard from './pages/Dashboard'
 function App() {
   const [userData, setUserData] = useState([])
   const [isSignedIn, setIsSignedIn] = useState(false)
+  const [cookies, setCookie, removeCookie] = useCookies(['user', 'loggedin']);
 
-  if (!isSignedIn) {
+  if (!isSignedIn && !(cookies["loggedin"])) {  // TODO: This is very unsecure. the user cookie must hold a unique key generated and sent by the server
     return (
+        <>
       <Login
         updateUserData={setUserData}
         updateSignedInStatus={setIsSignedIn}
       />
+      </>
     )
   }
 
