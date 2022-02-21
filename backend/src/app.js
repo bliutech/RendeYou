@@ -10,7 +10,7 @@ const app = express();
 const port = 8000;
 const cors = require("cors");
 
-const { User } = require("./schemas");
+const { User, Event } = require("./schemas");
 const { stripUser, escapeRegex } = require("./util");
 const { hash, genSalt } = require("./crypt");
 
@@ -48,6 +48,9 @@ app.use(session({
 
 app.get("/", (req, res) => {
     res.sendFile("test-frontend.html", { root: "." });
+});
+app.get('/', (req, res) => {
+    res.send("Hello World");
 });
 
 app.post("/register", async (req, res) => {
@@ -147,8 +150,6 @@ app.get("/user/:id", async (req, res) => {
     }
 });
 
-
-
 app.post("/login", async(req, res) => {
     //get the username and password of the user trying to login
     const username = req.body.username;
@@ -157,109 +158,24 @@ app.post("/login", async(req, res) => {
     const user = await User.findOne({ 
         username: username,
         password: password
-    });
+    }).lean();
     if (user) { //if the user is a valid user
         req.session.userId = user._id; //then createa new session ID and return that user
-        res.send(stripUser(user.toObject()));
+        res.send(stripUser(user));
     } else { //otherwise, return an error status
         res.status(403);
-        res.send({error: "Forbidden"});
+        res.send();
     }
 });
 
 app.post("/logout", async(req, res) => {
-    const id = req.params.id;  //check to see if a valid user is logged in
-    const user = await User.findById(id).lean();
-    if (user) { //if they area valid user, then destroy their session
+    try { //if they area valid user, then destroy their session
         req.session.destroy();
         res.status(200);
-    } else { //otherwise, send 409 error
+        res.send();
+    } catch(err) {//otherwise, send 409 error
         res.status(409);
-    }
-});
-
-app.get("/event/:id", async(req, res) => {
-    const eventID = req.params.id;
-    const event = await Event.findById(eventID).lean(); 
-    if (event) { //make sure the event is valid, and if it is, send it
-        res.send(event);
-    } else { //otherwise, send a 404 error
-        res.status(404);
-    }
-});
-app.post("/event/new", async(req, res) =>  {
-    //need to make sure the changes are valid (i.e. the date is valid, etc.)
-    const title = req.body.title;
-    if (!title) {
-        res.status(400);
-        res.send({error: "Event name is empty"});
-        return;
-    }
-    if (/\s/.test(title)) {
-        res.status(400);
-        res.send({error: "Event name contains white space"});
-        return;
-    }
-    const existingEvent = Event.findOne(req.body);
-    if (existingEvent) {
-        res.status(400);
-        res.send({error: "Event already exists"});
-        return;
-    }
-    const newEvent = new Event(req.body);
-    try {
-        await newEvent.save();
-        res.status(200);
-    } catch(err) {
-        res.status(403);
-    }
- });
- 
-app.put("/event/:id", async(req, res) => {
-    const eventID = req.params.id; 
-    const event = await Event.findById(eventID).lean(); //retrieve the event to be modified
-    const changes = req.body;
-
-    //need to make sure the changes are valid (i.e. the date is valid, etc.)
-    const title = req.body.title;
-    if (!title) {
-        res.status(400);
-        res.send({error: "Event name is empty"});
-        return;
-    }
-    if (/\s/.test(title)) {
-        res.status(400);
-        res.send({error: "Event name contains white space"});
-        return;
-    }
-
-    //make sure the event is valid. If it is, set the input event to contain the needed changes
-    if (event) {
-        event.set(changes);
-        try {
-            await Event.save(); //save it
-            res.status(200); //send a 200 status if it does save
-        } catch (err) {
-            res.status(403); //and if it doesn't save, send a 403 error
-        }
-    } else {
-        res.status(404); //send a 404 error if the event is invalid
-    }
-});
-
-app.delete("/event/:id", async(req, res) => {
-    const eventID = req.params.id;
-    const event = await Event.findById(eventId).lean();
-    if (event) { //if the event is valid, delete it
-        Event.findByIdAndDelete(eventID, function(err) { //if there is some error in deleting it, then send a 403 error status
-            if (err) {
-                res.status(403);
-            } else {
-                res.status(200); //otherwise, send a successful 200 status
-            }
-        });
-    } else {
-        res.status(404); //send a 404 status if event wasn't found
+        res.send();
     }
 });
 
@@ -273,6 +189,7 @@ async function main() {
     app.listen(port, () => {
         console.log(`Example app listening on port ${port}`);
     });
+
 }
 
 main();
