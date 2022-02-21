@@ -35,4 +35,7 @@ function Register() {
   )
 }
 
+
+//TODO: Link with login page
+//TODO: Quality of life stuff (error messages)
 export default Register

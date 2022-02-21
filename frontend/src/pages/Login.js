@@ -5,12 +5,12 @@ import mockUser from '../context/mockUser'
 
 function Login({ updateUserData, updateSignedInStatus }) {
   function handleSubmit(uname, pass) {
-    // TODO: Work with backend peeps to adapt this function to communicate with them
     if (uname === mockUser.username && pass === mockUser.password) {
       updateUserData(mockUser)
       updateSignedInStatus(true)
     }
   }
+
   document.title = 'Login | RendeYou'
   return (
     <div className='content'>
@@ -20,5 +20,10 @@ function Login({ updateUserData, updateSignedInStatus }) {
     </div>
   )
 }
+
+ // TODO: Work with backend peeps to adapt this function to communicate with them
+//TODO: Register
+//TODO: possibly forget login
+//TODO: Quality of life (progress wheel, failed login message)
 
 export default Login
