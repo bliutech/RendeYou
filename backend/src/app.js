@@ -161,36 +161,24 @@ app.put("/user/me", checkAuth, async (req, res) => {
 
     const update = req.body;
 
-    // Check first last name are valid
-    if (!/[A-Za-z]/.test(update.firstName)) {
-        res.status(400) // 400 Bad Request
-        res.send({ error: "First name contains non-alpha characters or whitespace" });
-        return;
-    } else if (!/[A-Za-z]/.test(update.lastName)){
-        res.status(400) // 400 Bad Request
-        res.send({ error: "Last name contains non-alpha characters or whitespace" });
-        return;
-    }
-    // Checks if email is valid
     if (emailRegex.test(update.email)) {
-        res.status(400) // 400 Bad Request
+        res.status(400);
         res.send({ error: "Not a valid email" });
         return;
     }
 
-    // Some validations, kinda-unsafe!
     if (update.id !== user._id.toString()) {
         res.status(400);
         res.send({ error: "Tried to modify user id" });
+        return;
     }
 
     if (!update.username || /\s/.test(update.username)) {
-        res.status(400) // 400 Bad Request
+        res.status(400);
         res.send({ error: "Invalid username" });
         return;
     }
 
-    // No validations; unsafe!
     Object.assign(user, update);
 
     await user.save();
