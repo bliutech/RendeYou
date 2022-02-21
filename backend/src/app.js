@@ -4,6 +4,7 @@ if (readenv.error)
     throw "You need a .env file!";
 
 const mongoose = require("mongoose");
+const { ObjectId } = require("mongodb");
 
 const express = require("express");
 const app = express();
@@ -99,7 +100,7 @@ app.post("/login", async (req, res) => {
     const user = await User.findOne({
         username: username,
     }).lean();
-    if (user && user.passwordHash == hash(password, user.salt)) { 
+    if (user && user.passwordHash == hash(password, user.salt)) {
         req.session.userId = user._id; // then create a new session ID and return that user
         res.send(stripUser(user));
     } else { // otherwise, return an error status
@@ -129,7 +130,7 @@ app.get("/user", async (req, res) => {
         for (const id of idArray) {
             if (!/[0-9a-f]{24}/.test(id)) {
                 res.status(400); // 400 Bad Request
-                res.send({ error: "ids are not not all 24-digit hexadecimal strings" });
+                res.send({ error: "ids are not all 24-digit hexadecimal strings" });
                 return;
             }
         }
@@ -192,9 +193,25 @@ app.put("/user/me", checkAuth, async (req, res) => {
         return;
     }
 
+    for (const id of update.friends) {
+        if (!/[0-9a-f]{24}/.test(id)) {
+            res.status(400); // 400 Bad Request
+            res.send({ error: "Invalid ids in friends" });
+            return;
+        }
+    }
+
+    const numFriends = await User.find().where("_id").in(update.friends).countDocuments();
+    if (numFriends != update.friends.length) {
+        res.status(400);
+        res.send({error: "Invalid ids in friends"});
+        return;
+    }
+
     user.email = update.email;
     user.firstName = update.firstName;
     user.lastName = update.lastName;
+    user.friends = update.friends.map(idString => new ObjectId(idString));
 
     await user.save();
     res.send();
