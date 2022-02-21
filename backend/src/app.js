@@ -10,7 +10,7 @@ const app = express();
 const port = 8000;
 const cors = require("cors");
 
-const { User } = require("./schemas");
+const { User, Event } = require("./schemas");
 const { stripUser, escapeRegex } = require("./util");
 const { hash, genSalt } = require("./crypt");
 
@@ -49,7 +49,6 @@ app.use(session({
 app.get("/", (req, res) => {
     res.sendFile("test-frontend.html", { root: "." });
 });
-
 app.post("/register", async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
@@ -147,6 +146,39 @@ app.get("/user/:id", async (req, res) => {
     }
 });
 
+app.post("/login", async(req, res) => {
+    //get the username and password of the user trying to login
+    const username = req.body.username;
+    const password = req.body.password;
+    //retrieve that user from database
+    const user = await User.findOne({ 
+        username: username,
+        password: password
+    }).lean();
+    if (user) { //if the user is a valid user
+        req.session.userId = user._id; //then createa new session ID and return that user
+        res.send(stripUser(user));
+    } else { //otherwise, return an error status
+        res.status(403);
+        res.send();
+    }
+});
+
+app.post("/logout", async(req, res) => {
+    const id = req.session.userId;
+    const user = await User.findById(id).lean();
+    if (user) {
+        req.session.destroy();
+        res.status(200);
+        res.send();
+    } else {
+        res.status(409);
+        res.send();
+    }
+});
+
+
+
 //==============================================================================
 
 async function main() {
@@ -155,6 +187,7 @@ async function main() {
     app.listen(port, () => {
         console.log(`Example app listening on port ${port}`);
     });
+
 }
 
 main();

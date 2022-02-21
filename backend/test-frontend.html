@@ -32,6 +32,18 @@
     <input type="submit">
   </form>
 
+  <form id="login">
+    <p>/login</p>
+    <p><label>username: <input></label></p>
+    <p><label>password: <input type="password"></label></p>
+    <input type = "submit">
+  </form>
+  
+  <form id="logout">
+    <p>/logout</p>
+    <input type = "submit">
+  </form> 
+
   <script>
     function backend(endpoint) {
       return "http://localhost:8000" + endpoint;
@@ -74,6 +86,30 @@
         last: document.getElementById("search-last").value
       };
       fetch(backend("/user?" + toQuery(data)));
+    });
+
+    const getLoggedUser = document.getElementById("login");
+    getLoggedUser.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const data = {
+        username: getLoggedUser.querySelector("input").value,
+        password: getLoggedUser.querySelector("input[type=password]").value
+      }
+      fetch(backend("/login"), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
+    });
+
+    const Logout = document.getElementById("logout");
+    Logout.addEventListener("submit", function(e) {
+      e.preventDefault();
+      fetch(backend("/logout"), {
+        method: "POST"
+      });
     });
   </script>
 </body>
