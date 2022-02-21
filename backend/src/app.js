@@ -98,9 +98,8 @@ app.post("/login", async (req, res) => {
     // retrieve that user from database
     const user = await User.findOne({
         username: username,
-        password: password
     }).lean();
-    if (user) { // if the user is a valid user
+    if (user && user.passwordHash == hash(password, user.salt)) { 
         req.session.userId = user._id; // then create a new session ID and return that user
         res.send(stripUser(user));
     } else { // otherwise, return an error status
