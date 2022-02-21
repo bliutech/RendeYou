@@ -186,34 +186,37 @@ app.put("/user/me", checkAuth, async (req, res) => {
     const user = await User.findById(id);
     const update = req.body;
 
-    if (update.email && !emailRegex.test(update.email)) {
-        res.status(400);
-        res.send({ error: "Invalid email" });
-        return;
-    }
-
-    for (const id of update.friends) {
-        if (!/[0-9a-f]{24}/.test(id)) {
-            res.status(400); // 400 Bad Request
-            res.send({ error: "Invalid ids in friends" });
-            return;
+    async function updateOnlyIfChanged(prop, validate, errorMessage) {
+        if (update[prop] !== undefined && user[prop] !== update[prop]) {
+            if (validate && await validate(update[prop]))
+                user[prop] = update[prop];
+            else
+                throw errorMessage;
         }
     }
 
-    const numFriends = await User.find().where("_id").in(update.friends).countDocuments();
-    if (numFriends != update.friends.length) {
+    const updateEmail = updateOnlyIfChanged("email", emailRegex.test, "Invalid email");
+
+    const updateFriends = updateOnlyIfChanged("friends", async (friends) => {
+        for (const id of friends) {
+            if (!/[0-9a-f]{24}/.test(id))
+                return false;
+        }
+        const numFriends = await User.find().where("_id").in(friends).countDocuments();
+        return numFriends == friends.length;
+    }, "Invalid or duplicate ids in friends list");
+
+    const updateFirstName = updateOnlyIfChanged("firstName");
+    const updateLastName = updateOnlyIfChanged("lastName");
+
+    try {
+        await Promise.all([updateFirstName, updateLastName, updateEmail, updateFriends]);
+        await user.save();
+        res.send();
+    } catch (errorMessage) {
         res.status(400);
-        res.send({error: "Invalid ids in friends"});
-        return;
+        res.send({ error: errorMessage });
     }
-
-    user.email = update.email;
-    user.firstName = update.firstName;
-    user.lastName = update.lastName;
-    user.friends = update.friends.map(idString => new mongoose.Types.ObjectId(idString));
-
-    await user.save();
-    res.send();
 });
 
 app.delete("/user/me", checkAuth, async (req, res) => {
