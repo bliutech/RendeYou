@@ -142,7 +142,7 @@ app.get("/user/:id([0-9a-f]{24})", async (req, res) => {
     }
 });
 
-app.get("/user/me", checkAuth, async(req, res) => {
+app.get("/user/me", checkAuth, async (req, res) => {
     const id = req.session.userId;
 
     // .lean() makes the query return a JS object instead of a document
@@ -160,6 +160,17 @@ app.put("/user/me", checkAuth, async (req, res) => {
     const user = await User.findById(id);
 
     const update = req.body;
+
+    if (update.id !== user._id.toString()) {
+        res.status(400);
+        res.send({ error: "Tried to modify user id" });
+    }
+
+    if (!update.username || /\s/.test(update.username)) {
+        res.status(400) // 400 Bad Request
+        res.send({ error: "Invalid username" });
+        return;
+    }
 
     // No validations; unsafe!
     Object.assign(user, update);
