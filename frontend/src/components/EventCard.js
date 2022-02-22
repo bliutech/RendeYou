@@ -12,53 +12,37 @@ import {
 } from '@mui/material'
 import { Box } from '@mui/system'
 import { Grid } from '@mui/material'
+import { isHostComponent } from '@mui/base'
 
 const EventCard = ({ event, joinHandler, ...attributes }) => {
+  const date = new Date(event.date)
+  const options = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }
   return (
     <>
-      <Card
-        sx={{
-          maxWidth: '600px',
-        }}
-        variant='outlined'
-      >
-        <CardHeader
-          title={event.title}
-          subheader={'10/23/2022'}
-          style={{ backgroundColor: '#FC6A01' }}
-        />
-        <CardContent>
-          <Grid container spacing={2}>
-            <Grid item xs={8}>
-              <Typography variant='paragraph' component='paragraph'>
-                {event.description}
-              </Typography>
-            </Grid>
-            <Grid item xs={4}>
-              <Typography div>
-                <Typography variant='h6' component='h6'>
-                  {event.location}
-                </Typography>
-                <Typography h2>{event.time}</Typography>
-              </Typography>
-              <Typography div>
-                <Typography h5>{event.members}</Typography>
-              </Typography>
-            </Grid>
-          </Grid>
-        </CardContent>
-        <CardActions>
-          <Button
-            variant='contained'
-            onClick={joinHandler}
-            startIcon={<AddIcon />}
-            style={{ backgroundColor: '#FC6A01' }}
-          >
-            Join
-          </Button>
-          <Typography h5>{event.members.join(' ')}</Typography>
-        </CardActions>
-      </Card>
+      <div>
+        <div>
+          <p>{event.title}</p>
+          <p>{event.host}</p>
+        </div>
+        <div>
+          <div>
+            <p>{event.description}</p>
+          </div>
+          <div>
+            <p>{date.toLocaleDateString('en-US', options)}</p>
+            <p>{date.toLocaleTimeString('en-US')}</p>
+          </div>
+        </div>
+        <div>
+          <button onClick={joinHandler}>Join</button>
+          <p>{event.members.join(' ')}</p>
+        </div>
+      </div>
     </>
   )
 }

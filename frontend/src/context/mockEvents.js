@@ -1,4 +1,4 @@
-export default [
+const mockEvents = [
   {
     id: 'cobber_1',
     date: 1519211809934,
@@ -6,8 +6,8 @@ export default [
     description: 'Match between Rams and Bengals',
     time: '1200',
     location: 'Bruin Walk',
-    host: 'bill_cob',
-    members: ['randall_guy', 'willy_wonka'],
+    host: 'bill cob',
+    members: ['randall guy', 'willy wonka'],
   },
   {
     id: 'cobber_2',
@@ -24,9 +24,9 @@ export default [
     date: 1519211809935,
     title: 'dinner',
     description: 'icecream',
-    time: '1500',
     location: 'Konkers',
     host: 'randall_guy',
     members: ['bill_cob'],
   },
 ]
+export default mockEvents
