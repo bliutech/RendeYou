@@ -24,7 +24,7 @@ export default function Logout()
     }
     
     return(
-        <div className='content' onLoad={handleLogout()}>
+        <div className='content' onLoad={handleLogout}>
             <h1> Logout </h1>
             <p> Logged out of your RendeYou account. </p>
             <p style={{color: "#ff0000"}}>{err_msg}</p>
