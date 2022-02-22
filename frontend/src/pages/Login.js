@@ -51,7 +51,6 @@ function Login({ updateUserData, updateSignedInStatus }) {
       <p style={{ color: '#00ff00' }}>{cookies['user']}</p>
       <Form onSubmit={handleSubmit} />
       <p>Register</p>
-      <button onClick={}>Register</button>
     </div>
   )
 }
