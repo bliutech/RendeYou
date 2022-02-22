@@ -55,6 +55,7 @@
     <input type = "submit">
   </form> 
 
+
   <form id="Event Form">
     <p>/event/new</p>
     <p>Title: <input id="title"></span></p>
@@ -63,6 +64,9 @@
     <p><label>Location: <input id="location"></label></p>
     <input type="submit">
   </form>
+
+  <input type="button" id="check-session" value="Check Session">
+
 
   <script>
     function backend(endpoint) {
@@ -166,6 +170,7 @@
       });
     });
 
+
     const EventForm = document.getElementById("Event Form");
     EventForm.addEventListener("submit", async function(e) {
       e.preventDefault();
@@ -189,6 +194,12 @@
 
 
     
+
+    const checkSessionButton = $("check-session");
+    checkSessionButton.addEventListener("click", function(e) {
+      fetch(backend("/check-session"));
+    });
+
   </script>
 </body>
 
