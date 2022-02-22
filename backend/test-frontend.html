@@ -55,6 +55,8 @@
     <input type = "submit">
   </form> 
 
+  <input type="button" id="check-session" value="Check Session">
+
   <script>
     function backend(endpoint) {
       return "http://localhost:8000" + endpoint;
@@ -155,6 +157,11 @@
       fetch(backend("/logout"), {
         method: "POST"
       });
+    });
+
+    const checkSessionButton = $("check-session");
+    checkSessionButton.addEventListener("click", function(e) {
+      fetch(backend("/check-session"));
     });
   </script>
 </body>

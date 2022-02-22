@@ -41,6 +41,7 @@ app.use(session({
     secret: process.env.SESSION_SECRET,
     saveUninitialized: true,
     resave: false,
+    rolling: true,
     cookie: { maxAge: sessionLifetime }
 }));
 
@@ -49,6 +50,10 @@ app.use(session({
 
 app.get("/", (req, res) => {
     res.sendFile("test-frontend.html", { root: "." });
+});
+
+app.get("/check-session", (req, res) => {
+    res.send({ session: req.session.userId !== undefined });
 });
 
 app.post("/register", async (req, res) => {
@@ -99,7 +104,7 @@ app.post("/login", async (req, res) => {
     const user = await User.findOne({
         username: username,
     }).lean();
-    if (user && user.passwordHash == hash(password, user.salt)) { 
+    if (user && user.passwordHash == hash(password, user.salt)) {
         req.session.userId = user._id; // then create a new session ID and return that user
         res.send(stripUser(user));
     } else { // otherwise, return an error status
