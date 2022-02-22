@@ -15,15 +15,16 @@ import Dashboard from './pages/Dashboard'
 function App() {
   const [userData, setUserData] = useState([])
   const [isSignedIn, setIsSignedIn] = useState(false)
-  const [cookies, setCookie, removeCookie] = useCookies(['user', 'loggedin']);
+  const [cookies, setCookie, removeCookie] = useCookies(['user', 'loggedin'])
 
-  if (!isSignedIn && !(cookies["loggedin"])) {  // TODO: This is very unsecure. the user cookie must hold a unique key generated and sent by the server
+  if (!isSignedIn && !cookies['loggedin']) {
+    // TODO: This is very unsecure. the user cookie must hold a unique key generated and sent by the server
     return (
-        <>
-      <Login
-        updateUserData={setUserData}
-        updateSignedInStatus={setIsSignedIn}
-      />
+      <>
+        <Login
+          updateUserData={setUserData}
+          updateSignedInStatus={setIsSignedIn}
+        />
       </>
     )
   }
