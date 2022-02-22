@@ -11,7 +11,7 @@ const port = 8000;
 const cors = require("cors");
 
 const { User, Event } = require("./schemas");
-const { stripUser, escapeRegex, emailRegex } = require("./util");
+const { stripUser, escapeRegex, emailRegex, idRegex } = require("./util");
 const { hash, genSalt } = require("./crypt");
 
 const session = require("express-session");
@@ -127,7 +127,7 @@ app.get("/user", async (req, res) => {
 
         // Validate ids
         for (const id of idArray) {
-            if (!/[0-9a-f]{24}/.test(id)) {
+            if (!idRegex.test(id)) {
                 res.status(400); // 400 Bad Request
                 res.send({ error: "ids are not all 24-digit hexadecimal strings" });
                 return;
@@ -198,10 +198,8 @@ app.put("/user/me", checkAuth, async (req, res) => {
     const updateEmail = updateOnlyIfChanged("email", emailRegex.test, "Invalid email");
 
     const updateFriends = updateOnlyIfChanged("friends", async (friends) => {
-        for (const id of friends) {
-            if (!/[0-9a-f]{24}/.test(id))
-                return false;
-        }
+        if (!friends.every(idRegex.test))
+            return false;
         const numFriends = await User.find().where("_id").in(friends).countDocuments();
         return numFriends == friends.length;
     }, "Invalid or duplicate ids in friends list");
