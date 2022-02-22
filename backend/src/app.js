@@ -52,9 +52,7 @@ app.get("/", (req, res) => {
     res.sendFile("test-frontend.html", { root: "." });
 });
 
-app.get("/check-session", (req, res) => {
-    res.send({ session: Boolean(req.session.userId) });
-});
+app.get("/check-session", (req, res) => res.json(Boolean(req.session.userId)));
 
 app.post("/register", async (req, res) => {
     const username = req.body.username;
