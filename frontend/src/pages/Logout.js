@@ -14,15 +14,8 @@ export default function Logout()
             method: "POST",
             credentials: "include"
         });
-        const res_j = await res.json();
         // 409 is user not logged in
         // 200 is OK and logged out
-        if (res.status >= 400) {
-            setErrMsg(res_j.error);
-        }
-        else {
-            setErrMsg("");
-        }
         navigate('/');
     });
     
