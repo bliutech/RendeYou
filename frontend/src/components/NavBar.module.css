@@ -1,5 +1,5 @@
 .header {
-    width: 40px;
+    width: 150px;
     height: 100%;
     list-style-type: none;
     display: flex;
@@ -14,26 +14,42 @@
     list-style-type: none;
     padding: 0;
     overflow: hidden;
-    display:inline;
+    display: inline;
     align-items: center;
     vertical-align: top;
 }
 
 .header li
 {
-    margin-left: 4px;
-    margin-right: 4px;
-    display:inline;
+    margin-left: 15px;
+    margin-right: 15px;
+    display: inline;
+    line-height: 60px;
 }
 
 .header li a{
-    font-size: 8px;
+    font-size: 30px;
+    font-weight: 500;
     color: white;
     text-decoration: none;
+    text-align: center;
 }
 
 .header ul li a:hover,
 .header li a:hover,
 .header a:active {
     color: black;
+}
+
+.logo{
+    width: 100%;
+}
+
+.addImage{
+    display: flex;
+    margin-left: 45px;
+    margin-right: 45px;
+    width: 60px;
+    background-color: #FC6A01;
+    bottom: 100%;
 }

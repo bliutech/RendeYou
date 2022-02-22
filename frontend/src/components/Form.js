@@ -28,10 +28,13 @@ class Form extends React.Component {
                 <legend>Username</legend>
                 <input value={this.state.uname} 
                 onChange={this.updateUname}
+                placeholder="Enter Username"
                 />
                 <legend>Password</legend>
-                <input type="password" value={this.state.pass}
+                <input type="password" 
+                value={this.state.pass}
                 onChange={this.updatePass}
+                placeholder="Enter Password"
                 />
                 <br/>
                 <input type="submit" value="Submit"/>
