@@ -23,12 +23,14 @@ const sessionLifetime = 1000 * 60 * 5; // 5 min
 
 // Allow CORS
 // TODO: Currently allows requests from any origin - change before production!
-let corsOptions;
+const corsOptions = {
+    origin: "*",
+    credentials: true
+};
 if (process.env.ENV == "dev") {
-    corsOptions = { origin: "http://localhost:3000" };
+    corsOptions.origin = "http://localhost:3000"
 } else if (process.env.ENV == "production") {
-    // Production options
-    corsOptions = { origin: "<FRONTEND IP HERE>:3000" };
+    corsOptions.origin = "PRODUCTION IP HERE"
 }
 app.use(cors(corsOptions));
 
