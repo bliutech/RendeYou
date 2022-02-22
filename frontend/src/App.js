@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { BrowserRouter, Route, Switch, Link, Redirect } from 'react-router-dom'
 import { useCookies, Cookies, withCookies } from 'react-cookie'
 import Home from './pages/Home.js'
 import Login from './pages/Login.js'
@@ -11,6 +11,7 @@ import Error404 from './pages/Error404.js'
 import About from './pages/About.js'
 import NavBar from './components/NavBar.js'
 import Dashboard from './pages/Dashboard'
+import ProfileCard from './components/ProfileCard.js'
 
 function App() {
   const [userData, setUserData] = useState([])
@@ -21,10 +22,25 @@ function App() {
     // TODO: This is very unsecure. the user cookie must hold a unique key generated and sent by the server
     return (
       <>
-        <Login
-          updateUserData={setUserData}
-          updateSignedInStatus={setIsSignedIn}
-        />
+        <BrowserRouter>
+          <Switch>
+            <Route path='/login'>
+              <Login
+                updateUserData={setUserData}
+                updateSignedInStatus={setIsSignedIn}
+              />
+              <Link to='/register'>
+                <button>register</button>
+              </Link>
+            </Route>
+            <Route exact path='/register'>
+              <Register />
+            </Route>
+            <Route path='*'>
+              <Redirect to='/login' />
+            </Route>
+          </Switch>
+        </BrowserRouter>
       </>
     )
   }
@@ -35,7 +51,10 @@ function App() {
       <BrowserRouter>
         <Switch>
           <Route exact path='/'>
-            <Dashboard></Dashboard>
+            <Dashboard event={userData}></Dashboard>
+          </Route>
+          <Route exact path='/profile'>
+            <ProfileCard event={userData}></ProfileCard>
           </Route>
           <Route path='*'>
             <Error404></Error404>
