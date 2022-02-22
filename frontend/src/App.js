@@ -53,6 +53,9 @@ function App() {
           <Route exact path='/'>
             <Dashboard event={userData}></Dashboard>
           </Route>
+          <Route path='/login'>
+              <Redirect to='/'></Redirect>
+          </Route>
           <Route exact path='/profile'>
             <ProfileCard event={userData}></ProfileCard>
           </Route>
