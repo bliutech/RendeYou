@@ -174,15 +174,12 @@
     const EventForm = document.getElementById("Event Form");
     EventForm.addEventListener("submit", async function(e) {
       e.preventDefault();
-      // const res = await fetch(backend("/user/me"), {credentials: "include"});
-      // console.log(res);
       const data = {
         title: $("title").value,
         date: $("date").value,
         description: $("description").value,
         location: $("location").value,
       };
-     // console.log(data);
       fetch(backend("/event/new"), {
         method: "POST",
         headers: {
