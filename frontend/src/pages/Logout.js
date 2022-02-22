@@ -9,7 +9,8 @@ export default function Logout()
 
     async function handleLogout() {
         const res = await fetch(backend("/logout"), {
-            method: "POST"
+            method: "POST",
+            credentials: "include"
         });
         const res_j = await res.json();
         // 409 is user not logged in
