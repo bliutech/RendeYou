@@ -15,7 +15,7 @@ const { stripUser, escapeRegex, emailRegex } = require("./util");
 const { hash, genSalt } = require("./crypt");
 
 const session = require("express-session");
-const sessionLifetime = 1000 * 60 * 60; // 1h
+const sessionLifetime = 1000 * 60 * 5; // 5 min
 
 //==============================================================================
 // Express app settings
@@ -53,7 +53,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/check-session", (req, res) => {
-    res.send({ session: req.session.userId !== undefined });
+    res.send({ session: Boolean(req.session.userId) });
 });
 
 app.post("/register", async (req, res) => {
