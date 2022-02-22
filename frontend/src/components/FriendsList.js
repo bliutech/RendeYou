@@ -43,16 +43,16 @@ const FriendsList = async () => {
 
     //  TODO: Test linking with backend by uncommenting the below code block
 
-    // const res = await fetch(backend('/user/me'), {
-    //     credentials: "include",
-    // })
-    // res_j = await res.json();
-    // const IDList = res_j.friends;
-    // let str = IDList.join();
-    // console.log(str);  // Debugging
-    // dispList = await fetch(backend('/user'), {
-    //     ids: str,
-    // })
+    const res = await fetch(backend('/user/me'), {
+        credentials: "include",
+    })
+    const res_j = await res.json();
+    const IDList = res_j.friends;
+    let str = IDList.join();
+    console.log(str);  // Debugging
+    dispList = await fetch(backend('/user'), {
+        ids: str,
+    })
 
     return (<>{
         dispList.map(
