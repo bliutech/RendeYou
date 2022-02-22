@@ -1,13 +1,23 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import '../index.css'
 
-function Profile() {
+function Profile(user) {
   document.title = 'Profile | RendeYou'
   return (
-    <div className='content'>
-      <h1> Profile </h1>
-      <p> Your RendeYou profile. </p>
-    </div>
+    <>
+      <img src={user.info.picture} alt='' width='100px' />
+      <p>{user.info.firstName + ' ' + user.info.lastName}</p>
+      <br />
+      <p>{user.info.email}</p>
+      <br />
+      <p>{user.info.username}</p>
+      <br />
+      <p>{user.info.friends.join(' ')}</p>
+      <Link to='/'>
+        <button>Dashboard</button>
+      </Link>
+    </>
   )
 }
 

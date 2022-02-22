@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Form from '../components/Form'
+import LoginForm from '../components/LoginForm'
 import { useCookies } from 'react-cookie'
 import Register from './Register'
 import mockUser from '../context/mockUser'
@@ -26,7 +26,7 @@ function Login({ updateUserData, updateSignedInStatus }) {
     }
 
     const user = await res.json()
-    updateUserData(user)
+    updateUserData(mockUser)
     updateSignedInStatus(true)
   }
 
@@ -49,7 +49,7 @@ function Login({ updateUserData, updateSignedInStatus }) {
       <p> Login to your RendeYou account. </p>
       <button onClick={clearCookies}>clear</button>
       <p style={{ color: '#00ff00' }}>{cookies['user']}</p>
-      <Form onSubmit={handleSubmit} />
+      <LoginForm onSubmit={handleSubmit} />
       <p>Register</p>
     </div>
   )

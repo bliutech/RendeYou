@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Form from '../components/Form.js'
+import RegisterForm from '../components/RegisterForm.js'
 import backend from '../components/Util.js'
 import '../index.css'
 
@@ -30,11 +30,10 @@ function Register() {
       <h1> Register </h1>
       <p> Register your RendeYou account. </p>
       <p style={{ color: '#ff0000' }}>{err_msg}</p>
-      <Form onSubmit={handleSubmit} />
+      <RegisterForm onSubmit={handleSubmit} />
     </div>
   )
 }
-
 
 //TODO: Link with login page
 //TODO: Quality of life stuff (error messages)
