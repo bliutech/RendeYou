@@ -221,6 +221,34 @@ function checkAuth(req, res, next) {
         res.send();
     }
 }
+app.post("/event/new", async(req, res) =>  {
+    //need to make sure the changes are valid (i.e. the date is valid, etc.)
+    const title = req.body.title;
+    const id = req.session.userId;
+    const user = await User.findById(req.session.userId).lean();
+    if (!user) {
+        res.sendStatus(400);
+        return;
+    }
+    if (!title) {
+        res.status(400);
+        res.send({error: "Event name is empty"});
+        return;
+    }
+    const newEvent = new Event(req.body);
+    newEvent.host = id;
+    newEvent.members = user.friends;
+    try {
+        await newEvent.save();
+        res.status(200);
+        res.send();
+    } catch(err) {
+        res.status(403);
+        res.send();
+    }
+ });
+
+ 
 
 //==============================================================================
 

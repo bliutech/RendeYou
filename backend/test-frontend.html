@@ -55,6 +55,15 @@
     <input type = "submit">
   </form> 
 
+  <form id="Event Form">
+    <p>/event/new</p>
+    <p>Title: <input id="title"></span></p>
+    <p><label>Date: <input id="date"></label></p>
+    <p><label>Description: <input id="description"></label></p>
+    <p><label>Location: <input id="location"></label></p>
+    <input type="submit">
+  </form>
+
   <script>
     function backend(endpoint) {
       return "http://localhost:8000" + endpoint;
@@ -156,6 +165,30 @@
         method: "POST"
       });
     });
+
+    const EventForm = document.getElementById("Event Form");
+    EventForm.addEventListener("submit", async function(e) {
+      e.preventDefault();
+      // const res = await fetch(backend("/user/me"), {credentials: "include"});
+      // console.log(res);
+      const data = {
+        title: $("title").value,
+        date: $("date").value,
+        description: $("description").value,
+        location: $("location").value,
+      };
+     // console.log(data);
+      fetch(backend("/event/new"), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data),
+      });
+    });
+
+
+    
   </script>
 </body>
 
