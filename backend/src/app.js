@@ -15,7 +15,7 @@ const { stripUser, escapeRegex, emailRegex } = require("./util");
 const { hash, genSalt } = require("./crypt");
 
 const session = require("express-session");
-const sessionLifetime = 1000 * 60 * 60; // 1h
+const sessionLifetime = 1000 * 60 * 5; // 5 min
 
 //==============================================================================
 // Express app settings
@@ -41,6 +41,7 @@ app.use(session({
     secret: process.env.SESSION_SECRET,
     saveUninitialized: true,
     resave: false,
+    rolling: true,
     cookie: { maxAge: sessionLifetime }
 }));
 
@@ -50,6 +51,8 @@ app.use(session({
 app.get("/", (req, res) => {
     res.sendFile("test-frontend.html", { root: "." });
 });
+
+app.get("/check-session", (req, res) => res.json(Boolean(req.session.userId)));
 
 app.post("/register", async (req, res) => {
     const username = req.body.username;
@@ -99,7 +102,7 @@ app.post("/login", async (req, res) => {
     const user = await User.findOne({
         username: username,
     }).lean();
-    if (user && user.passwordHash == hash(password, user.salt)) { 
+    if (user && user.passwordHash == hash(password, user.salt)) {
         req.session.userId = user._id; // then create a new session ID and return that user
         res.send(stripUser(user));
     } else { // otherwise, return an error status
@@ -214,12 +217,10 @@ app.delete("/user/me", checkAuth, async (req, res) => {
 // Add this as an intermediate handler to any endpoint that requires
 // authentication.
 function checkAuth(req, res, next) {
-    if (req.session.userId) {
+    if (req.session.userId)
         next();
-    } else {
-        res.status(403); // 403 Forbidden
-        res.send();
-    }
+    else
+        res.sendStatus(403); // 403 Forbidden
 }
 
 //==============================================================================
