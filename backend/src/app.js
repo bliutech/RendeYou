@@ -217,12 +217,10 @@ app.delete("/user/me", checkAuth, async (req, res) => {
 // Add this as an intermediate handler to any endpoint that requires
 // authentication.
 function checkAuth(req, res, next) {
-    if (req.session.userId) {
+    if (req.session.userId)
         next();
-    } else {
-        res.status(403); // 403 Forbidden
-        res.send();
-    }
+    else
+        res.sendStatus(403); // 403 Forbidden
 }
 
 //==============================================================================
