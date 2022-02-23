@@ -235,11 +235,10 @@ app.post("/event/new", checkAuth, async(req, res) =>  {
         return;
     }
     const newEvent = new Event(req.body);
+    newEvent.host = id;
+    user.hostedEvents.push(newEvent.id);
     try {
         await newEvent.save();
-        newEvent.host = id;
-        user.hostedEvents.push(newEvent.id);
-        console.log(newEvent.id);
         res.send();
     } catch(err) {
         res.status(403);
