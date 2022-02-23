@@ -58,7 +58,7 @@
 
   <form id="Event Form">
     <p>/event/new</p>
-    <p>Title: <input id="title"></span></p>
+    <p><label>Title: <input id="title"></label></p>
     <p><label>Date: <input id="date"></label></p>
     <p><label>Description: <input id="description"></label></p>
     <p><label>Location: <input id="location"></label></p>
@@ -188,8 +188,6 @@
         body: JSON.stringify(data),
       });
     });
-
-
     
 
     const checkSessionButton = $("check-session");

@@ -224,15 +224,11 @@ function checkAuth(req, res, next) {
     else
         res.sendStatus(403); // 403 Forbidden
 }
-app.post("/event/new", async(req, res) =>  {
+app.post("/event/new", checkAuth, async(req, res) =>  {
     //need to make sure the changes are valid (i.e. the date is valid, etc.)
     const title = req.body.title;
     const id = req.session.userId;
     const user = await User.findById(req.session.userId).lean();
-    if (!user) {
-        res.sendStatus(400);
-        return;
-    }
     if (!title) {
         res.status(400);
         res.send({error: "Event name is empty"});
@@ -240,10 +236,9 @@ app.post("/event/new", async(req, res) =>  {
     }
     const newEvent = new Event(req.body);
     newEvent.host = id;
-    newEvent.members = user.friends;
+    user.hostedEvents.push(newEvent.ObjectId);
     try {
         await newEvent.save();
-        res.status(200);
         res.send();
     } catch(err) {
         res.status(403);
