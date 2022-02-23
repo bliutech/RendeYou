@@ -57,7 +57,7 @@
 
 
   <form id="Event Form">
-    <p>/event/new (get event)</p>
+    <p>/event/new</p>
     <p><label>Title: <input id="title"></label></p>
     <p><label>Date: <input id="date"></label></p>
     <p><label>Description: <input id="description"></label></p>
@@ -66,17 +66,11 @@
   </form>
 
   <form id="get-event">
-    <p>/event/[id]</p>
+    <p>/event/[id] (get event)</p>
     <p><label>id: <input></label></p>
     <input type="submit">
   </form>
-
-  <form id="delete-event">
-    <p>/event/[id] (delete event)</p>
-    <p><label>id: <input></label></p>
-    <input type="submit">
-  </form>
-
+  
   <input type="button" id="check-session" value="Check Session">
 
 
@@ -207,6 +201,8 @@
       const eventId = getEvent.querySelector("input").value;
       fetch(backend("/event/" + eventId));
     });
+    
+
 
 
     const checkSessionButton = $("check-session");
