@@ -70,7 +70,13 @@
     <p><label>id: <input></label></p>
     <input type="submit">
   </form>
-  
+
+  <form id="delete-event">
+    <p>/event/[id] (delete event)</p>
+    <p><label>id: <input></label></p>
+    <input type="submit">
+  </form>
+
   <input type="button" id="check-session" value="Check Session">
 
 
@@ -202,6 +208,14 @@
       fetch(backend("/event/" + eventId));
     });
     
+    const deleteEvent = document.getElementById("delete-event");
+    deleteEvent.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const eventId = deleteEvent.querySelector("input").value;
+      fetch(backend("/event/" + eventId), {
+        method: "DELETE",
+      });
+    });
 
 
 
