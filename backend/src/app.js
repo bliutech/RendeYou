@@ -235,10 +235,11 @@ app.post("/event/new", checkAuth, async(req, res) =>  {
         return;
     }
     const newEvent = new Event(req.body);
-    newEvent.host = id;
-    user.hostedEvents.push(newEvent.ObjectId);
     try {
         await newEvent.save();
+        newEvent.host = id;
+        user.hostedEvents.push(newEvent.id);
+        console.log(newEvent.id);
         res.send();
     } catch(err) {
         res.status(403);
@@ -246,7 +247,16 @@ app.post("/event/new", checkAuth, async(req, res) =>  {
     }
  });
 
- 
+ app.get("/event/:id([0-9a-f]{24})", async(req, res) => {
+   const eventID = req.params.id;
+   const event = await Event.findById(eventID).lean();
+   if (event) { //make sure the event is valid, and if it is, send it
+       res.send(event);
+   } else { //otherwise, send a 404 error
+       res.sendStatus(404);
+   }
+});
+
 
 //==============================================================================
 

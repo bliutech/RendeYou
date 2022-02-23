@@ -65,6 +65,12 @@
     <input type="submit">
   </form>
 
+  <form id="get-event">
+    <p>/event/[id]</p>
+    <p><label>id: <input></label></p>
+    <input type="submit">
+  </form>
+
   <input type="button" id="check-session" value="Check Session">
 
 
@@ -187,6 +193,13 @@
         },
         body: JSON.stringify(data),
       });
+    });
+
+    const getEvent = document.getElementById("get-event");
+    getEvent.addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const eventId = getEvent.querySelector("input").value;
+      fetch(backend("/event/" + eventId));
     });
     
 
