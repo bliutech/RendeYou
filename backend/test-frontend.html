@@ -32,6 +32,48 @@
     <input type="submit">
   </form>
 
+  <form id="current-user">
+    <p>/user/me</p>
+    <p>username: <span id="current-username"></span></p>
+    <p><label>firstName: <input id="update-first"></label></p>
+    <p><label>lastName: <input id="update-last"></label></p>
+    <p><label>email: <input id="update-email"></label></p>
+    <input type="submit">
+  </form>
+  <input type="button" id="get-current-user" value="Get Current User">
+  <input type="button" id="delete-current-user" value="Delete Current User">
+
+  <form id="login">
+    <p>/login</p>
+    <p><label>username: <input></label></p>
+    <p><label>password: <input type="password"></label></p>
+    <input type = "submit">
+  </form>
+  
+  <form id="logout">
+    <p>/logout</p>
+    <input type = "submit">
+  </form> 
+
+
+  <form id="Event Form">
+    <p>/event/new</p>
+    <p><label>Title: <input id="title"></label></p>
+    <p><label>Date: <input id="date"></label></p>
+    <p><label>Description: <input id="description"></label></p>
+    <p><label>Location: <input id="location"></label></p>
+    <input type="submit">
+  </form>
+
+  <form id="get-event">
+    <p>/event/[id] (get event)</p>
+    <p><label>id: <input></label></p>
+    <input type="submit">
+  </form>
+  
+  <input type="button" id="check-session" value="Check Session">
+
+
   <script>
     function backend(endpoint) {
       return "http://localhost:8000" + endpoint;
@@ -41,8 +83,12 @@
       return new URLSearchParams(obj).toString();
     }
 
-    const registerForm = document.getElementById("register");
-    registerForm.addEventListener("submit", function(e) {
+    function $(id) {
+      return document.getElementById(id);
+    }
+
+    const registerForm = $("register");
+    registerForm.addEventListener("submit", function (e) {
       e.preventDefault();
       const data = {
         username: registerForm.querySelector("input").value,
@@ -57,24 +103,113 @@
       });
     });
 
-    const getUserForm = document.getElementById("get-user");
-    getUserForm.addEventListener("submit", function(e) {
+    const getUserForm = $("get-user");
+    getUserForm.addEventListener("submit", function (e) {
       e.preventDefault();
       const id = getUserForm.querySelector("input").value;
       fetch(backend("/user/" + id));
     });
 
-    const searchUsersForm = document.getElementById("search-users");
+    const searchUsersForm = $("search-users");
     searchUsersForm.addEventListener("submit", function (e) {
       e.preventDefault();
       const data = {
-        ids: document.getElementById("search-ids").value,
-        username: document.getElementById("search-username").value,
-        first: document.getElementById("search-first").value,
-        last: document.getElementById("search-last").value
+        ids: $("search-ids").value,
+        username: $("search-username").value,
+        first: $("search-first").value,
+        last: $("search-last").value
       };
       fetch(backend("/user?" + toQuery(data)));
     });
+
+    const currentUserForm = $("current-user");
+    currentUserForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const data = {
+        firstName: $("update-first").value,
+        lastName: $("update-last").value,
+        email: $("update-email").value
+      };
+      fetch(backend("/user/me"), {
+        method: "PUT",
+        credentials: "include",
+        body: JSON.stringify(data)
+      });
+    });
+
+    const getLoggedUser = document.getElementById("login");
+    getLoggedUser.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const data = {
+        username: getLoggedUser.querySelector("input").value,
+        password: getLoggedUser.querySelector("input[type=password]").value
+      }
+      fetch(backend("/login"), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
+    });
+
+    const getCurrentUserButton = $("get-current-user");
+    getCurrentUserButton.addEventListener("click", async function (e) {
+      const res = await fetch(backend("/user/me"), { credentials: "include" });
+      const json = await res.json();
+      $("current-username").textContent = json.username;
+      $("update-first").value = json.firstName;
+      $("update-last").value = json.lastName;
+      $("update-email").value = json.email;
+    });
+
+    const deleteCurrentUserButton = $("delete-current-user");
+    deleteCurrentUserButton.addEventListener("click", function (e) {
+      fetch(backend("/user/me"), { method: "DELETE", credentials: "include" });
+    });
+    
+    const Logout = document.getElementById("logout");
+    Logout.addEventListener("submit", function(e) {
+      e.preventDefault();
+      fetch(backend("/logout"), {
+        method: "POST"
+      });
+    });
+
+
+    const EventForm = document.getElementById("Event Form");
+    EventForm.addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const data = {
+        title: $("title").value,
+        date: $("date").value,
+        description: $("description").value,
+        location: $("location").value,
+      };
+      fetch(backend("/event/new"), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data),
+      });
+    });
+
+    const getEvent = document.getElementById("get-event");
+    getEvent.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const eventId = getEvent.querySelector("input").value;
+      fetch(backend("/event/" + eventId));
+    });
+    
+
+
+
+    const checkSessionButton = $("check-session");
+    checkSessionButton.addEventListener("click", function(e) {
+      fetch(backend("/check-session"));
+    });
+
   </script>
 </body>
 
