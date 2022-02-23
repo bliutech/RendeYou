@@ -236,9 +236,12 @@ app.post("/event/new", checkAuth, async(req, res) =>  {
     }
     const newEvent = new Event(req.body);
     newEvent.host = id;
-    user.hostedEvents.push(newEvent.id);
     try {
         await newEvent.save();
+        await User.findOneAndUpdate(
+            {_id: id},
+            {$push: {hostedEvents: newEvent.id}}
+        );
         res.send();
     } catch(err) {
         res.status(403);
@@ -255,7 +258,6 @@ app.post("/event/new", checkAuth, async(req, res) =>  {
        res.sendStatus(404);
    }
 });
-
 
 //==============================================================================
 

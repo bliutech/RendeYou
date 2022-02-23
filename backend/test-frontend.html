@@ -57,7 +57,7 @@
 
 
   <form id="Event Form">
-    <p>/event/new</p>
+    <p>/event/new (get event)</p>
     <p><label>Title: <input id="title"></label></p>
     <p><label>Date: <input id="date"></label></p>
     <p><label>Description: <input id="description"></label></p>
@@ -67,6 +67,12 @@
 
   <form id="get-event">
     <p>/event/[id]</p>
+    <p><label>id: <input></label></p>
+    <input type="submit">
+  </form>
+
+  <form id="delete-event">
+    <p>/event/[id] (delete event)</p>
     <p><label>id: <input></label></p>
     <input type="submit">
   </form>
@@ -196,12 +202,12 @@
     });
 
     const getEvent = document.getElementById("get-event");
-    getEvent.addEventListener("submit", async function(e) {
+    getEvent.addEventListener("submit", function(e) {
       e.preventDefault();
       const eventId = getEvent.querySelector("input").value;
       fetch(backend("/event/" + eventId));
     });
-    
+
 
     const checkSessionButton = $("check-session");
     checkSessionButton.addEventListener("click", function(e) {
