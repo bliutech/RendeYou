@@ -28,6 +28,8 @@ function Login({ updateUserData, updateSignedInStatus }) {
     const user = await res.json()
     updateUserData(mockUser)
     updateSignedInStatus(true)
+    setCookie('user', mockUser.id, { path: '/', maxAge: 120 })
+    setCookie('loggedin', true, { path: '/', maxAge: 120 })
   }
 
   async function handle() {
