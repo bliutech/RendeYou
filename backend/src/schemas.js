@@ -25,6 +25,17 @@ const userSchema = new mongoose.Schema({
     salt: String
 });
 
+const eventSchema = new mongoose.Schema({
+    title: String,
+    date: Number,
+    description: String,
+    location: String,
+    host: ObjectId,
+    members: [ObjectId],
+});
+
 const User = mongoose.model("User", userSchema);
+const Event = mongoose.model("Event", eventSchema);
 
 exports.User = User;
+exports.Event = Event;

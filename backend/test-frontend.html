@@ -55,6 +55,21 @@
     <input type = "submit">
   </form> 
 
+  <form id="Event Form">
+    <p>/event/new</p>
+    <p><label>Title: <input id="title"></label></p>
+    <p><label>Date: <input id="date"></label></p>
+    <p><label>Description: <input id="description"></label></p>
+    <p><label>Location: <input id="location"></label></p>
+    <input type="submit">
+  </form>
+
+  <form id="get-event">
+    <p>/event/[id] (get event)</p>
+    <p><label>id: <input></label></p>
+    <input type="submit">
+  </form>
+  
   <input type="button" id="check-session" value="Check Session">
 
   <script>
@@ -159,6 +174,31 @@
       });
     });
 
+    const EventForm = document.getElementById("Event Form");
+    EventForm.addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const data = {
+        title: $("title").value,
+        date: $("date").value,
+        description: $("description").value,
+        location: $("location").value,
+      };
+      fetch(backend("/event/new"), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data),
+      });
+    });
+
+    const getEvent = document.getElementById("get-event");
+    getEvent.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const eventId = getEvent.querySelector("input").value;
+      fetch(backend("/event/" + eventId));
+    });
+    
     const checkSessionButton = $("check-session");
     checkSessionButton.addEventListener("click", function(e) {
       fetch(backend("/check-session"));
