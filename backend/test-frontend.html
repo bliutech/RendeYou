@@ -38,6 +38,7 @@
     <p><label>firstName: <input id="update-first"></label></p>
     <p><label>lastName: <input id="update-last"></label></p>
     <p><label>email: <input id="update-email"></label></p>
+    <p><label>friends: <input id="update-friends"></label></p>
     <input type="submit">
   </form>
   <input type="button" id="get-current-user" value="Get Current User">
@@ -55,7 +56,30 @@
     <input type = "submit">
   </form> 
 
+
+  <form id="Event Form">
+    <p>/event/new</p>
+    <p><label>Title: <input id="title"></label></p>
+    <p><label>Date: <input id="date"></label></p>
+    <p><label>Description: <input id="description"></label></p>
+    <p><label>Location: <input id="location"></label></p>
+    <input type="submit">
+  </form>
+
+  <form id="get-event">
+    <p>/event/[id] (get event)</p>
+    <p><label>id: <input></label></p>
+    <input type="submit">
+  </form>
+
+  <form id="delete-event">
+    <p>/event/[id] (delete event)</p>
+    <p><label>id: <input></label></p>
+    <input type="submit">
+  </form>
+
   <input type="button" id="check-session" value="Check Session">
+
 
   <script>
     function backend(endpoint) {
@@ -111,11 +135,15 @@
       const data = {
         firstName: $("update-first").value,
         lastName: $("update-last").value,
-        email: $("update-email").value
+        email: $("update-email").value,
+        friends: $("update-friends").value.split(",").filter(x => x)
       };
       fetch(backend("/user/me"), {
         method: "PUT",
         credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify(data)
       });
     });
@@ -144,6 +172,7 @@
       $("update-first").value = json.firstName;
       $("update-last").value = json.lastName;
       $("update-email").value = json.email;
+      $("update-friends").value = json.friends.join(",");
     });
 
     const deleteCurrentUserButton = $("delete-current-user");
@@ -159,10 +188,48 @@
       });
     });
 
+
+    const EventForm = document.getElementById("Event Form");
+    EventForm.addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const data = {
+        title: $("title").value,
+        date: $("date").value,
+        description: $("description").value,
+        location: $("location").value,
+      };
+      fetch(backend("/event/new"), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data),
+      });
+    });
+
+    const getEvent = document.getElementById("get-event");
+    getEvent.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const eventId = getEvent.querySelector("input").value;
+      fetch(backend("/event/" + eventId));
+    });
+    
+    const deleteEvent = document.getElementById("delete-event");
+    deleteEvent.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const eventId = deleteEvent.querySelector("input").value;
+      fetch(backend("/event/" + eventId), {
+        method: "DELETE",
+      });
+    });
+
+
+
     const checkSessionButton = $("check-session");
     checkSessionButton.addEventListener("click", function(e) {
       fetch(backend("/check-session"));
     });
+
   </script>
 </body>
 

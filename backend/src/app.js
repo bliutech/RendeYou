@@ -11,7 +11,7 @@ const port = 8000;
 const cors = require("cors");
 
 const { User, Event } = require("./schemas");
-const { stripUser, escapeRegex, emailRegex } = require("./util");
+const { stripUser, escapeRegex, emailRegex, idRegex } = require("./util");
 const { hash, genSalt } = require("./crypt");
 
 const session = require("express-session");
@@ -132,9 +132,9 @@ app.get("/user", async (req, res) => {
 
         // Validate ids
         for (const id of idArray) {
-            if (!/[0-9a-f]{24}/.test(id)) {
+            if (!idRegex.test(id)) {
                 res.status(400); // 400 Bad Request
-                res.send({ error: "ids are not not all 24-digit hexadecimal strings" });
+                res.send({ error: "ids are not all 24-digit hexadecimal strings" });
                 return;
             }
         }
@@ -191,24 +191,102 @@ app.put("/user/me", checkAuth, async (req, res) => {
     const user = await User.findById(id);
     const update = req.body;
 
-    if (update.email && !emailRegex.test(update.email)) {
-        res.status(400);
-        res.send({ error: "Invalid email" });
-        return;
+    async function updateOnlyIfChanged(prop, validate, errorMessage) {
+        if (update[prop] !== undefined && user[prop] !== update[prop]) {
+            if (validate && await validate(update[prop]))
+                user[prop] = update[prop];
+            else
+                throw errorMessage;
+        }
     }
 
-    user.email = update.email;
-    user.firstName = update.firstName;
-    user.lastName = update.lastName;
+    const updateEmail = updateOnlyIfChanged("email", emailRegex.test, "Invalid email");
 
-    await user.save();
-    res.send();
+    const updateFriends = updateOnlyIfChanged("friends", async (friends) => {
+        if (!friends.every(idRegex.test))
+            return false;
+        const numFriends = await User.find().where("_id").in(friends).countDocuments();
+        return numFriends == friends.length;
+    }, "Invalid or duplicate ids in friends list");
+
+    const updateFirstName = updateOnlyIfChanged("firstName");
+    const updateLastName = updateOnlyIfChanged("lastName");
+
+    try {
+        await Promise.all([updateFirstName, updateLastName, updateEmail, updateFriends]);
+        await user.save();
+        res.send();
+    } catch (errorMessage) {
+        res.status(400);
+        res.send({ error: errorMessage });
+    }
 });
 
 app.delete("/user/me", checkAuth, async (req, res) => {
     await User.findByIdAndDelete(req.session.userId);
     req.session.destroy();
     res.send();
+});
+
+app.post("/event/new", checkAuth, async (req, res) => {
+    //need to make sure the changes are valid (i.e. the date is valid, etc.)
+    const title = req.body.title;
+    const id = req.session.userId;
+    const user = await User.findById(req.session.userId).lean();
+    if (!title) {
+        res.status(400);
+        res.send({ error: "Event name is empty" });
+        return;
+    }
+    const newEvent = new Event(req.body);
+    newEvent.host = id;
+    try {
+        await newEvent.save();
+        await User.findOneAndUpdate(
+            { _id: id },
+            { $push: { hostedEvents: newEvent.id } }
+        );
+        res.send();
+    } catch (err) {
+        res.status(403);
+        res.send();
+    }
+});
+
+app.get("/event/:id([0-9a-f]{24})", async (req, res) => {
+    const eventID = req.params.id;
+    const event = await Event.findById(eventID).lean();
+    if (event) { //make sure the event is valid, and if it is, send it
+        res.send(event);
+    } else { //otherwise, send a 404 error
+        res.sendStatus(404);
+    }
+});
+
+app.delete("/event/:id([0-9a-f]{24})", checkAuth, async (req, res) => {
+    const eventID = req.params.id;
+    const userId = req.session.userId;
+    const event = await Event.findById(eventID).lean();
+    if (event.host != userId) {
+        res.sendStatus(403);
+        return;
+    }
+    if (event) { //if the event is valid, delete it
+        Event.findByIdAndDelete(eventID, function (err) { //if there is some error in deleting it, then send a 403 error status
+            if (err) {
+                res.sendStatus(403);
+            } else {
+                res.sendStatus(200);
+            }
+        });
+        await User.findOneAndUpdate({ _id: userId }, {
+            $pullAll: {
+                hostedEvents: [{ _id: eventID }]
+            }
+        });
+    } else {
+        res.sendStatus(404);
+    }
 });
 
 //==============================================================================
