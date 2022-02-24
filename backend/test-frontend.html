@@ -38,6 +38,7 @@
     <p><label>firstName: <input id="update-first"></label></p>
     <p><label>lastName: <input id="update-last"></label></p>
     <p><label>email: <input id="update-email"></label></p>
+    <p><label>friends: <input id="update-friends"></label></p>
     <input type="submit">
   </form>
   <input type="button" id="get-current-user" value="Get Current User">
@@ -128,11 +129,15 @@
       const data = {
         firstName: $("update-first").value,
         lastName: $("update-last").value,
-        email: $("update-email").value
+        email: $("update-email").value,
+        friends: $("update-friends").value.split(",").filter(x => x)
       };
       fetch(backend("/user/me"), {
         method: "PUT",
         credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify(data)
       });
     });
@@ -161,6 +166,7 @@
       $("update-first").value = json.firstName;
       $("update-last").value = json.lastName;
       $("update-email").value = json.email;
+      $("update-friends").value = json.friends.join(",");
     });
 
     const deleteCurrentUserButton = $("delete-current-user");
