@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home.js';
 import Login from './pages/Login.js';
@@ -13,7 +13,12 @@ import checkSession from './components/Util.js';
 
 function App()
 {
-    let isLoggedin = checkSession();
+    let [isLoggedin, setsLoggedin] = useState(false);
+    useEffect(()=> 
+    {
+        setsLoggedin(checkSession());
+    });
+
     return(
         <div>
             <BrowserRouter>

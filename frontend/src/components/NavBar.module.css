@@ -53,3 +53,8 @@
     background-color: #FC6A01;
     bottom: 100%;
 }
+
+.addImage:hover,
+.addImage:active{
+    background-color: black;
+}
