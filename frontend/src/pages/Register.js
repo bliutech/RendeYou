@@ -14,6 +14,7 @@ export default function Register()
         }
         const res = await fetch(backend("/register"), {
             method: "POST",
+            credentials: "include",
             headers: {
             "Content-Type": "application/json"
             },
