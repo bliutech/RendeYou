@@ -14,9 +14,9 @@ import checkSession from './components/Util.js';
 function App()
 {
     let [isLoggedin, setsLoggedin] = useState(false);
-    useEffect(()=> 
+    useEffect(async ()=> 
     {
-        setsLoggedin(await checkSession());
+        setsLoggedin(checkSession());
     });
 
     return(
