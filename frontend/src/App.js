@@ -16,7 +16,7 @@ function App()
     let [isLoggedin, setsLoggedin] = useState(false);
     useEffect(()=> 
     {
-        setsLoggedin(checkSession());
+        setsLoggedin(await checkSession());
     });
 
     return(
