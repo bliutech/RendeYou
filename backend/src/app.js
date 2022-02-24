@@ -211,6 +211,67 @@ app.delete("/user/me", checkAuth, async (req, res) => {
     res.send();
 });
 
+app.post("/event/new", checkAuth, async (req, res) => {
+    //need to make sure the changes are valid (i.e. the date is valid, etc.)
+    const title = req.body.title;
+    const id = req.session.userId;
+    const user = await User.findById(req.session.userId).lean();
+    if (!title) {
+        res.status(400);
+        res.send({ error: "Event name is empty" });
+        return;
+    }
+    const newEvent = new Event(req.body);
+    newEvent.host = id;
+    try {
+        await newEvent.save();
+        await User.findOneAndUpdate(
+            { _id: id },
+            { $push: { hostedEvents: newEvent.id } }
+        );
+        res.send();
+    } catch (err) {
+        res.status(403);
+        res.send();
+    }
+});
+
+app.get("/event/:id([0-9a-f]{24})", async (req, res) => {
+    const eventID = req.params.id;
+    const event = await Event.findById(eventID).lean();
+    if (event) { //make sure the event is valid, and if it is, send it
+        res.send(event);
+    } else { //otherwise, send a 404 error
+        res.sendStatus(404);
+    }
+});
+
+app.delete("/event/:id([0-9a-f]{24})", checkAuth, async (req, res) => {
+    const eventID = req.params.id;
+    const userId = req.session.userId;
+    const event = await Event.findById(eventID).lean();
+    if (event.host != userId) {
+        res.sendStatus(403);
+        return;
+    }
+    if (event) { //if the event is valid, delete it
+        Event.findByIdAndDelete(eventID, function (err) { //if there is some error in deleting it, then send a 403 error status
+            if (err) {
+                res.sendStatus(403);
+            } else {
+                res.sendStatus(200);
+            }
+        });
+        await User.findOneAndUpdate({ _id: userId }, {
+            $pullAll: {
+                hostedEvents: [{ _id: eventID }]
+            }
+        });
+    } else {
+        res.sendStatus(404);
+    }
+});
+
 //==============================================================================
 // Route handlers
 
@@ -224,68 +285,6 @@ function checkAuth(req, res, next) {
     else
         res.sendStatus(403); // 403 Forbidden
 }
-app.post("/event/new", checkAuth, async(req, res) =>  {
-    //need to make sure the changes are valid (i.e. the date is valid, etc.)
-    const title = req.body.title;
-    const id = req.session.userId;
-    const user = await User.findById(req.session.userId).lean();
-    if (!title) {
-        res.status(400);
-        res.send({error: "Event name is empty"});
-        return;
-    }
-    const newEvent = new Event(req.body);
-    newEvent.host = id;
-    try {
-        await newEvent.save();
-        await User.findOneAndUpdate(
-            {_id: id},
-            {$push: {hostedEvents: newEvent.id}}
-        );
-        res.send();
-    } catch(err) {
-        res.status(403);
-        res.send();
-    }
- });
-
- app.get("/event/:id([0-9a-f]{24})", async(req, res) => {
-   const eventID = req.params.id;
-   const event = await Event.findById(eventID).lean();
-   if (event) { //make sure the event is valid, and if it is, send it
-       res.send(event);
-   } else { //otherwise, send a 404 error
-       res.sendStatus(404);
-   }
-});
-
-app.delete("/event/:id([0-9a-f]{24})", checkAuth, async(req, res) => {
-    const eventID = req.params.id;
-    const userId = req.session.userId;
-    const event = await Event.findById(eventID).lean();
-    if (event.host != userId) {
-        res.sendStatus(403);
-        return;
-    }
-    if (event) { //if the event is valid, delete it
-        Event.findByIdAndDelete(eventID, function(err) { //if there is some error in deleting it, then send a 403 error status
-            if (err) {
-                res.sendStatus(403);
-            } else {
-                res.sendStatus(200);
-            }
-        });
-        await User.findOneAndUpdate({_id: userId}, {
-            $pullAll: {
-                hostedEvents: [{_id: eventID}]
-            }
-        });
-    } else {
-        res.sendStatus(404);
-    }
- });
- 
- 
 
 //==============================================================================
 
