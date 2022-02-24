@@ -289,6 +289,46 @@ app.delete("/event/:id([0-9a-f]{24})", checkAuth, async (req, res) => {
     }
 });
 
+app.post("/event/:id([0-9a-f]{24})/subscribe", checkAuth, async (req, res) => {
+    const userId = req.session.userId;
+    const event = await Event.findById(req.params.id);
+    if (!event)
+        res.sendStatus(404); // 404 Not Found
+    if (event.members.some(userId.equals))
+        res.sendStatus(409); // 409 Conflict - user is already subscribed to event
+    const updateEvent = (async () => {
+        event.members.push(userId);
+        await event.save();
+    })();
+    const updateUser = (async () => {
+        const user = await User.findById(userId);
+        user.subscriptions.push(event._id);
+        await user.save();
+    })();
+    await Promise.all([updateEvent, updateUser]);
+    res.send();
+});
+
+app.post("/event/:id([0-9a-f]{24})/unsubscribe", checkAuth, async (req, res) => {
+    const userId = req.session.userId;
+    const event = await Event.findById(req.params.id);
+    if (!event)
+        res.sendStatus(404); // 404 Not Found
+    if (!event.members.some(userId.equals))
+        res.sendStatus(409); // 409 Conflict - user isn't subscribed to event
+    const updateEvent = (async () => {
+        event.members = event.members.filter(id => !id.equals(userId));
+        await event.save();
+    })();
+    const updateUser = (async () => {
+        const user = await User.findById(userId);
+        user.subscriptions = user.subscriptions.filter(id => !id.equals(event._id));
+        await user.save();
+    })();
+    await Promise.all([updateEvent, updateUser]);
+    res.send();
+});
+
 //==============================================================================
 // Route handlers
 
