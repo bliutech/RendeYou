@@ -9,10 +9,11 @@ import Meetings from './pages/Meetings.js';
 import Error404 from './pages/Error404.js';
 import About from './pages/About.js';
 import NavBar from './components/NavBar.js';
+import checkSession from './components/Util.js';
 
 function App()
 {
-    let isLoggedin = false;
+    let isLoggedin = checkSession();
     return(
         <div>
             <BrowserRouter>
