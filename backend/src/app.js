@@ -263,7 +263,11 @@ app.delete("/event/:id([0-9a-f]{24})", checkAuth, async(req, res) => {
     const eventID = req.params.id;
     const userId = req.session.userId;
     const event = await Event.findById(eventID).lean();
-    if (event && event.host == userId) { //if the event is valid, delete it
+    if (event.host != userId) {
+        res.sendStatus(403);
+        return;
+    }
+    if (event) { //if the event is valid, delete it
         Event.findByIdAndDelete(eventID, function(err) { //if there is some error in deleting it, then send a 403 error status
             if (err) {
                 res.sendStatus(403);
