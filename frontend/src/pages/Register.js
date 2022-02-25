@@ -35,7 +35,7 @@ function Register() {
       <p> Register your RendeYou account. </p>
       <p style={{ color: '#ff0000' }}>{err_msg}</p>
       <RegisterForm onSubmit={handleSubmit} />
-      <button handleSubmit={switchToLogin}>Login</button>
+      <button onClick={switchToLogin}>Login</button>
     </div>
   )
 }

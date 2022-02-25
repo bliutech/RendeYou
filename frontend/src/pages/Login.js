@@ -54,7 +54,7 @@ function Login() {
       <p style={{ color: '#00ff00' }}>{cookies['user']}</p>
       <LoginForm onSubmit={handleSubmit} />
       <p style={{ color: '#ff0000' }}>{err_msg}</p>
-      <button onSubmit={switchToRegister}>{Register}</button>
+      <button onClick={switchToRegister}>Register</button>
     </div>
   )
 }
