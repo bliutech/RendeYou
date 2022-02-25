@@ -1,13 +1,19 @@
-import React from 'react';
-import '../index.css';
+import React from 'react'
+import { Link } from 'react-router-dom'
+import '../index.css'
+import ProfileCard from '../components/ProfileCard'
 
-export default function Profile()
-{
-    document.title = 'Profile | RendeYou';
-    return(
-        <div className='content'>
-            <h1> Profile </h1>
-            <p> Your RendeYou profile. </p>
-        </div>
-    );
+function Profile(props) {
+  document.title = 'Profile | RendeYou'
+  return (
+    <>
+      <h1>Profile Page</h1>
+      <ProfileCard userinfo={props.info} />
+      <Link to='/'>
+        <button>Dashboard</button>
+      </Link>
+    </>
+  )
 }
+
+export default Profile
