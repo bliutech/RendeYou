@@ -8,6 +8,7 @@ import Profile from './pages/Profile.js';
 import Meetings from './pages/Meetings.js';
 import Error404 from './pages/Error404.js';
 import About from './pages/About.js';
+import Events from './pages/Events.js';
 import NavBar from './components/NavBar.js';
 
 function App()
@@ -26,6 +27,7 @@ function App()
                     <Route path='/logout' element={ <Logout /> } />
                     <Route path='/profile' element={ <Profile /> } />
                     <Route path='/about' element={ <About /> } />
+                    <Route path='/create-event' element={ <Events /> } />
                     <Route path='/*' element={<Error404 />}/>
                 </Routes>
             </BrowserRouter>
