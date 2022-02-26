@@ -1,4 +1,4 @@
-export default [
+const mockFriends = [
   {
     id: 'randall_guy',
     firstName: 'Randall',
@@ -19,4 +19,6 @@ export default [
     hostedEvents: [],
     friends: ['bill_cob'],
   },
-]
+];
+
+export default mockFriends;

@@ -18,6 +18,19 @@ export async function getUserData() {
   return user
 }
 
+// returns true if session is active, returns false if session has expired
+export async function checkSession()
+{
+    const res = await fetch(backend("/check-session"), {
+        method: "POST",
+        credentials: "include",
+        headers: {
+        "Content-Type": "application/json"
+        }
+    });
+    const res_j = await res.json();
+    return res_j;
+
 // formats date string to confirm with React's yyyy-MM-dd format
 export function formatDate(date_str) {
     let date = new Date(date_str);

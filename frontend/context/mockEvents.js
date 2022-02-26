@@ -28,5 +28,6 @@ const mockEvents = [
     host: 'randall_guy',
     members: ['bill_cob'],
   },
-]
-export default mockEvents
+];
+
+export default mockEvents;
