@@ -15,6 +15,7 @@ export default function Logout()
         });
         // 409 is user not logged in
         // 200 is OK and logged out
+        // maybe add back body for error response
         navigate('/');
     });
     

@@ -20,6 +20,7 @@ export default function NavBar()
                     <ul>
                         <li><Link to={(isLoggedin ? '/profile' : '/login')}> {(isLoggedin ? "Profile" : "Login")} </Link></li>
                         <li><Link to={(isLoggedin ? '/logout' : '/register')}> {(isLoggedin ? "Logout" : "Register")} </Link></li>
+                        <li><Link to='/event/new'> {(isLoggedin ? "Create Event" : null)} </Link></li>
                     </ul>
                     {(isLoggedin ? <img onClick={()=>alert('it works!')} className={classes.addImage} src={PlusSign} alt="add event"/> : null)}
                 </nav>
