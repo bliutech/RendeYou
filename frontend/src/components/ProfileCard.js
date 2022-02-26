@@ -1,3 +1,5 @@
+import React from 'react';
+
 const ProfileCard = (user) => {
   return (
     <>
@@ -10,7 +12,7 @@ const ProfileCard = (user) => {
       <br />
       <p>{user.friends.join(' ')}</p>
     </>
-  )
+  );
 }
 
-export default ProfileCard
+export default ProfileCard;
