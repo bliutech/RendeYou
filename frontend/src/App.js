@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home.js';
 import Login from './pages/Login.js';
@@ -8,11 +8,18 @@ import Profile from './pages/Profile.js';
 import Meetings from './pages/Meetings.js';
 import Error404 from './pages/Error404.js';
 import About from './pages/About.js';
+import CreateEvents from './pages/Events.js';
 import NavBar from './components/NavBar.js';
+import checkSession from './components/Util.js';
 
 function App()
 {
-    let isLoggedin = false;
+    let [isLoggedin, setsLoggedin] = useState(false);
+    useEffect(async ()=> 
+    {
+        setsLoggedin(checkSession());
+    });
+
     return(
         <div>
             <BrowserRouter>
@@ -26,6 +33,7 @@ function App()
                     <Route path='/logout' element={ <Logout /> } />
                     <Route path='/profile' element={ <Profile /> } />
                     <Route path='/about' element={ <About /> } />
+                    <Route path='/event/new' element={ <CreateEvents /> } />
                     <Route path='/*' element={<Error404 />}/>
                 </Routes>
             </BrowserRouter>
