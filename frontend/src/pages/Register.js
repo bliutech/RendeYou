@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
-import RegisterForm from '../components/RegisterForm.js'
-import backend from '../components/Util.js'
-import '../index.css'
+import React, { useState } from 'react';
+import {Link} from 'react-router-dom';
+import RegisterForm from '../components/RegisterForm.js';
+import backend from '../components/Util.js';
+import '../index.css';
 
-function Register() {
+export default function Register() {
   document.title = 'Register | RendeYou'
   const [err_msg, setErrMsg] = useState('')
   async function handleSubmit(uname, pass) {
@@ -26,20 +27,12 @@ function Register() {
     }
   }
 
-  function switchToLogin() {
-    //TODO: Have page link to login
-  }
   return (
     <div className='content'>
       <h1> Register </h1>
       <p> Register your RendeYou account. </p>
-      <p style={{ color: '#ff0000' }}>{err_msg}</p>
       <RegisterForm onSubmit={handleSubmit} />
-      <button onClick={switchToLogin}>Login</button>
+      <p>Already have an account? Login <Link to='/login'>here</Link>.</p>
     </div>
   )
 }
-
-//TODO: Link with login page
-//TODO: Quality of life stuff (error messages)
-export default Register
