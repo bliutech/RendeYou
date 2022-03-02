@@ -193,7 +193,7 @@ app.put("/user/me", checkAuth, async (req, res) => {
 
     async function updateOnlyIfChanged(prop, validate, errorMessage) {
         if (update[prop] !== undefined && user[prop] !== update[prop]) {
-            if (validate && await validate(update[prop]))
+            if (!validate || await validate(update[prop]))
                 user[prop] = update[prop];
             else
                 throw errorMessage;
@@ -292,10 +292,14 @@ app.delete("/event/:id([0-9a-f]{24})", checkAuth, async (req, res) => {
 app.post("/event/:id([0-9a-f]{24})/subscribe", checkAuth, async (req, res) => {
     const userId = req.session.userId;
     const event = await Event.findById(req.params.id);
-    if (!event)
+    if (!event) {
         res.sendStatus(404); // 404 Not Found
-    if (event.members.some(userId.equals))
+        return;
+    }
+    if (event.members.some(userId.equals)) {
         res.sendStatus(409); // 409 Conflict - user is already subscribed to event
+        return;
+    }
     const updateEvent = (async () => {
         event.members.push(userId);
         await event.save();
@@ -312,10 +316,14 @@ app.post("/event/:id([0-9a-f]{24})/subscribe", checkAuth, async (req, res) => {
 app.post("/event/:id([0-9a-f]{24})/unsubscribe", checkAuth, async (req, res) => {
     const userId = req.session.userId;
     const event = await Event.findById(req.params.id);
-    if (!event)
+    if (!event) {
         res.sendStatus(404); // 404 Not Found
-    if (!event.members.some(userId.equals))
+        return;
+    }
+    if (!event.members.some(userId.equals)) {
         res.sendStatus(409); // 409 Conflict - user isn't subscribed to event
+        return;
+    }
     const updateEvent = (async () => {
         event.members = event.members.filter(id => !id.equals(userId));
         await event.save();
