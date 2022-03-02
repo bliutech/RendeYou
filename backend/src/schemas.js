@@ -19,6 +19,7 @@ const userSchema = new mongoose.Schema({
     username: String,
     email: String,
     hostedEvents: [mongoose.ObjectId],
+    subscriptions: [mongoose.ObjectId],
     friends: [mongoose.ObjectId],
     passwordHash: String,
     salt: String
