@@ -191,16 +191,17 @@ app.put("/user/me", checkAuth, async (req, res) => {
     const user = await User.findById(id);
     const update = req.body;
 
-    async function updateOnlyIfChanged(prop, validate, errorMessage) {
-        if (update[prop] !== undefined && user[prop] !== update[prop]) {
-            if (!validate || await validate(update[prop]))
-                user[prop] = update[prop];
+    async function updateOnlyIfChanged(propName, validate, errorMessage) {
+        const updatedProp = update[propName];
+        if (propName in update && user[propName] !== updatedProp) {
+            if (!validate || await validate(updatedProp))
+                user[propName] = updatedProp;
             else
                 throw errorMessage;
         }
     }
 
-    const updateEmail = updateOnlyIfChanged("email", emailRegex.test, "Invalid email");
+    const updateEmail = updateOnlyIfChanged("email", emailRegex.test.bind(emailRegex), "Invalid email");
 
     const updateFriends = updateOnlyIfChanged("friends", async (friends) => {
         if (!friends.every(idRegex.test))
@@ -218,7 +219,7 @@ app.put("/user/me", checkAuth, async (req, res) => {
         res.send();
     } catch (errorMessage) {
         res.status(400);
-        res.send({ error: errorMessage });
+        res.json({ error: errorMessage });
     }
 });
 
