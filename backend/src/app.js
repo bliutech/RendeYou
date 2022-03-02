@@ -91,7 +91,7 @@ app.post("/register", async (req, res) => {
     await newUser.save();
 
     // Create a new session on registration
-    req.session.userId = newUser._id;
+    req.session.userId = newUser._id.toString();
 
     res.send(stripUser(newUser.toObject()));
 });
@@ -201,7 +201,7 @@ app.put("/user/me", checkAuth, async (req, res) => {
         }
     }
 
-    const updateEmail = updateOnlyIfChanged("email", emailRegex.test.bind(emailRegex), "Invalid email");
+    const updateEmail = updateOnlyIfChanged("email", email => emailRegex.test(email), "Invalid email");
 
     const updateFriends = updateOnlyIfChanged("friends", async (friends) => {
         if (!friends.every(idRegex.test))
@@ -297,7 +297,7 @@ app.post("/event/:id([0-9a-f]{24})/subscribe", checkAuth, async (req, res) => {
         res.sendStatus(404); // 404 Not Found
         return;
     }
-    if (event.members.some(userId.equals)) {
+    if (event.members.some(id => id.equals(userId))) {
         res.sendStatus(409); // 409 Conflict - user is already subscribed to event
         return;
     }
@@ -321,7 +321,7 @@ app.post("/event/:id([0-9a-f]{24})/unsubscribe", checkAuth, async (req, res) => 
         res.sendStatus(404); // 404 Not Found
         return;
     }
-    if (!event.members.some(userId.equals)) {
+    if (!event.members.some(id => id.equals(userId))) {
         res.sendStatus(409); // 409 Conflict - user isn't subscribed to event
         return;
     }
