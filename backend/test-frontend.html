@@ -138,6 +138,10 @@
         email: $("update-email").value,
         friends: $("update-friends").value.split(",").filter(x => x)
       };
+      for (const i in data) {
+        if (!data[i])
+          delete data[i];
+      }
       fetch(backend("/user/me"), {
         method: "PUT",
         credentials: "include",
