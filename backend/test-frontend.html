@@ -80,6 +80,12 @@
 
   <input type="button" id="check-session" value="Check Session">
 
+  <form id="subscribe-event">
+    <p>/event/[id]/subscribe</p>
+    <label>id: <input id="subscribe-event-id"></label>
+    <input type="button" id="subscribe-event-button" value="Subscribe">
+    <input type="button" id="unsubscribe-event-button" value="Unsubscribe">
+  </form>
 
   <script>
     function backend(endpoint) {
@@ -93,6 +99,24 @@
     function $(id) {
       return document.getElementById(id);
     }
+
+    const subscribeEventButton = $("subscribe-event-button");
+    const subscribeEventId = $("subscribe-event-id");
+    subscribeEventButton.addEventListener("click", function() {
+      const id = subscribeEventId.value;
+      fetch(backend("/event/" + id + "/subscribe"), {
+        method: "POST",
+        credentials: "include"
+      });
+    });
+    const unsubscribeEventButton = $("unsubscribe-event-button");
+    unsubscribeEventButton.addEventListener("click", function() {
+      const id = subscribeEventId.value;
+      fetch(backend("/event/" + id + "/unsubscribe"), {
+        method: "POST",
+        credentials: "include"
+      });
+    });
 
     const registerForm = $("register");
     registerForm.addEventListener("submit", function (e) {
@@ -138,6 +162,10 @@
         email: $("update-email").value,
         friends: $("update-friends").value.split(",").filter(x => x)
       };
+      for (const i in data) {
+        if (!data[i])
+          delete data[i];
+      }
       fetch(backend("/user/me"), {
         method: "PUT",
         credentials: "include",

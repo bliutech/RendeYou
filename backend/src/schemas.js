@@ -19,6 +19,7 @@ const userSchema = new mongoose.Schema({
     username: String,
     email: String,
     hostedEvents: [mongoose.ObjectId],
+    subscriptions: [mongoose.ObjectId],
     friends: [mongoose.ObjectId],
     passwordHash: String,
     salt: String
@@ -29,8 +30,8 @@ const eventSchema = new mongoose.Schema({
     date: Number,
     description: String,
     location: String,
-    host: ObjectId,
-    members: [ObjectId],
+    host: mongoose.ObjectId,
+    members: [mongoose.ObjectId],
 });
 
 const User = mongoose.model("User", userSchema);
