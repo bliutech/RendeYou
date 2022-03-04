@@ -1,13 +1,19 @@
-import React from 'react';
+import { React, useContext } from 'react';
+import { UserDataContext } from '../context/UserDataProvider';
 import '../index.css';
+import { Link } from 'react-router-dom';
 
-export default function Meetings()
-{
-    document.title = 'Meetings | RendeYou';
-    return(
-        <div className='content'>
-            <h1> Meetings </h1>
-            <p> Your RendeYou meetings! </p>
-        </div>
-    );
+export default function Meetings() {
+  document.title = 'Meetings | RendeYou';
+  const { user, setUser } = useContext(UserDataContext);
+  console.log(user);
+  return (
+    <div className='content'>
+      <h1> Meetings </h1>
+      <p> Your RendeYou meetings! </p>
+      <Link to='/friends'>
+        <button>Friends List</button>
+      </Link>
+    </div>
+  );
 }
