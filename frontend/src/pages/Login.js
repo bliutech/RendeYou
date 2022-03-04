@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
-import {Link} from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
 import LoginForm from '../components/LoginForm.js';
 import backend from '../components/Util.js';
+import { UserDataContext } from '../context/UserDataProvider.js';
 
-export default function Login() {
+export default function Login(props) {
   const [err_msg, setErrMsg] = useState('');
+  const { setUser, setisLoggedin } = useContext(UserDataContext);
   async function handleSubmit(uname, pass) {
     const data = {
       username: uname,
@@ -20,13 +22,12 @@ export default function Login() {
     });
     if (res.status >= 400) {
       setErrMsg(res.error);
-    }
-    else {
+    } else {
       setErrMsg('');
     }
-
-    const user = await res.json();
-    return;
+    const currentUser = await res.json();
+    setisLoggedin(true);
+    setUser(currentUser);
   }
 
   document.title = 'Login | RendeYou';
@@ -34,8 +35,10 @@ export default function Login() {
     <div className='content'>
       <h1> Login </h1>
       <p> Login to your RendeYou account. </p>
-      <LoginForm onSubmit={handleSubmit}/>
-      <p>Don't have an account? Register <Link to='/register'>here</Link>.</p>
+      <LoginForm onSubmit={handleSubmit} />
+      <p>
+        Don't have an account? Register <Link to='/register'>here</Link>.
+      </p>
     </div>
-  )
+  );
 }
