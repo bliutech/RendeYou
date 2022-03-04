@@ -1,30 +1,30 @@
-import React from 'react'
+import React from 'react';
 
 class LoginForm extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       uname: '',
       pass: '',
-    }
-    this.updateUname = this.updateUname.bind(this)
-    this.updatePass = this.updatePass.bind(this)
+    };
+    this.updateUname = this.updateUname.bind(this);
+    this.updatePass = this.updatePass.bind(this);
   }
 
   updateUname(event) {
-    this.setState({ uname: event.target.value })
+    this.setState({ uname: event.target.value });
   }
 
   updatePass(event) {
-    this.setState({ pass: event.target.value })
+    this.setState({ pass: event.target.value });
   }
 
   render() {
     return (
       <form
         onSubmit={(e) => {
-          e.preventDefault()
-          this.props.onSubmit(this.state.uname, this.state.pass)
+          e.preventDefault();
+          this.props.onSubmit(this.state.uname, this.state.pass);
         }}
       >
         <legend>Username</legend>
@@ -43,8 +43,8 @@ class LoginForm extends React.Component {
         <br />
         <input type='submit' value='Submit' />
       </form>
-    )
+    );
   }
 }
 
-export default LoginForm
+export default LoginForm;

@@ -1,41 +1,41 @@
 .item {
-    background-color: #ffbd95;
-    border-color: #fc6a01;
-    border-width: 4px;
-    border-radius: 16px;
-    padding: 40px;
-    display: flex;
-    flex-direction: row;
+  background-color: #ffbd95;
+  border-color: #fc6a01;
+  border-width: 4px;
+  border-radius: 16px;
+  padding: 40px;
+  display: flex;
+  flex-direction: row;
 }
 .subitem {
-    background-color: #ffbd95;
-    padding: 5px;
-    display: flex;
-    flex-direction: column;
+  background-color: #ffbd95;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
 }
 .largebody {
-    font-size: 20;
-    font-family: sans-serif;
-    font-weight: bold;
-    flex-direction: column;
-    align-self: flex-start;
+  font-size: 20;
+  font-family: sans-serif;
+  font-weight: bold;
+  flex-direction: column;
+  align-self: flex-start;
 }
 .bodytext {
-    font-size: 10;
-    font-family: sans-serif;
-    padding: 2; 
-    color: gray;
-    border-radius: 8;
-    align-self: flex-start;
+  font-size: 10;
+  font-family: sans-serif;
+  padding: 2;
+  color: gray;
+  border-radius: 8;
+  align-self: flex-start;
 }
 .profile {
-    width: 50;
-    height: 50;
-    align-self: center;
+  width: 50;
+  height: 50;
+  align-self: center;
 }
 
 .image {
-    width: 50px;
-    height: 50px;
-    align-self: center;
+  width: 50px;
+  height: 50px;
+  align-self: center;
 }
