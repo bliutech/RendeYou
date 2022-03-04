@@ -1,11 +1,11 @@
 const EventCard = ({ event, joinHandler, ...attributes }) => {
-  const date = new Date(event.date);
+  const date = new Date(event.date)
   const options = {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
     day: 'numeric',
-  };
+  }
   return (
     <>
       <div>
@@ -33,10 +33,10 @@ const EventCard = ({ event, joinHandler, ...attributes }) => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default EventCard;
+export default EventCard
 //TODO: make this adapt to users timezone
 //TODO: link host to profile
 //TODO: talk to backend about date format

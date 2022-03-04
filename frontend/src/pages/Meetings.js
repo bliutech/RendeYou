@@ -1,11 +1,15 @@
-import { React, useContext } from 'react';
+import { React, useContext, useEffect } from 'react';
 import { UserDataContext } from '../context/UserDataProvider';
 import '../index.css';
 import { Link } from 'react-router-dom';
+import { checkSession } from '../components/Util';
 
 export default function Meetings() {
   document.title = 'Meetings | RendeYou';
   const { user, setUser } = useContext(UserDataContext);
+  useEffect(() => {
+    checkSession();
+  });
   console.log(user);
   return (
     <div className='content'>
