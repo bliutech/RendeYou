@@ -1,12 +1,20 @@
 import React from 'react';
-import { useState } from 'react';
-import backend from '../components/Util';
+import { useState, useEffect } from 'react';
+import backend, { checkSession, getUserData } from '../components/Util';
 
 const UserDataContext = React.createContext();
 
 const UserDataProvider = ({ children }) => {
   const [user, setUser] = useState();
   const [isLoggedin, setisLoggedin] = useState(false);
+  useEffect(async () => {
+    setisLoggedin(await checkSession());
+    setUser(await getUserData());
+  }, []);
+  const updateData = async () => {
+    setisLoggedin(await checkSession());
+    setUser(await getUserData());
+  };
   // const setUser = async (currUser) => {
   //   const res = await fetch(backend('/user/me'), {
   //     method: 'PUT',
@@ -28,6 +36,7 @@ const UserDataProvider = ({ children }) => {
         setUser,
         isLoggedin,
         setisLoggedin,
+        updateData,
       }}
     >
       {children}
