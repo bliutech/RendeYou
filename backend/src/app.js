@@ -23,14 +23,11 @@ const sessionLifetime = 1000 * 60 * 5; // 5 min
 
 // Allow CORS
 // TODO: Currently allows requests from any origin - change before production!
-const corsOptions = {
-    origin: "*",
-    credentials: true
-};
+const corsOptions = { credentials: true };
 if (process.env.ENV == "dev") {
-    corsOptions.origin = "http://localhost:3000"
+    corsOptions.origin = "http://localhost:3000";
 } else if (process.env.ENV == "production") {
-    corsOptions.origin = "PRODUCTION IP HERE"
+    corsOptions.origin = "PRODUCTION IP HERE";
 }
 app.use(cors(corsOptions));
 
@@ -50,9 +47,7 @@ app.use(session({
 //==============================================================================
 // API routes
 
-app.get("/", (req, res) => {
-    res.sendFile("test-frontend.html", { root: "." });
-});
+app.get("/", (req, res) => res.sendFile("test-frontend.html", { root: "." }));
 
 app.get("/check-session", (req, res) => res.json(Boolean(req.session.userId)));
 
@@ -191,9 +186,10 @@ app.put("/user/me", checkAuth, async (req, res) => {
     const user = await User.findById(id);
     const update = req.body;
 
-    async function updateOnlyIfChanged(propName, validate, errorMessage) {
+    async function updateOnlyIfChanged(propName, errorMessage, validate,
+        hasChanged = (x, y) => x !== y) {
         const updatedProp = update[propName];
-        if (propName in update && user[propName] !== updatedProp) {
+        if (propName in update && hasChanged(user[propName], updatedProp)) {
             if (!validate || await validate(updatedProp))
                 user[propName] = updatedProp;
             else
@@ -201,14 +197,16 @@ app.put("/user/me", checkAuth, async (req, res) => {
         }
     }
 
-    const updateEmail = updateOnlyIfChanged("email", email => emailRegex.test(email), "Invalid email");
+    const updateEmail = updateOnlyIfChanged("email", "Invalid email", email => emailRegex.test(email));
 
-    const updateFriends = updateOnlyIfChanged("friends", async (friends) => {
-        if (!friends.every(id => idRegex.test(id)))
-            return false;
-        const numFriends = await User.find().where("_id").in(friends).countDocuments();
-        return numFriends == friends.length;
-    }, "Invalid or duplicate ids in friends list");
+    const updateFriends = updateOnlyIfChanged("friends", "Invalid or duplicate ids in friends list",
+        async (friends) => {
+            if (!friends.every(id => idRegex.test(id)))
+                return false;
+            const numFriends = await User.find().where("_id").in(friends).countDocuments();
+            return numFriends === friends.length;
+        },
+        (x, y) => x.length !== y.length || x.some((n, i) => n !== y[i]));
 
     const updateFirstName = updateOnlyIfChanged("firstName");
     const updateLastName = updateOnlyIfChanged("lastName");

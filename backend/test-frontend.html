@@ -160,12 +160,14 @@
         firstName: $("update-first").value,
         lastName: $("update-last").value,
         email: $("update-email").value,
-        friends: $("update-friends").value.split(",")
+        friends: $("update-friends").value.split(",").filter(x => x)
       };
       for (const i in data) {
-        if (!data[i] || i == "friends" && data[i].length == 0)
+        if (!data[i])
           delete data[i];
       }
+      if (data.friends.length == 0)
+        delete data.friends;
       fetch(backend("/user/me"), {
         method: "PUT",
         credentials: "include",
