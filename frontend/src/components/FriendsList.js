@@ -57,7 +57,7 @@ const FriendsList = () => {
         const dispres_json = await dispres.json();
         updateDispList(dispres_json);
     }, []);
-    if (dispList.length === 0) return (<p>Add Friends</p>);
+    if (dispList.length === 0) return (<p>Damn you have no Friends</p>);
 
     return (<>{
         dispList.map(
