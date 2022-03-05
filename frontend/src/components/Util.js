@@ -41,6 +41,20 @@ export async function checkSession() {
   return res_j;
 }
 
+export async function getEvent(id) {
+  const res = await fetch(backend('/event/' + id), {
+    method: 'GET',
+    credentials: 'include',
+    id: id,
+  });
+  const event = await res.json();
+  if (res.status >= 400) {
+    alert('ERROR: Could not get user.');
+    return;
+  }
+  return event;
+}
+
 // formats date string to confirm with React's yyyy-MM-dd format
 export function formatDate(date_str) {
   let date = new Date(date_str);

@@ -8,7 +8,7 @@ import '../index.css';
 
 export default function Register() {
   document.title = 'Register | RendeYou';
-  const { user, setUser, setisLoggedin } = useContext(UserDataContext);
+  const { updateData } = useContext(UserDataContext);
   const [err_msg, setErrMsg] = useState('');
 
   async function handleSubmit(uname, pass, firstName, lastName, email) {
@@ -35,10 +35,7 @@ export default function Register() {
     const user = Object.assign({}, await res.json(), otherData);
 
     addUserData(user);
-    const userData = await getUserData();
-    setUser(userData);
-    setisLoggedin(true);
-    console.log(userData);
+    updateData();
   }
 
   return (

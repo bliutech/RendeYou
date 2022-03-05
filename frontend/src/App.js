@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home.js';
 import Login from './pages/Login.js';
@@ -12,8 +12,13 @@ import CreateEvents from './pages/Events.js';
 import NavBar from './components/NavBar.js';
 import { UserDataContext } from './context/UserDataProvider.js';
 import Friends from './pages/Friends.js';
+import { checkSession, getUserData } from './components/Util.js';
 function App() {
-  const { isLoggedin } = useContext(UserDataContext);
+  const { isLoggedin, updateData } = useContext(UserDataContext);
+
+  useEffect(async () => {
+    updateData();
+  }, []);
   return !isLoggedin ? (
     <>
       <BrowserRouter>

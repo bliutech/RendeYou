@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../index.css';
 import ProfileCard from '../components/ProfileCard.js';
@@ -6,8 +6,10 @@ import { UserDataContext } from '../context/UserDataProvider';
 
 export default function Profile() {
   document.title = 'Profile | RendeYou';
-  const { user } = useContext(UserDataContext);
-  console.log(user);
+  const { user, updateData } = useContext(UserDataContext);
+  useEffect(async () => {
+    updateData();
+  }, []);
 
   return (
     <>

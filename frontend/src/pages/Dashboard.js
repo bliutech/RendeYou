@@ -1,8 +1,14 @@
 import EventCard from '../components/EventCard';
 import mockEvents from '../context/mockEvents';
 import { Link } from 'react-router-dom';
+import { UserDataContext } from '../context/UserDataProvider';
+import { useContext, useEffect } from 'react';
 
 const Dashboard = (userData) => {
+  const { updateData } = useContext(UserDataContext);
+  useEffect(async () => {
+    updateData();
+  }, []);
   return (
     <>
       <div>
