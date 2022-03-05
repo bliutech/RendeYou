@@ -50,11 +50,17 @@ const FriendsList = () => {
         const res_j = await res.json();
         const IDList = res_j.friends;
         let str = IDList.join();
-        console.log(str);  // Debugging
+        console.log("Getting frineds...");
+        if (str.length === 0) {
+            console.log("No beaches?");
+            updateDispList([]);
+            return;
+        }
         const dispres = await fetch(backend('/user'), {
             ids: str,
         })
         const dispres_json = await dispres.json();
+        console.log("Display list:",dispres_json);
         updateDispList(dispres_json);
     }, []);
     if (dispList.length === 0) return (<p>Damn you have no Friends</p>);
@@ -68,8 +74,8 @@ const FriendsList = () => {
                     <div className={classes.item}>
                         <img className={classes.image} src="https://reactnative.dev/img/tiny_logo.png" alt="Italian Trulli" />
                     <div>
-                        <p className={classes.largebody}>{person.firstname} {person.lastname}</p>
-                        <p className={classes.bodytext}>@{person.email}</p>
+                        <p className={classes.largebody}>{person.firstName} {person.lastName}</p>
+                        <p className={classes.bodytext}>{person.email}</p>
                     </div>
                     </div>
                 </td>
