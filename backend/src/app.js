@@ -86,7 +86,7 @@ app.post("/register", async (req, res) => {
     await newUser.save();
 
     // Create a new session on registration
-    req.session.userId = newUser._id.toString();
+    req.session.userId = newUser._id;
 
     res.send(stripUser(newUser.toObject()));
 });
@@ -96,12 +96,10 @@ app.post("/login", async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     // retrieve that user from database
-    const user = await User.findOne({
-        username: username,
-    }).lean();
+    const user = await User.findOne({ username: username });
     if (user && user.passwordHash == hash(password, user.salt)) {
         req.session.userId = user._id; // then create a new session ID and return that user
-        res.send(stripUser(user));
+        res.send(stripUser(user.toObject()));
     } else { // otherwise, return an error status
         res.sendStatus(403);
     }
@@ -168,10 +166,7 @@ app.get("/user/:id([0-9a-f]{24})", async (req, res) => {
 });
 
 app.get("/user/me", checkAuth, async (req, res) => {
-    const id = req.session.userId;
-
-    // .lean() makes the query return a JS object instead of a document
-    const user = await User.findById(id).lean();
+    const user = await User.findById(req.session.userId).lean();
     if (user) {
         res.send(stripUser(user));
     } else {
@@ -181,9 +176,8 @@ app.get("/user/me", checkAuth, async (req, res) => {
 
 // Doesn't allow users to change their username or password
 app.put("/user/me", checkAuth, async (req, res) => {
-    const id = req.session.userId;
     // Find the user indicated by the session's userId, i.e. the logged in user
-    const user = await User.findById(id);
+    const user = await User.findById(req.session.userId);
     const update = req.body;
 
     async function updateOnlyIfChanged(propName, errorMessage, validate,
@@ -231,7 +225,6 @@ app.post("/event/new", checkAuth, async (req, res) => {
     //need to make sure the changes are valid (i.e. the date is valid, etc.)
     const title = req.body.title;
     const id = req.session.userId;
-    const user = await User.findById(req.session.userId).lean();
     if (!title) {
         res.status(400);
         res.send({ error: "Event name is empty" });
@@ -243,7 +236,7 @@ app.post("/event/new", checkAuth, async (req, res) => {
         await newEvent.save();
         await User.findOneAndUpdate(
             { _id: id },
-            { $push: { hostedEvents: newEvent.id } }
+            { $push: { hostedEvents: newEvent._id } }
         );
         res.send();
     } catch (err) {
@@ -266,26 +259,26 @@ app.delete("/event/:id([0-9a-f]{24})", checkAuth, async (req, res) => {
     const eventID = req.params.id;
     const userId = req.session.userId;
     const event = await Event.findById(eventID).lean();
-    if (event.host != userId) {
+    if (!event) {
+        res.sendStatus(404); // 404 Not Found
+        return;
+    }
+    if (!event.host.equals(userId)) {
         res.sendStatus(403);
         return;
     }
-    if (event) { //if the event is valid, delete it
-        Event.findByIdAndDelete(eventID, function (err) { //if there is some error in deleting it, then send a 403 error status
-            if (err) {
-                res.sendStatus(403);
-            } else {
-                res.sendStatus(200);
-            }
-        });
-        await User.findOneAndUpdate({ _id: userId }, {
-            $pullAll: {
-                hostedEvents: [{ _id: eventID }]
-            }
-        });
-    } else {
-        res.sendStatus(404);
-    }
+    Event.findByIdAndDelete(eventID, function (err) { //if there is some error in deleting it, then send a 403 error status
+        if (err) {
+            res.sendStatus(403);
+        } else {
+            res.sendStatus(200);
+        }
+    });
+    await User.findOneAndUpdate({ _id: userId }, {
+        $pullAll: {
+            hostedEvents: [{ _id: eventID }]
+        }
+    });
 });
 
 app.post("/event/:id([0-9a-f]{24})/subscribe", checkAuth, async (req, res) => {
