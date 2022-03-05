@@ -11,7 +11,7 @@ const port = 8000;
 const cors = require("cors");
 
 const { User, Event } = require("./schemas");
-const { stripUser, escapeRegex, emailRegex, idRegex } = require("./util");
+const { stripUser, stripEvent, escapeRegex, emailRegex, idRegex } = require("./util");
 const { hash, genSalt } = require("./crypt");
 
 const session = require("express-session");
@@ -258,7 +258,7 @@ app.get("/event/:id([0-9a-f]{24})", async (req, res) => {
     const eventID = req.params.id;
     const event = await Event.findById(eventID).lean();
     if (event) { //make sure the event is valid, and if it is, send it
-        res.send(event);
+        res.send(stripEvent(event));
     } else { //otherwise, send a 404 error
         res.sendStatus(404);
     }

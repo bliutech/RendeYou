@@ -160,10 +160,10 @@
         firstName: $("update-first").value,
         lastName: $("update-last").value,
         email: $("update-email").value,
-        friends: $("update-friends").value.split(",").filter(x => x)
+        friends: $("update-friends").value.split(",")
       };
       for (const i in data) {
-        if (!data[i])
+        if (!data[i] || i == "friends" && data[i].length == 0)
           delete data[i];
       }
       fetch(backend("/user/me"), {
