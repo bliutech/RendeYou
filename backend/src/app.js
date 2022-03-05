@@ -219,12 +219,7 @@ app.put("/user/me", checkAuth, async (req, res) => {
         res.send();
     } catch (errorMessage) {
         res.status(400);
-<<<<<<< Updated upstream
         res.json({ error: errorMessage });
-=======
-        console.log(errorMessage);
-        res.send({ error: errorMessage });
->>>>>>> Stashed changes
     }
 });
 
