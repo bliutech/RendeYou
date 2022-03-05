@@ -204,7 +204,7 @@ app.put("/user/me", checkAuth, async (req, res) => {
     const updateEmail = updateOnlyIfChanged("email", email => emailRegex.test(email), "Invalid email");
 
     const updateFriends = updateOnlyIfChanged("friends", async (friends) => {
-        if (!friends.every(idRegex.test))
+        if (!friends.every(id => idRegex.test(id)))
             return false;
         const numFriends = await User.find().where("_id").in(friends).countDocuments();
         return numFriends == friends.length;
