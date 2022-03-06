@@ -1,4 +1,4 @@
-const EventCard = ({ event, joinHandler }) => {
+const EventCard = ({ event, leaveHandler }) => {
   const date = new Date(event.date);
   const options = {
     weekday: 'long',
@@ -28,7 +28,7 @@ const EventCard = ({ event, joinHandler }) => {
           </div>
         </div>
         <div>
-          <button onClick={async () => joinHandler(event['id'])}>Join</button>
+          <button onClick={async () => leaveHandler(event['id'])}>Leave</button>
           <p>{event.members.join(' ')}</p>
         </div>
       </div>

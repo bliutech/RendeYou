@@ -28,24 +28,6 @@ export const getUserData = async () => {
   return user;
 };
 
-// updateData is the function frontend uses to refresh data with backend. Always pass in from UserDataProvider
-export const deleteEvent = async (id, updateData) => {
-  const res = await fetch(backend('/event/' + id), {
-    method: 'DELETE',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  if (res.status == 403) {
-    await updateData();
-    return;
-  } else if (res.status == 404) {
-    alert('Event not found');
-    return;
-  }
-  await updateData();
-};
 // returns true if session is active, returns false if session has expired
 export async function checkSession() {
   const res = await fetch(backend('/check-session'), {
@@ -73,6 +55,69 @@ export async function getEvent(id) {
   return event;
 }
 
+// updateData is the function frontend uses to refresh data with backend. Always pass in from UserDataProvider
+export const deleteEvent = async (id, updateData) => {
+  const res = await fetch(backend('/event/' + id), {
+    method: 'DELETE',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  if (res.status == 403) {
+    await updateData();
+    return;
+  } else if (res.status == 404) {
+    alert('Event not found');
+    return;
+  }
+  await updateData();
+};
+
+// This is for joining and unjoining events
+export const joinEvent = async (id, updateData) => {
+  const res = await fetch(backend('/event/' + id + '/subscribe'), {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    id: id,
+  });
+  if (res.status == 403) {
+    await updateData();
+    return;
+  } else if (res.status == 404) {
+    alert('Event not found');
+    return;
+  } else if (res.status == 409) {
+    alert('Already subscribed');
+    return;
+  }
+  await updateData();
+};
+
+export const leaveEvent = async (id, updateData) => {
+  const res = await fetch(backend('/event/' + id + '/unsubscribe'), {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    id: id,
+  });
+  if (res.status == 403) {
+    await updateData();
+    return;
+  } else if (res.status == 404) {
+    alert('Event not found');
+    return;
+  } else if (res.status == 409) {
+    alert('Already unsubscribed');
+    return;
+  }
+  await updateData();
+};
 //This gets a list of users from a list of ids
 export async function getUsers(ids) {
   const res = await fetch(backend('/user'), {
