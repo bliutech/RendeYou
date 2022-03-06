@@ -166,6 +166,8 @@
         if (!data[i])
           delete data[i];
       }
+      if (data.friends.length == 0)
+        delete data.friends;
       fetch(backend("/user/me"), {
         method: "PUT",
         credentials: "include",
