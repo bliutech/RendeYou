@@ -1,18 +1,22 @@
 import React from 'react';
 
-const ProfileCard = (user) => {
+const ProfileCard = (props) => {
   return (
     <>
-      <img src={user.picture} alt='' width='100px' />
-      <p>{user.firstName + ' ' + user.lastName}</p>
+      <img
+        src='https://cdn.iconscout.com/icon/free/png-256/person-1767893-1502146.png'
+        alt=''
+        width='100px'
+      />
+      <p>{props.user.firstName + ' ' + props.user.lastName}</p>
       <br />
-      <p>{user.email}</p>
+      <p>{props.user.email}</p>
       <br />
-      <p>{user.username}</p>
+      <p>{props.user.username}</p>
       <br />
-      <p>{user.friends.join(' ')}</p>
+      <p>{props.user.friends.join(' ')}</p>
     </>
   );
-}
+};
 
 export default ProfileCard;

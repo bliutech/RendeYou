@@ -1,8 +1,8 @@
-import React from 'react'
+import React from 'react';
 
 class RegisterForm extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       firstName: '',
       lastName: '',
@@ -12,40 +12,46 @@ class RegisterForm extends React.Component {
       hostedEvents: [],
       friends: [],
       image: '',
-    }
-    this.updateUname = this.updateUname.bind(this)
-    this.updatePass = this.updatePass.bind(this)
-    this.updatefirstName = this.updatefirstName.bind(this)
-    this.updatelastName = this.updatelastName.bind(this)
-    this.updateEmail = this.updateEmail.bind(this)
+    };
+    this.updateUname = this.updateUname.bind(this);
+    this.updatePass = this.updatePass.bind(this);
+    this.updatefirstName = this.updatefirstName.bind(this);
+    this.updatelastName = this.updatelastName.bind(this);
+    this.updateEmail = this.updateEmail.bind(this);
   }
 
   updateUname(event) {
-    this.setState({ uname: event.target.value })
+    this.setState({ uname: event.target.value });
   }
 
   updatePass(event) {
-    this.setState({ pass: event.target.value })
+    this.setState({ pass: event.target.value });
   }
 
   updatefirstName(event) {
-    this.setState({ firstName: event.target.value })
+    this.setState({ firstName: event.target.value });
   }
 
   updatelastName(event) {
-    this.setState({ lastName: event.target.value })
+    this.setState({ lastName: event.target.value });
   }
 
   updateEmail(event) {
-    this.setState({ email: event.target.value })
+    this.setState({ email: event.target.value });
   }
 
   render() {
     return (
       <form
         onSubmit={(e) => {
-          e.preventDefault()
-          this.props.onSubmit(this.state.uname, this.state.pass)
+          e.preventDefault();
+          this.props.onSubmit(
+            this.state.uname,
+            this.state.pass,
+            this.state.firstName,
+            this.state.lastName,
+            this.state.email
+          );
         }}
       >
         <legend>First Name</legend>
@@ -82,8 +88,8 @@ class RegisterForm extends React.Component {
         <br />
         <input type='submit' value='Submit' />
       </form>
-    )
+    );
   }
 }
 
-export default RegisterForm
+export default RegisterForm;

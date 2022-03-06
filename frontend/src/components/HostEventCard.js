@@ -1,4 +1,4 @@
-const EventCard = ({ event, joinHandler, deleteHandler, ...attributes }) => {
+const HostEventCard = ({ event, deleteHandler }) => {
   const date = new Date(event.date);
   const options = {
     weekday: 'long',
@@ -28,7 +28,9 @@ const EventCard = ({ event, joinHandler, deleteHandler, ...attributes }) => {
           </div>
         </div>
         <div>
-          <button onClick={joinHandler}>Join</button>
+          <button onClick={async () => deleteHandler(event['_id'])}>
+            Delete
+          </button>
           <p>{event.members.join(' ')}</p>
         </div>
       </div>
@@ -36,7 +38,7 @@ const EventCard = ({ event, joinHandler, deleteHandler, ...attributes }) => {
   );
 };
 
-export default EventCard;
+export default HostEventCard;
 //TODO: make this adapt to users timezone
 //TODO: link host to profile
 //TODO: talk to backend about date format
