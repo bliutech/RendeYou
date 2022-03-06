@@ -21,6 +21,29 @@ _RendeYou_ is a **MERN Stack** full stack web application that connects users wi
  - MongoDB <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/MongoDB_Logo.png/1598px-MongoDB_Logo.png?20180423174357" alt="MongoDB" height="30px">
 
 ## Setup
+To setup the dependencies for the backend server, run:
+```
+cd backend
+npm install
+```
+which should download a set of ```node_modules``` for the backend server.
+
+Backend Dependencies:
+- Express.js
+- MongooseDB
+
+To setup the dependencies for the frontend application, run:
+```
+cd frontend
+npm install
+```
+which should download a set of ```node_modules``` for the backend server.
+
+Frontend Dependencies:
+- React.js
+- react-router-dom
+
+## Running the App
 To start the backend server, run:
 ```
 cd backend
