@@ -12,6 +12,16 @@ function stripUser(user) {
     return user;
 }
 
+// Strip extraneous fields from event object
+// user must be a regular JS object, not a document (i.e. use .lean() when
+// querying, or call .toObject() on an existing document).
+function stripEvent(event) {
+    delete event.__v;
+    event.id = event.__id;
+    delete event._id;
+    return event;
+}
+
 // Escape str so that regex will search for str literally even if it contains
 // special characters.
 function escapeRegex(str) {
@@ -22,4 +32,5 @@ exports.emailRegex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{
 exports.idRegex = /[0-9a-f]{24}/;
 
 exports.stripUser = stripUser;
+exports.stripEvent = stripEvent;
 exports.escapeRegex = escapeRegex;
