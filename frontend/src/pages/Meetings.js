@@ -40,7 +40,7 @@ export default function Meetings() {
   };
 
   const deleteHandler = async (id) => {
-    deleteEvent(id, supdateData);
+    deleteEvent(id, updateData);
   };
 
   return (
