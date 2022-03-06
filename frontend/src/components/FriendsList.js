@@ -56,6 +56,7 @@ const FriendsList = () => {
             updateDispList([]);
             return;
         }
+        console.log(str);
         const dispres = await fetch(backend('/user'), {
             ids: str,
         })

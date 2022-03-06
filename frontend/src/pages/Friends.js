@@ -4,6 +4,7 @@ import FriendsList from '../components/FriendsList';
 import AddFriend from '../components/AddFriend';
 import { UserDataContext } from '../context/UserDataProvider';
 import { useContext, useEffect } from 'react';
+import classes from '../components/FriendsList.module.css'
 
 export default function Friends() {
   document.title = 'Friends | RendeYou';
@@ -15,8 +16,14 @@ export default function Friends() {
     <div className='content'>
       <h1> Your Friends </h1>
       <p> All of your friends on RendeYou! </p>
-      <FriendsList />
-      <AddFriend />
+      <div className={classes.pagesplit}>
+        <div>
+          <FriendsList />
+        </div>
+        <div>
+          <AddFriend />
+        </div>
+      </div>
     </div>
   );
 }
