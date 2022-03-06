@@ -87,6 +87,16 @@
     <input type="button" id="unsubscribe-event-button" value="Unsubscribe">
   </form>
 
+  <form id="update-event">
+    <p>/event/[id]</p>
+    <label>id: <input id="event-update-id"></label>
+    <p><label>Title: <input id="new-title"></label></p>
+    <p><label>Date: <input id="new-date"></label></p>
+    <p><label>Description: <input id="new-description"></label></p>
+    <p><label>Location: <input id="new-location"></label></p>
+    <input type="submit">
+  </form>
+
   <script>
     function backend(endpoint) {
       return "http://localhost:8000" + endpoint;
@@ -253,6 +263,24 @@
       });
     });
 
+    const updateEvent = document.getElementById("update-event");
+    updateEvent.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const eventID = $("event-update-id").value;
+      const reqBody  = {
+        title: $("new-title").value,
+        date: $("new-date").value,
+        description: $("new-description").value,
+        location: $("new-location").value,
+      }
+      fetch(backend("/event/" + eventID), {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(reqBody),
+      })
+    });
 
 
     const checkSessionButton = $("check-session");
