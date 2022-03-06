@@ -28,7 +28,7 @@ const HostEventCard = ({ event, deleteHandler }) => {
           </div>
         </div>
         <div>
-          <button onClick={async () => deleteHandler(event['_id'])}>
+          <button onClick={async () => deleteHandler(event['id'])}>
             Delete
           </button>
           <p>{event.members.join(' ')}</p>
