@@ -28,6 +28,7 @@ export const getUserData = async () => {
   return user;
 };
 
+// updateData is the function frontend uses to refresh data with backend. Always pass in from UserDataProvider
 export const deleteEvent = async (id, updateData) => {
   const res = await fetch(backend('/event/' + id), {
     method: 'DELETE',
@@ -85,6 +86,19 @@ export async function getUsers(ids) {
   const users = await res.json();
 
   return users;
+}
+
+export async function removeFriend(id, updateData) {
+  const res = await getUserData();
+  let res_j = await res.json();
+  if (res.status == 403) {
+    await updateData();
+    return;
+  } 
+  let index = res_j.friends.findIndex(id);
+  res_j.friends.splice(index, 1);
+  await addUserData(res_j);
+  await updateData();
 }
 
 // formats date string to confirm with React's yyyy-MM-dd format
