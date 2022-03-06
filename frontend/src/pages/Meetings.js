@@ -2,32 +2,45 @@ import { React, useContext, useEffect, useState } from 'react';
 import { UserDataContext } from '../context/UserDataProvider';
 import '../index.css';
 import { Link } from 'react-router-dom';
-import { checkSession, getUserData, getEvent } from '../components/Util';
+import { getEvent, getUsers } from '../components/Util';
 import EventCard from '../components/EventCard';
+import HostEventCard from '../components/HostEventCard';
 import backend from '../components/Util';
+import { deleteEvent } from '../components/Util';
 
 export default function Meetings() {
   document.title = 'Meetings | RendeYou';
   const { user, setUser, updateData } = useContext(UserDataContext);
-  const [events, setEvents] = useState(Array(0));
+  const [hostedEvents, setHostedEvents] = useState(Array(0));
+  const [friendEvents, setFriendEvents] = useState(Array(0));
   useEffect(async () => {
-    updateData();
+    await updateData();
   }, []);
 
   useEffect(() => {
-    getEvents();
+    getFriendEvents();
+    getHostedEvents();
   }, [user]);
   console.log(user);
 
-  const getEvents = async () => {
-    let tempEvents = events;
-    for (let i = 0; i < user['hostedEvents'].length; i++) {
+  const getHostedEvents = async () => {
+    let tempEvents = [];
+    for (let i = user['hostedEvents'].length - 1; i >= 0; i--) {
       const addedEvent = await getEvent(user['hostedEvents'][i]);
-      console.log(addedEvent);
       tempEvents = tempEvents.concat(addedEvent);
     }
     console.log(tempEvents);
-    setEvents(tempEvents);
+    setHostedEvents(tempEvents);
+  };
+
+  const getFriendEvents = async () => {
+    const ids = user.friends;
+    const friends = await getUsers(ids);
+    console.log(friends);
+  };
+
+  const deleteHandler = async (id) => {
+    deleteEvent(id, supdateData);
   };
 
   return (
@@ -36,9 +49,9 @@ export default function Meetings() {
       <p> Your RendeYou meetings! </p>
       <h1>Hosted Events </h1>
       <div>
-        {events?.length != 0 ? (
-          events?.map((e) => {
-            return <EventCard event={e} key={e.id} />;
+        {hostedEvents?.length != 0 ? (
+          hostedEvents?.map((e) => {
+            return <HostEventCard event={e} deleteHandler={deleteHandler} />;
           })
         ) : (
           <p>No Events</p>

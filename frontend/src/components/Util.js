@@ -28,6 +28,23 @@ export const getUserData = async () => {
   return user;
 };
 
+export const deleteEvent = async (id, updateData) => {
+  const res = await fetch(backend('/event/' + id), {
+    method: 'DELETE',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  if (res.status == 403) {
+    await updateData();
+    return;
+  } else if (res.status == 404) {
+    alert('Event not found');
+    return;
+  }
+  await updateData();
+};
 // returns true if session is active, returns false if session has expired
 export async function checkSession() {
   const res = await fetch(backend('/check-session'), {
@@ -53,6 +70,21 @@ export async function getEvent(id) {
     return;
   }
   return event;
+}
+
+//This gets a list of users from a list of ids
+export async function getUsers(ids) {
+  const res = await fetch(backend('/user'), {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    ids: ids.join(','),
+  });
+
+  const users = await res.json();
+
+  return users;
 }
 
 // formats date string to confirm with React's yyyy-MM-dd format

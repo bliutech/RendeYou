@@ -8,7 +8,7 @@ export default function Profile() {
   document.title = 'Profile | RendeYou';
   const { user, updateData } = useContext(UserDataContext);
   useEffect(async () => {
-    updateData();
+    await updateData();
   }, []);
 
   return (
