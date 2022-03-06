@@ -6,12 +6,13 @@ const EventCard = ({ event, leaveHandler }) => {
     month: 'long',
     day: 'numeric',
   };
+
   return (
     <>
       <div>
         <div>
           <p>{event.title}</p>
-          <p>{event.host}</p>
+          <p>{event.hostUser.firstName + ' ' + event.hostUser.lastName}</p>
         </div>
         <div>
           <div>

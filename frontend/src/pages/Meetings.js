@@ -37,7 +37,8 @@ export default function Meetings() {
   const getHostedEvents = async () => {
     let tempEvents = [];
     for (let i = user['hostedEvents'].length - 1; i >= 0; i--) {
-      const addedEvent = await getEvent(user['hostedEvents'][i]);
+      let addedEvent = await getEvent(user['hostedEvents'][i]);
+      addedEvent.hostUser = user;
       tempEvents = tempEvents.concat(addedEvent);
     }
     setHostedEvents(tempEvents);
@@ -53,7 +54,8 @@ export default function Meetings() {
     for (let i = 0; i < friends.length; i++) {
       for (let j = 0; j < friends[i].hostedEvents.length; j++) {
         if (user.subscriptions.indexOf(friends[i].hostedEvents[j]) == -1) {
-          const addedEvent = await getEvent(friends[i].hostedEvents[j]);
+          let addedEvent = await getEvent(friends[i].hostedEvents[j]);
+          addedEvent.hostUser = friends[i];
           events.push(addedEvent);
         }
       }
@@ -65,7 +67,10 @@ export default function Meetings() {
     const ids = user.subscriptions;
     let events = [];
     for (let i = 0; i < ids.length; i++) {
-      events.push(await getEvent(ids[i]));
+      let addedEvent = await getEvent(ids[i]);
+      let host = await getFriend(addedEvent.host);
+      addedEvent.hostUser = host;
+      events.push(addedEvent);
     }
     console.log(events);
     setJoinedEvents(events);
