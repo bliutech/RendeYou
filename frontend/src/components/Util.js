@@ -89,18 +89,27 @@ export async function getUsers(ids) {
 }
 
 export async function removeFriend(id, updateData) {
-  const res = await getUserData();
-  let res_j = await res.json();
-  if (res.status == 403) {
-    await updateData();
-    return;
-  } 
-  let index = res_j.friends.findIndex(id);
-  res_j.friends.splice(index, 1);
-  await addUserData(res_j);
-  await updateData();
+  const user = await getUserData();
+  let index = user.friends.indexOf(id);
+  user.friends.splice(index, 1);
+  await addUserData(user);
 }
 
+export const getFriend = async (id) => {
+  const res = await fetch(backend('/user/' + id), {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  const user = await res.json();
+  if (res.status >= 400) {
+    return;
+  }
+
+  return user;
+};
 // formats date string to confirm with React's yyyy-MM-dd format
 export function formatDate(date_str) {
   let date = new Date(date_str);
