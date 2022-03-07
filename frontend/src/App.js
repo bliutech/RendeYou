@@ -12,7 +12,9 @@ import CreateEvents from './pages/Events.js';
 import NavBar from './components/NavBar.js';
 import { UserDataContext } from './context/UserDataProvider.js';
 import Friends from './pages/Friends.js';
-import { checkSession, getUserData } from './components/Util.js';
+import GetUser from './pages/GetUser.js';
+import GetEvent from './pages/GetEvent.js';
+
 function App() {
   const { isLoggedin, updateData } = useContext(UserDataContext);
 
@@ -27,6 +29,8 @@ function App() {
           <Route path='/' element={<Navigate to={'/login'} />} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
+          <Route path='/user/:id' element={<GetUser />} />
+          <Route path='/event/:id' element={<GetEvent />} />
           <Route path='*' element={<Navigate to={'/login'} />} />
         </Routes>
       </BrowserRouter>
