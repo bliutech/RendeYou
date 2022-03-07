@@ -5,7 +5,7 @@ export default function backend(endpoint) {
   if (settings.ENV === "dev")
     ip = "http://localhost:8000";
   else if (settings.ENV = "production")
-    ip = settings.BACKEND_IP
+    ip = settings.BACKEND_IP;
 
   return ip + endpoint;
 }
