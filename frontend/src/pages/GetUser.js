@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import '../index.css';
 import ProfileCard from '../components/ProfileCard.js';
 import backend from '../components/Util.js';
+import './GetUser.css';
 
 export default function GetUser() {
     let { id } = useParams('');

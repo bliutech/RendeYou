@@ -5,6 +5,7 @@ import AddFriend from '../components/AddFriend';
 import { UserDataContext } from '../context/UserDataProvider';
 import { useContext, useEffect } from 'react';
 import classes from '../components/FriendsList.module.css'
+import './Friends.css';
 
 export default function Friends() {
   document.title = 'Friends | RendeYou';

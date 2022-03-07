@@ -38,7 +38,7 @@ function App() {
           <Route path='/event/new' element={isLoggedin ? <CreateEvents /> : <Navigate to={'/'} />} />
           <Route path='/user/:id' element={<GetUser />} />
           <Route path='/event/:id' element={<GetEvent />} />
-          <Route path='*' element={<Navigate to={<Error404 />} />} />
+          <Route path='*' element={<Error404 />} />
         </Routes>
       </BrowserRouter>
     </>
