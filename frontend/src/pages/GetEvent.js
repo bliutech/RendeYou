@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import '../index.css';
 import EventCard from '../components/EventCard.js';
 import backend from '../components/Util.js';
+import './GetEvent.css';
 
 export default function GetEvent() {
     let { id } = useParams('');

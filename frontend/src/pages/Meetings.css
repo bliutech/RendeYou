@@ -1,0 +1,24 @@
+.content
+{
+    padding-left: 20px;
+}
+
+.event-feed
+{
+    float: left;
+    border: black;
+    border-width: 5px 5px 5px 5px;
+    width: 60%;
+    padding-left: 20px;
+}
+
+.hosted-events
+{
+    border: black;
+    border-width: 5px 5px 5px 5px;
+    float: right;
+    padding: 20px;
+    padding-right: 50px;
+    width: 30%;
+    background-color: #f7802b;
+}

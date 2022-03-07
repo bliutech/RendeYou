@@ -4,13 +4,13 @@ import '../index.css';
 import { Link } from 'react-router-dom';
 import { getEvent, getUsers } from '../components/Util';
 import EventCard from '../components/EventCard';
-
 import {
   deleteEvent,
   getFriend,
   joinEvent,
   leaveEvent,
 } from '../components/Util';
+import './Meetings.css';
 
 export default function Meetings() {
   document.title = 'Meetings | RendeYou';
