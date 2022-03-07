@@ -19,12 +19,11 @@ export default function GetUser() {
         else {
             console.log('Page found!');
         }
-        const curr_user = await res.json();
-        setUser(curr_user);
+        setUser(await res.json());
     }
     useEffect(()=> {
         getUser(id);
-    }, []);
+    });
 
     return (
     <>

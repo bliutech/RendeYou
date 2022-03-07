@@ -10,11 +10,12 @@ export default function GetUser() {
     let [user, setUser] = useState({});
     async function getUser(id)
     {
-        const res = await fetch(backend('/user' + id), {
+        const res = await fetch(backend('/user/' + id), {
             method: 'GET'
         });
         if (res.status >= 400) {
             console.log(res.error);
+            return;
         }
         else {
             console.log('Page found!');
