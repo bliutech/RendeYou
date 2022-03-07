@@ -8,17 +8,35 @@ import LocationPicker from './LocationPicker.js';
 
 export default function CreateEvent() {
   let [title, setTitle] = useState('');
-  let [date, setDate] = useState(Date.now());
+  let [date, setDate] = useState();
   let [description, setDescription] = useState('');
   let [time, setTime] = useState();
   const [location, setLocation] = useState('');
   const { updateData } = useContext(UserDataContext);
   const [err_msg, setErrMsg] = useState('');
 
+  // function getAsDate(day, time){
+  //     var hours = Number(time.match(/^(\d+)/)[1]);
+  //     var minutes = Number(time.match(/:(\d+)/)[1]);
+  //     var AMPM = time.match(/\s(.*)$/);
+  //     if(AMPM == "pm" && hours<12) hours = hours+12;
+  //     if(AMPM == "am" && hours==12) hours = hours-12;
+  //     var sHours = hours.toString();
+  //     var sMinutes = minutes.toString();
+  //     if(hours<10) sHours = "0" + sHours;
+  //     if(minutes<10) sMinutes = "0" + sMinutes;
+  //     time = sHours + ":" + sMinutes + ":00";
+  //     var d = new Date(day);
+  //     var n = d.toISOString().substring(0,10);
+  //     var newDate = new Date(n+"T"+time);
+  //     console.log(newDate);
+  //     return newDate;
+  // }
+
   async function handleSubmit() {
     const data = {
       title: title,
-      date: date,
+      date: date + time,
       description: description,
       location: location,
     };
@@ -31,6 +49,12 @@ export default function CreateEvent() {
       },
       body: JSON.stringify(data),
     });
+    if (res.status >= 400) {
+      alert("Event failed to create!");
+      console.log(res.error);
+      return;
+  }
+
     await updateData();
   }
 
@@ -43,6 +67,7 @@ export default function CreateEvent() {
           console.log(date);
         }}
       >
+
         <h1> Create Event </h1>
 
         <p> Event Name: </p>
