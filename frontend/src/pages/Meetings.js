@@ -7,6 +7,7 @@ import EventCard from '../components/EventCard';
 import HostEventCard from '../components/HostEventCard';
 import backend from '../components/Util';
 import { deleteEvent } from '../components/Util';
+import './Meetings.css';
 
 export default function Meetings() {
   document.title = 'Meetings | RendeYou';
@@ -45,21 +46,19 @@ export default function Meetings() {
 
   return (
     <div className='content'>
-      <h1> Meetings </h1>
-      <p> Your RendeYou meetings! </p>
-      <h1>Hosted Events </h1>
-      <div>
-        {hostedEvents?.length != 0 ? (
-          hostedEvents?.map((e) => {
-            return <HostEventCard event={e} deleteHandler={deleteHandler} />;
-          })
-        ) : (
-          <p>No Events</p>
-        )}
+      <div className='event-feed'>
+        <h1> Meetings </h1>
+        <p> Your RendeYou meetings! </p>
       </div>
-      <Link to='/friends'>
-        <button>Friends List</button>
-      </Link>
+      <div className='hosted-events'>
+        <h1>Hosted Events </h1>
+        <div>
+          {hostedEvents?.length != 0 ? (hostedEvents?.map((e) => { return <HostEventCard event={e} deleteHandler={deleteHandler} />;})) : (<p>No Events</p>)}
+        </div>
+        <Link to='/friends'>
+          <button>Friends List</button>
+        </Link>
+      </div>
     </div>
   );
 }

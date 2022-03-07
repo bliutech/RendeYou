@@ -45,16 +45,7 @@
     width: 150px;
 }
 
-.addImage{
-    display: flex;
-    margin-left: 45px;
-    margin-right: 45px;
-    width: 60px;
-    background-color: #FC6A01;
-    bottom: 100%;
-}
-
-.addImage:hover,
-.addImage:active{
-    background-color: black;
+.list-end
+{
+    float:bottom;
 }

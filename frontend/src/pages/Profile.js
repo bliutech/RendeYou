@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import '../index.css';
 import ProfileCard from '../components/ProfileCard.js';
 import { UserDataContext } from '../context/UserDataProvider';
+import './Profile.css';
 
 export default function Profile() {
   document.title = 'Profile | RendeYou';
@@ -13,16 +14,7 @@ export default function Profile() {
 
   return (
     <>
-      <div
-        style={{
-          position: 'fixed',
-          bottom: '300px',
-          right: '600px',
-          width: '300px',
-          border: '3px solid #fc6a01',
-          textAlign: 'center',
-        }}
-      >
+      <div className='content profile'>
         <h1>Profile Page</h1>
         <ProfileCard user={user} />
         <Link to='/'>Home</Link>

@@ -11,7 +11,8 @@ export default function NavBar() {
     <header className={classes.header}>
       <nav className={classes.nav}>
         <Link to='/' className={classes.logo}>
-          <img className={classes.logo} src={Logo} alt='logo' />
+          {' '}
+          <img className={classes.logo} src={Logo} alt='logo' />{' '}
         </Link>
         <ul>
           <li>
@@ -21,23 +22,21 @@ export default function NavBar() {
             </Link>
           </li>
           <li>
-            <Link to={isLoggedin ? '/logout' : '/register'}>
+            <Link to={isLoggedin ? '/event/new' : '/register'}>
               {' '}
-              {isLoggedin ? 'Logout' : 'Register'}{' '}
+              {isLoggedin ? 'Event +' : 'Register'}{' '}
             </Link>
           </li>
           <li>
-            <Link to='/event/new'> {isLoggedin ? 'Create Event' : null} </Link>
+            <Link to='/friends'>
+            {' '}
+            {isLoggedin ? 'Friends' : null}{' '}
+            </Link>
+          </li>
+          <li className='list-end'>
+            <Link to='/logout'> {isLoggedin ? 'Logout' : null} </Link>
           </li>
         </ul>
-        {isLoggedin ? (
-          <img
-            onClick={() => alert('it works!')}
-            className={classes.addImage}
-            src={PlusSign}
-            alt='add event'
-          />
-        ) : null}
       </nav>
     </header>
   );
