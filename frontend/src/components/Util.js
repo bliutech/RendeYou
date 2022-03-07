@@ -1,11 +1,9 @@
-import settings from "../settings"
+import settings from '../settings';
 
 export default function backend(endpoint) {
   let ip;
-  if (settings.ENV === "dev")
-    ip = "http://localhost:8000";
-  else if (settings.ENV = "production")
-    ip = settings.BACKEND_IP;
+  if (settings.ENV === 'dev') ip = 'http://localhost:8000';
+  else if ((settings.ENV = 'production')) ip = settings.BACKEND_IP;
 
   return ip + endpoint;
 }
@@ -33,6 +31,19 @@ export const getUserData = async () => {
     },
   });
   const user = await res.json();
+  if (user.friends.length != 0) {
+    const res2 = await fetch(backend('/user?ids=' + user.friends), {
+      method: 'GET',
+    });
+
+    const friends = await res2.json();
+    let friendNames = [];
+    friends.forEach((member) => {
+      friendNames.push(member.firstName + ' ' + member.lastName);
+    });
+    user.friendNames = friendNames;
+  }
+
   return user;
 };
 
@@ -139,12 +150,11 @@ export const leaveEvent = async (id, updateData) => {
 };
 //This gets a list of users from a list of ids
 export async function getUsers(ids) {
-  const res = await fetch(backend('/user'), {
+  const res = await fetch(backend('/user/?ids=' + ids), {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
-    ids: ids.join(','),
   });
 
   const users = await res.json();
@@ -169,6 +179,18 @@ export const getFriend = async (id) => {
   const user = await res.json();
   if (res.status >= 400) {
     return;
+  }
+  if (user.friends.length != 0) {
+    const res2 = await fetch(backend('/user?ids=' + user.friends), {
+      method: 'GET',
+    });
+
+    const friends = await res2.json();
+    let friendNames = [];
+    friends.forEach((member) => {
+      friendNames.push(member.firstName + ' ' + member.lastName);
+    });
+    user.friendNames = friendNames;
   }
 
   return user;
