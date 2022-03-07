@@ -1,7 +1,7 @@
+import { getFriend } from './Util';
 import React from 'react';
 import classes from './EventCard.module.css';
-
-const EventCard = ({ event, joinHandler, deleteHandler, ...attributes }) => {
+const EventCard = ({ event, handlerName, handler }) => {
   const date = new Date(event.date);
   const options = {
     weekday: 'long',
@@ -9,31 +9,44 @@ const EventCard = ({ event, joinHandler, deleteHandler, ...attributes }) => {
     month: 'long',
     day: 'numeric',
   };
+
   return (
     <>
       <div>
-        <div>
-          <p>{event.title}</p>
-          <p>{event.host}</p>
-        </div>
-        <div>
-          <div>
+        <tr>
+          <td>{event.title}</td>
+          <td>{event.hostUser.firstName + ' ' + event.hostUser.lastName}</td>
+        </tr>
+        <tr>
+          <td>
             <p>{event.description}</p>
-          </div>
-          <div>
-            <p>{date.toLocaleDateString('en-US', options)}</p>
-            <p>
+          </td>
+          <td>
+            <tr>{date.toLocaleDateString('en-US', options)}</tr>
+            <tr>
               {date.toLocaleTimeString('en-US', {
                 hour: '2-digit',
                 minute: '2-digit',
               })}
-            </p>
-          </div>
-        </div>
-        <div>
-          <button onClick={joinHandler}>Join</button>
-          <p>{event.members.join(' ')}</p>
-        </div>
+            </tr>
+          </td>
+        </tr>
+        <td>
+          <p>{event.location}</p>
+        </td>
+        <tr>
+          <td>
+            <button
+              className={classes.button}
+              onClick={async () => handler(event['id'])}
+            >
+              {handlerName}
+            </button>
+          </td>
+          <td>
+            <p>{event.memberNames?.join(', ')}</p>
+          </td>
+        </tr>
       </div>
     </>
   );

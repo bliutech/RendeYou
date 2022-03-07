@@ -1,15 +1,17 @@
 import React, { useContext, useState } from 'react';
 import backend, { checkSession, formatDate } from './Util.js';
 import { getUserData } from './Util.js';
+import GooglePlacesAutocomplete from 'react-google-autocomplete';
 import './CreateEvent.module.css';
 import { UserDataContext } from '../context/UserDataProvider.js';
+import LocationPicker from './LocationPicker.js';
 
 export default function CreateEvent() {
   let [title, setTitle] = useState('');
   let [date, setDate] = useState();
   let [description, setDescription] = useState('');
-  let [location, setLocation] = useState('');
   let [time, setTime] = useState();
+  const [location, setLocation] = useState('');
   const { updateData } = useContext(UserDataContext);
   const [err_msg, setErrMsg] = useState('');
 
@@ -40,6 +42,7 @@ export default function CreateEvent() {
       description: description,
       location: location,
     };
+    console.log(data);
     const res = await fetch(backend('/event/new'), {
       method: 'POST',
       credentials: 'include',
@@ -60,27 +63,42 @@ export default function CreateEvent() {
 
   return (
     <div>
-        <form onSubmit={(e) => {
+      <form
+        onSubmit={(e) => {
           e.preventDefault();
           handleSubmit();
-        }} >
-      
+          console.log(date);
+        }}
+      >
+
         <h1> Create Event </h1>
-        
+
         <p> Event Name: </p>
-        <input type='text' value={title} onChange={(a) => setTitle(a.target.value)} placeholder='Event Name' />
-        
+        <input
+          type='text'
+          value={title}
+          onChange={(a) => setTitle(a.target.value)}
+          placeholder='Event Name'
+        />
+
         <p> Date: </p>
-        <input type='date' value={date} onChange={(a) => setDate(a.target.value)} />
-        
-        <p> Time: </p>
-        <input type='time' value={time} onChange={(a) => setTime(a.target.value)} />
+        <input
+          type='date'
+          value={formatDate(Date(date).toString())}
+          onChange={(a) =>
+            setDate(Date.parse(formatDate(Date(a.target.value).toString())))
+          }
+        />
 
         <p> Description: </p>
-        <textarea type='text' value={description} onChange={(a) => setDescription(a.target.value)} placeholder='Event Description' />
-        
+        <textarea
+          type='text'
+          value={description}
+          onChange={(a) => setDescription(a.target.value)}
+          placeholder='Event Description'
+        />
         <p> Location: </p>
-        <input type='text' value={location} onChange={(a) => setLocation(a.target.value)} placeholder='Event Location' />
+        <LocationPicker location={location} setLocation={setLocation} />
 
         <br />
 

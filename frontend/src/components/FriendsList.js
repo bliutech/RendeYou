@@ -3,6 +3,7 @@ import { UserDataContext } from '../context/UserDataProvider';
 import classes from './FriendsList.module.css';
 import backend from './Util.js';
 import { getFriend, removeFriend } from './Util.js';
+import FriendCard from './FriendCard';
 
 const FriendsList = () => {
   const [dispList, updateDispList] = useState([]);
@@ -45,26 +46,11 @@ const FriendsList = () => {
     <>
       {dispList.map((person) => {
         return (
-          <tr>
-            <td>
-              <div className={classes.item}>
-                <img
-                  className={classes.image}
-                  src='https://reactnative.dev/img/tiny_logo.png'
-                  alt='React Native Logo'
-                />
-                <div>
-                  <p className={classes.largebody}>
-                    {person.firstName} {person.lastName}
-                  </p>
-                  <p className={classes.bodytext}>{person.email}</p>
-                  <button onClick={async () => deleteFriend(person.id)}>
-                    Remove
-                  </button>
-                </div>
-              </div>
-            </td>
-          </tr>
+          <FriendCard
+            person={person}
+            handler={deleteFriend}
+            handlerName={'Remove'}
+          />
         );
       })}
     </>
