@@ -279,6 +279,7 @@ app.delete("/event/:id([0-9a-f]{24})", checkAuth, async (req, res) => {
             hostedEvents: [{ _id: eventID }]
         }
     });
+
 });
 
 app.put("/event/:id([0-9a-f]{24})", checkAuth, async (req, res) => {
@@ -292,6 +293,7 @@ app.put("/event/:id([0-9a-f]{24})", checkAuth, async (req, res) => {
     const event = await Event.findById(eventID).lean()
     if (!event) {
         res.sendStatus(404);
+        return;
     }
     await Event.findOneAndUpdate(
         {_id: eventID},
