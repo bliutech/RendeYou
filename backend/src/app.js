@@ -27,7 +27,7 @@ const corsOptions = { credentials: true };
 if (process.env.ENV == "dev") {
     corsOptions.origin = "http://localhost:3000";
 } else if (process.env.ENV == "production") {
-    corsOptions.origin = "PRODUCTION IP HERE";
+    corsOptions.origin = process.env.FRONTEND_IP;
 }
 app.use(cors(corsOptions));
 
