@@ -181,3 +181,20 @@ export function formatDate(date_str) {
 
   return [year, month, day].join('-');
 }
+
+//Adapted from https://www.freecodecamp.org/news/how-to-add-search-to-frontend-app/
+export const searchFriendByName = async (inputData, setResult, setLoading) => {
+  setResult([]);
+  if (inputData === null || inputData === '') return;
+  setLoading(true);
+  const res = await fetch(backend('/user?username=' + inputData), {
+    method: 'GET',
+  });
+  if (res.status >= 400) {
+    alert('ERROR: Could not get user.');
+    return;
+  }
+  const users = await res.json();
+  setLoading(false);
+  setResult(users);
+};
