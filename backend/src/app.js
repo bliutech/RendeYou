@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 
 const express = require("express");
 const app = express();
-const port = 8000;
+const port = parseInt(process.env.PORT);
 const cors = require("cors");
 
 const { User, Event } = require("./schemas");
@@ -15,7 +15,9 @@ const { stripUser, stripEvent, escapeRegex, emailRegex, idRegex } = require("./u
 const { hash, genSalt } = require("./crypt");
 
 const session = require("express-session");
-const sessionLifetime = 1000 * 60 * 5; // 5 min
+const MemoryStore = require("memorystore")(session);
+const checkPeriod = 1000 * 60 * parseInt(process.env.CHECK_PERIOD_MIN);
+const sessionLifetime = 1000 * 60 * parseInt(process.env.SESSION_LIFETIME_MIN);
 
 //==============================================================================
 // Express app settings
@@ -27,7 +29,7 @@ const corsOptions = { credentials: true };
 if (process.env.ENV == "dev") {
     corsOptions.origin = "http://localhost:3000";
 } else if (process.env.ENV == "production") {
-    corsOptions.origin = "PRODUCTION IP HERE";
+    corsOptions.origin = process.env.FRONTEND_IP;
 }
 app.use(cors(corsOptions));
 
@@ -41,7 +43,8 @@ app.use(session({
     saveUninitialized: true,
     resave: false,
     rolling: true,
-    cookie: { maxAge: sessionLifetime }
+    cookie: { maxAge: sessionLifetime },
+    store: new MemoryStore({ checkPeriod: checkPeriod })
 }));
 
 //==============================================================================
@@ -223,12 +226,17 @@ app.delete("/user/me", checkAuth, async (req, res) => {
 
 app.post("/event/new", checkAuth, async (req, res) => {
     //need to make sure the changes are valid (i.e. the date is valid, etc.)
-    const title = req.body.title;
+    const body = req.body;
     const id = req.session.userId;
-    if (!title) {
-        res.status(400);
-        res.send({ error: "Event name is empty" });
-        return;
+    for (const [key, value] of Object.entries(req.body)) {
+        if (!value) {
+            res.sendStatus(400);
+            return;
+        }
+        if (key == "date" && isNaN(value)) {
+            res.sendStatus(400);
+            return;
+        }
     }
     const newEvent = new Event(req.body);
     newEvent.host = id;
@@ -279,8 +287,40 @@ app.delete("/event/:id([0-9a-f]{24})", checkAuth, async (req, res) => {
             hostedEvents: [{ _id: eventID }]
         }
     });
+    await User.updateMany({subscriptions: eventID}, {
+        $pullAll: {
+            subscriptions: [{_id: eventID}]
+        }
+    });
 });
 
+app.put("/event/:id([0-9a-f]{24})", checkAuth, async (req, res) => {
+    const eventID = req.params.id;
+    const updates = {};
+    for (const [key, value] of Object.entries(req.body)) {
+        if (value) {
+            if (key == "date" && isNaN(value)) {
+                res.sendStatus(400);
+                return;
+            }
+            updates[key] = value;
+        }
+    }
+    const event = await Event.findById(eventID).lean()
+    if (req.session.userId != event.host) {
+        res.sendStatus(403);
+        return;
+    }
+    if (!event) {
+        res.sendStatus(404);
+        return;
+    }
+    await Event.findOneAndUpdate(
+        {_id: eventID},
+        updates,
+    );
+    res.sendStatus(200);
+});
 app.post("/event/:id([0-9a-f]{24})/subscribe", checkAuth, async (req, res) => {
     const userId = req.session.userId;
     const event = await Event.findById(req.params.id);

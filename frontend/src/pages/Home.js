@@ -1,17 +1,22 @@
-import React from 'react';
-import '../index.css';
-import { useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
+import {Link} from 'react-router-dom';
 import { UserDataContext } from '../context/UserDataProvider';
+import '../index.css';
+import './Home.css';
+import Logo from '../files/rende-you-logo.svg';
+
 export default function Home() {
   document.title = 'Home | RendeYou';
+
   const { updateData } = useContext(UserDataContext);
   useEffect(async () => {
     updateData();
   }, []);
+
   return (
-    <div className='content'>
-      <h1> Welcome to RendeYou! </h1>
-      <p> The best website to rendez-vous with your friends! </p>
+    <div className='content home-page'>
+        <Link to={!(UserDataContext) ? '/' : '/login'} ><img src={Logo} className="logo-img center vertical-center" /></Link>
+        <p className='center'> The best place to rendez-vous with your friends! </p>
     </div>
   );
 }

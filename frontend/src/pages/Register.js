@@ -5,6 +5,8 @@ import backend from '../components/Util.js';
 import { UserDataContext } from '../context/UserDataProvider.js';
 import { addUserData, getUserData } from '../components/Util.js';
 import '../index.css';
+import BackDrop from '../files/rendez-vous-2.jpg';
+import './Register.css';
 
 export default function Register() {
   document.title = 'Register | RendeYou';
@@ -40,12 +42,15 @@ export default function Register() {
 
   return (
     <div className='content'>
-      <h1> Register </h1>
-      <p> Register your RendeYou account. </p>
-      <RegisterForm onSubmit={handleSubmit} />
-      <p>
-        Already have an account? Login <Link to='/login'>here</Link>.
-      </p>
+      <img src={BackDrop} className='backdrop'/>
+      <div className='form'>
+        <h1> Register </h1>
+        <p> Register your RendeYou account. </p>
+        <RegisterForm onSubmit={handleSubmit} />
+        <p>
+          Already have an account? Login <Link to='/login'>here</Link>.
+        </p>
+      </div>
     </div>
   );
 }

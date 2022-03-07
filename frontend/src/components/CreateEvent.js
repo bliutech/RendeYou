@@ -10,10 +10,12 @@ export default function CreateEvent() {
   let [title, setTitle] = useState('');
   let [date, setDate] = useState(Date.now());
   let [description, setDescription] = useState('');
+  let [location, setLocation] = useState('');
   let [time, setTime] = useState();
   const [location, setLocation] = useState('');
   const { updateData } = useContext(UserDataContext);
   const [err_msg, setErrMsg] = useState('');
+
   async function handleSubmit() {
     const data = {
       title: title,
@@ -39,9 +41,11 @@ export default function CreateEvent() {
         onSubmit={(e) => {
           e.preventDefault();
           handleSubmit();
+          console.log(date);
         }}
       >
         <h1> Create Event </h1>
+
         <p> Event Name: </p>
         <input
           type='text'
@@ -49,6 +53,7 @@ export default function CreateEvent() {
           onChange={(a) => setTitle(a.target.value)}
           placeholder='Event Name'
         />
+
         <p> Date: </p>
         <input
           type='date'
@@ -57,6 +62,7 @@ export default function CreateEvent() {
             setDate(Date.parse(formatDate(Date(a.target.value).toString())))
           }
         />
+
         <p> Description: </p>
         <textarea
           type='text'
@@ -66,7 +72,9 @@ export default function CreateEvent() {
         />
         <p> Location: </p>
         <LocationPicker location={location} setLocation={setLocation} />
+
         <br />
+
         <input type='submit' value='Submit' />
       </form>
     </div>

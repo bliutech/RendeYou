@@ -4,6 +4,7 @@ import '../index.css';
 import { Link } from 'react-router-dom';
 import { UserDataContext } from '../context/UserDataProvider';
 import { useContext, useEffect } from 'react';
+import './Events.css';
 
 export default function CreateEvents() {
   document.title = 'Create Event | RendeYou';

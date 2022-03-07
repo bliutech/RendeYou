@@ -1,18 +1,22 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@font-face {
+  font-family: "Istok Web";
+  src: url('./files/IstokWeb-Regular.ttf'); 
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+  font-family: 'Istok Web';
+  margin: 0;
+  padding: 0;
 }
 
 .content {
-  margin-left: 170px;
-  margin-right: 20px;
+  margin-left: 150px;
+  height: 100%;
+  width: auto;
+}
+
+input 
+{
+  margin-top: 5px;
+  margin-bottom: 5px;
 }

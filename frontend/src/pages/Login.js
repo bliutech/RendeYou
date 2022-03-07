@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import LoginForm from '../components/LoginForm.js';
 import backend from '../components/Util.js';
 import { UserDataContext } from '../context/UserDataProvider.js';
+import BackDrop from '../files/rendez-vous.jpg';
+import './Login.css';
 
 export default function Login(props) {
   const [err_msg, setErrMsg] = useState('');
@@ -33,12 +35,15 @@ export default function Login(props) {
   document.title = 'Login | RendeYou';
   return (
     <div className='content'>
-      <h1> Login </h1>
-      <p> Login to your RendeYou account. </p>
-      <LoginForm onSubmit={handleSubmit} />
-      <p>
-        Don't have an account? Register <Link to='/register'>here</Link>.
-      </p>
+      <img src={BackDrop} className='backdrop'/>
+      <div className='form'>
+        <h1> Login </h1>
+        <p> Login to your RendeYou account. </p>
+        <LoginForm onSubmit={handleSubmit} />
+        <p>
+          Don't have an account? Register <Link to='/register'>here</Link>.
+        </p>
+      </div>
     </div>
   );
 }

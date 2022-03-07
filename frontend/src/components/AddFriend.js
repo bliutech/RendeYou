@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
-import classes from './FriendsList.module.css';
 import { getUserData, addUserData, searchFriendByName } from './Util';
 import backend from './Util.js';
 import { UserDataContext } from '../context/UserDataProvider';
 import FriendCard from './FriendCard';
+import classes from './AddFriend.module.css';
+
 
 const AddFriend = () => {
   // TODO: This force adds friend for both the requester and the target, which should go through a request system

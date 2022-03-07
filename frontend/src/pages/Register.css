@@ -1,0 +1,17 @@
+.backdrop
+{
+    display: block;
+    padding-top: 15px;
+    padding-left: 15px;
+    padding-bottom: 15px;
+    border-radius: 50px;
+    width: 67%;
+    float: left;
+}
+
+.form
+{
+    float: right;
+    padding-right: 40px;
+    margin-top: 7%;
+}
