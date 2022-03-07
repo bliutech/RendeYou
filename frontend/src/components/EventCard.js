@@ -31,6 +31,9 @@ const EventCard = ({ event, handlerName, handler }) => {
             </tr>
           </td>
         </tr>
+        <td>
+          <p>{event.location}</p>
+        </td>
         <tr>
           <td>
             <button
