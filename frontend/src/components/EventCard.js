@@ -1,3 +1,5 @@
+import React from 'react';
+
 const EventCard = ({ event, joinHandler, deleteHandler, ...attributes }) => {
   const date = new Date(event.date);
   const options = {
