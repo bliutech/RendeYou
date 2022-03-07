@@ -1,14 +1,17 @@
 import React, { useContext, useState } from 'react';
 import backend, { checkSession, formatDate } from './Util.js';
 import { getUserData } from './Util.js';
+import GooglePlacesAutocomplete from 'react-google-autocomplete';
 import './CreateEvent.module.css';
 import { UserDataContext } from '../context/UserDataProvider.js';
+import LocationPicker from './LocationPicker.js';
 
 export default function CreateEvent() {
   let [title, setTitle] = useState('');
   let [date, setDate] = useState(Date.now());
   let [description, setDescription] = useState('');
   let [time, setTime] = useState();
+  const [location, setLocation] = useState('');
   const { updateData } = useContext(UserDataContext);
   const [err_msg, setErrMsg] = useState('');
   async function handleSubmit() {
@@ -16,7 +19,9 @@ export default function CreateEvent() {
       title: title,
       date: date,
       description: description,
+      location: location,
     };
+    console.log(location);
     const res = await fetch(backend('/event/new'), {
       method: 'POST',
       credentials: 'include',
@@ -58,6 +63,20 @@ export default function CreateEvent() {
           value={description}
           onChange={(a) => setDescription(a.target.value)}
           placeholder='Event Description'
+        />
+        <p> Location: </p>
+        <GooglePlacesAutocomplete
+          apiKey='AIzaSyCBnBUewxiEtXjg48XlIeQJH9sylL_5xUk'
+          onPlaceSelected={(place) => {
+            console.log(place);
+            console.log(place.formattedAddress);
+            setLocation(place.formattedAddress);
+          }}
+          options={{
+            fields: ['formatted_address', 'geometry', 'name'],
+            strictBounds: false,
+            types: ['establishment'],
+          }}
         />
         <br />
         <input type='submit' value='Submit' />

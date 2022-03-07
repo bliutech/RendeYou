@@ -1,7 +1,6 @@
 import classes from './EventCard.module.css';
 import { getFriend } from './Util';
 const EventCard = ({ event, handlerName, handler }) => {
-
   const date = new Date(event.date);
   const options = {
     weekday: 'long',
@@ -31,6 +30,9 @@ const EventCard = ({ event, handlerName, handler }) => {
             </tr>
           </td>
         </tr>
+        <td>
+          <p>{event.location}</p>
+        </td>
         <tr>
           <td>
             <button
