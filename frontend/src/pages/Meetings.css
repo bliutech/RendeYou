@@ -10,6 +10,7 @@
     border-width: 5px 5px 5px 5px;
     width: 60%;
     padding-left: 20px;
+    overflow-y: scroll;
 }
 
 .hosted-events
@@ -21,4 +22,5 @@
     padding-right: 50px;
     width: 30%;
     background-color: #f7802b;
+    overflow-y: scroll;
 }

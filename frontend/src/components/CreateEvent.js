@@ -34,9 +34,11 @@ export default function CreateEvent() {
   // }
 
   async function handleSubmit() {
+    const curr_date = new Date(date + ' ' + time + ':00.000');
+    console.log(curr_date.getTime())
     const data = {
       title: title,
-      date: date + time,
+      date: curr_date.getTime(),
       description: description,
       location: location,
     };
@@ -53,7 +55,8 @@ export default function CreateEvent() {
       alert("Event failed to create!");
       console.log(res.error);
       return;
-  }
+    }
+    alert("Event created!");
 
     await updateData();
   }
