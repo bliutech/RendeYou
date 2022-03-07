@@ -75,10 +75,10 @@ export const deleteEvent = async (id, updateData) => {
       'Content-Type': 'application/json',
     },
   });
-  if (res.status == 403) {
+  if (res.status === 403) {
     await updateData();
     return;
-  } else if (res.status == 404) {
+  } else if (res.status === 404) {
     alert('Event not found');
     return;
   }

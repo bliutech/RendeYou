@@ -1,6 +1,7 @@
 import classes from './EventCard.module.css';
 import { getFriend } from './Util';
 const EventCard = ({ event, handlerName, handler }) => {
+
   const date = new Date(event.date);
   const options = {
     weekday: 'long',
