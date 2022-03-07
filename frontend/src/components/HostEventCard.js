@@ -1,4 +1,5 @@
 import React from 'react';
+import classes from './HostEventCard.module.css';
 
 const HostEventCard = ({ event, deleteHandler }) => {
   const date = new Date(event.date);

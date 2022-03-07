@@ -2,6 +2,7 @@ import React from 'react';
 import '../index.css';
 import { UserDataContext } from '../context/UserDataProvider';
 import { useContext, useEffect } from 'react';
+import './About.css';
 
 export default function About() {
   const { updateData } = useContext(UserDataContext);
