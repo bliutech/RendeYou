@@ -21,91 +21,28 @@ function App() {
   useEffect(async () => {
     updateData();
   }, []);
-  return !isLoggedin ? (
+  return (
     <>
-      <BrowserRouter>
-        <NavBar />
-        <Routes>
-          <Route path='/' element={<Navigate to={'/login'} />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/register' element={<Register />} />
-          <Route path='/user/:id' element={<GetUser />} />
-          <Route path='/event/:id' element={<GetEvent />} />
-          <Route path='*' element={<Navigate to={'/login'} />} />
-        </Routes>
-      </BrowserRouter>
-    </>
-  ) : (
-    <div>
       <BrowserRouter>
         <NavBar />
         <Routes>
           <Route path='/' element={isLoggedin ? <Meetings /> : <Home />} />
           <Route path='/home' element={<Home />} />
-          <Route
-            path='/meetings'
-            element={isLoggedin ? <Meetings /> : <Home />}
-          />
-          <Route path='/login' element={<Navigate to={'/'} />} />
-          <Route path='/register' element={<Navigate to={'/'} />} />
-          <Route path='/logout' element={<Logout />} />
-          <Route path='/profile' element={<Profile />} />
           <Route path='/about' element={<About />} />
-          <Route path='/friends' element={<Friends />} />
-          <Route path='/event/new' element={<CreateEvents />} />
-          <Route path='/*' element={<Error404 />} />
+          <Route path='/login' element={isLoggedin ? <Navigate to={'/'} /> : <Login />} />
+          <Route path='/register' element={isLoggedin ? <Navigate to={'/'} /> : <Register />} />
+          <Route path='/meetings' element={isLoggedin ? <Meetings /> : <Navigate to={'/'} />} />
+          <Route path='/logout' element={isLoggedin ? <Logout /> : <Navigate to={'/'} />} />
+          <Route path='/profile' element={isLoggedin ? <Profile /> : <Navigate to={'/'} />} />
+          <Route path='/friends' element={isLoggedin ? <Friends /> : <Navigate to={'/'} />} />
+          <Route path='/event/new' element={isLoggedin ? <CreateEvents /> : <Navigate to={'/'} />} />
+          <Route path='/user/:id' element={<GetUser />} />
+          <Route path='/event/:id' element={<GetEvent />} />
+          <Route path='*' element={<Navigate to={<Error404 />} />} />
         </Routes>
       </BrowserRouter>
-    </div>
+    </>
   );
 }
 
 export default App;
-
-/*This is your original version of the code. Feel free to delete mine if you want to do it differently. 
-I needed to change it for testing purposes.*/
-/*
-import React, {useState, useEffect} from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Home from './pages/Home.js';
-import Login from './pages/Login.js';
-import Register from './pages/Register.js';
-import Logout from './pages/Logout.js';
-import Profile from './pages/Profile.js';
-import Meetings from './pages/Meetings.js';
-import Error404 from './pages/Error404.js';
-import About from './pages/About.js';
-import CreateEvents from './pages/Events.js';
-import NavBar from './components/NavBar.js';
-import checkSession from './components/Util.js';
-
-function App()
-{
-    let [isLoggedin, setsLoggedin] = useState(false);
-    useEffect(async ()=> 
-    {
-        setsLoggedin(checkSession());
-    });
-
-    return(
-        <div>
-            <BrowserRouter>
-                <NavBar />
-                <Routes>
-                    <Route path='/' element={ (isLoggedin ? <Meetings /> : <Home />) } />
-                    <Route path='/home' element={<Home />} />
-                    <Route path='/meetings' element={ (isLoggedin ? <Meetings /> : <Home />)}/>
-                    <Route path='/login' element={ <Login />} />
-                    <Route path='/register' element={ <Register />} />
-                    <Route path='/logout' element={ <Logout /> } />
-                    <Route path='/profile' element={ <Profile /> } />
-                    <Route path='/about' element={ <About /> } />
-                    <Route path='/event/new' element={ <CreateEvents /> } />
-                    <Route path='/*' element={<Error404 />}/>
-                </Routes>
-            </BrowserRouter>
-        </div>
-    );
-}
-export default App;
-*/
