@@ -223,12 +223,17 @@ app.delete("/user/me", checkAuth, async (req, res) => {
 
 app.post("/event/new", checkAuth, async (req, res) => {
     //need to make sure the changes are valid (i.e. the date is valid, etc.)
-    const title = req.body.title;
+    const body = req.body;
     const id = req.session.userId;
-    if (!title) {
-        res.status(400);
-        res.send({ error: "Event name is empty" });
-        return;
+    for (const [key, value] of Object.entries(req.body)) {
+        if (!value) {
+            res.sendStatus(400);
+            return;
+        }
+        if (key == "date" && isNaN(value)) {
+            res.sendStatus(400);
+            return;
+        }
     }
     const newEvent = new Event(req.body);
     newEvent.host = id;
@@ -279,7 +284,11 @@ app.delete("/event/:id([0-9a-f]{24})", checkAuth, async (req, res) => {
             hostedEvents: [{ _id: eventID }]
         }
     });
-
+    await User.updateMany({subscriptions: eventID}, {
+        $pullAll: {
+            subscriptions: [{_id: eventID}]
+        }
+    });
 });
 
 app.put("/event/:id([0-9a-f]{24})", checkAuth, async (req, res) => {
@@ -287,10 +296,18 @@ app.put("/event/:id([0-9a-f]{24})", checkAuth, async (req, res) => {
     const updates = {};
     for (const [key, value] of Object.entries(req.body)) {
         if (value) {
+            if (key == "date" && isNaN(value)) {
+                res.sendStatus(400);
+                return;
+            }
             updates[key] = value;
         }
     }
     const event = await Event.findById(eventID).lean()
+    if (req.session.userId != event.host) {
+        res.sendStatus(403);
+        return;
+    }
     if (!event) {
         res.sendStatus(404);
         return;
