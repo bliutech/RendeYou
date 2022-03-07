@@ -2,7 +2,7 @@ import { usePlacesWidget } from 'react-google-autocomplete';
 
 const LocationPicker = ({ location, setLocation }) => {
   const { ref, autocompleteRef } = usePlacesWidget({
-    apiKey: 'AIzaSyCBnBUewxiEtXjg48XlIeQJH9sylL_5xUk ',
+    apiKey: 'Input connors key here ',
     onPlaceSelected: (place) => {
       setLocation(place.formatted_address);
     },
