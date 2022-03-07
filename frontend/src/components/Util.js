@@ -1,5 +1,13 @@
+import settings from "../settings"
+
 export default function backend(endpoint) {
-  return 'http://localhost:8000' + endpoint;
+  let ip;
+  if (settings.ENV === "dev")
+    ip = "http://localhost:8000";
+  else if (settings.ENV = "production")
+    ip = settings.BACKEND_IP
+
+  return ip + endpoint;
 }
 
 //Use this function to update firstName, lastName, email and friendsList
