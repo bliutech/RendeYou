@@ -47,14 +47,25 @@ export async function getEvent(id) {
     credentials: 'include',
     id: id,
   });
-  const event = await res.json();
+  let event = await res.json();
   if (res.status >= 400) {
     alert('ERROR: Could not get user.');
     return;
   }
+  if (event.members.length != 0) {
+    const res2 = await fetch(backend('/user?ids=' + event.members), {
+      method: 'GET',
+    });
+
+    const members = await res2.json();
+    let memberNames = [];
+    members.forEach((member) => {
+      memberNames.push(member.firstName + ' ' + member.lastName);
+    });
+    event.memberNames = memberNames;
+  }
   return event;
 }
-
 // updateData is the function frontend uses to refresh data with backend. Always pass in from UserDataProvider
 export const deleteEvent = async (id, updateData) => {
   const res = await fetch(backend('/event/' + id), {

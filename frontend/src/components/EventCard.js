@@ -1,4 +1,5 @@
 import classes from './EventCard.module.css';
+import { getFriend } from './Util';
 const EventCard = ({ event, handlerName, handler }) => {
   const date = new Date(event.date);
   const options = {
@@ -39,7 +40,7 @@ const EventCard = ({ event, handlerName, handler }) => {
             </button>
           </td>
           <td>
-            <p>{event.members.join(' ')}</p>
+            <p>{event.memberNames?.join(', ')}</p>
           </td>
         </tr>
       </div>
