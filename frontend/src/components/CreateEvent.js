@@ -21,7 +21,7 @@ export default function CreateEvent() {
       description: description,
       location: location,
     };
-    console.log(location);
+    console.log(data);
     const res = await fetch(backend('/event/new'), {
       method: 'POST',
       credentials: 'include',
@@ -65,19 +65,7 @@ export default function CreateEvent() {
           placeholder='Event Description'
         />
         <p> Location: </p>
-        <GooglePlacesAutocomplete
-          apiKey='AIzaSyCBnBUewxiEtXjg48XlIeQJH9sylL_5xUk'
-          onPlaceSelected={(place) => {
-            console.log(place);
-            console.log(place.formattedAddress);
-            setLocation(place.formattedAddress);
-          }}
-          options={{
-            fields: ['formatted_address', 'geometry', 'name'],
-            strictBounds: false,
-            types: ['establishment'],
-          }}
-        />
+        <LocationPicker location={location} setLocation={setLocation} />
         <br />
         <input type='submit' value='Submit' />
       </form>

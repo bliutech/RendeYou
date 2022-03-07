@@ -2,9 +2,9 @@ import { usePlacesWidget } from 'react-google-autocomplete';
 
 const LocationPicker = ({ location, setLocation }) => {
   const { ref, autocompleteRef } = usePlacesWidget({
-    apiKey: 'Insert Connors api key',
+    apiKey: 'AIzaSyCBnBUewxiEtXjg48XlIeQJH9sylL_5xUk ',
     onPlaceSelected: (place) => {
-      setLocation(place.formattedAddress);
+      setLocation(place.formatted_address);
     },
     options: {
       fields: ['formatted_address', 'geometry', 'name'],
