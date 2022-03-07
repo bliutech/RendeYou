@@ -1,0 +1,25 @@
+.home-page
+{
+    background-color: #FC6A01;
+    position: fixed;
+    width: 87%;
+    height: 100%;
+}
+
+.logo-img
+{
+    width: 50%;
+}
+
+.center {
+    display: block;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.vertical-center
+{
+    margin-top: 15%;
+}
