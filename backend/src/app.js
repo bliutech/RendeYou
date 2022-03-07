@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 
 const express = require("express");
 const app = express();
-const port = 8000;
+const port = parseInt(process.env.PORT);
 const cors = require("cors");
 
 const { User, Event } = require("./schemas");
@@ -15,7 +15,9 @@ const { stripUser, stripEvent, escapeRegex, emailRegex, idRegex } = require("./u
 const { hash, genSalt } = require("./crypt");
 
 const session = require("express-session");
-const sessionLifetime = 1000 * 60 * 5; // 5 min
+const MemoryStore = require("memorystore")(session);
+const checkPeriod = 1000 * 60 * parseInt(process.env.CHECK_PERIOD_MIN);
+const sessionLifetime = 1000 * 60 * parseInt(process.env.SESSION_LIFETIME_MIN);
 
 //==============================================================================
 // Express app settings
@@ -27,7 +29,7 @@ const corsOptions = { credentials: true };
 if (process.env.ENV == "dev") {
     corsOptions.origin = "http://localhost:3000";
 } else if (process.env.ENV == "production") {
-    corsOptions.origin = "PRODUCTION IP HERE";
+    corsOptions.origin = process.env.FRONTEND_IP;
 }
 app.use(cors(corsOptions));
 
@@ -41,7 +43,8 @@ app.use(session({
     saveUninitialized: true,
     resave: false,
     rolling: true,
-    cookie: { maxAge: sessionLifetime }
+    cookie: { maxAge: sessionLifetime },
+    store: new MemoryStore({ checkPeriod: checkPeriod })
 }));
 
 //==============================================================================
