@@ -8,14 +8,17 @@ export default function CreateEvent() {
   let [title, setTitle] = useState('');
   let [date, setDate] = useState(Date.now());
   let [description, setDescription] = useState('');
+  let [location, setLocation] = useState('');
   let [time, setTime] = useState();
   const { updateData } = useContext(UserDataContext);
   const [err_msg, setErrMsg] = useState('');
+
   async function handleSubmit() {
     const data = {
       title: title,
       date: date,
       description: description,
+      location: location,
     };
     const res = await fetch(backend('/event/new'), {
       method: 'POST',
@@ -30,36 +33,28 @@ export default function CreateEvent() {
 
   return (
     <div>
-      <form
-        onSubmit={(e) => {
+        <form onSubmit={(e) => {
           e.preventDefault();
           handleSubmit();
-        }}
-      >
+          console.log(date);
+        }} >
+      
         <h1> Create Event </h1>
+        
         <p> Event Name: </p>
-        <input
-          type='text'
-          value={title}
-          onChange={(a) => setTitle(a.target.value)}
-          placeholder='Event Name'
-        />
+        <input type='text' value={title} onChange={(a) => setTitle(a.target.value)} placeholder='Event Name' />
+        
         <p> Date: </p>
-        <input
-          type='date'
-          value={formatDate(Date(date).toString())}
-          onChange={(a) =>
-            setDate(Date.parse(formatDate(Date(a.target.value).toString())))
-          }
-        />
+        <input type='date' value={formatDate(Date(date).toString())} onChange={(a) => setDate(Date.parse(formatDate(Date(a.target.value).toString())))} />
+        
         <p> Description: </p>
-        <textarea
-          type='text'
-          value={description}
-          onChange={(a) => setDescription(a.target.value)}
-          placeholder='Event Description'
-        />
+        <textarea type='text' value={description} onChange={(a) => setDescription(a.target.value)} placeholder='Event Description' />
+        
+        <p> Location: </p>
+        <input type='text' value={location} onChange={(a) => setLocation(a.target.value)} placeholder='Event Location' />
+
         <br />
+
         <input type='submit' value='Submit' />
       </form>
     </div>
