@@ -17,7 +17,7 @@ function stripUser(user) {
 // querying, or call .toObject() on an existing document).
 function stripEvent(event) {
     delete event.__v;
-    event.id = event.__id;
+    event.id = event._id;
     delete event._id;
     return event;
 }

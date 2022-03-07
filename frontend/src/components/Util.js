@@ -1,11 +1,9 @@
-import settings from "../settings"
+import settings from '../settings';
 
 export default function backend(endpoint) {
   let ip;
-  if (settings.ENV === "dev")
-    ip = "http://localhost:8000";
-  else if (settings.ENV = "production")
-    ip = settings.BACKEND_IP;
+  if (settings.ENV === 'dev') ip = 'http://localhost:8000';
+  else if ((settings.ENV = 'production')) ip = settings.BACKEND_IP;
 
   return ip + endpoint;
 }
@@ -33,27 +31,22 @@ export const getUserData = async () => {
     },
   });
   const user = await res.json();
+  if (user.friends.length != 0) {
+    const res2 = await fetch(backend('/user?ids=' + user.friends), {
+      method: 'GET',
+    });
+
+    const friends = await res2.json();
+    let friendNames = [];
+    friends.forEach((member) => {
+      friendNames.push(member.firstName + ' ' + member.lastName);
+    });
+    user.friendNames = friendNames;
+  }
+
   return user;
 };
 
-// updateData is the function frontend uses to refresh data with backend. Always pass in from UserDataProvider
-export const deleteEvent = async (id, updateData) => {
-  const res = await fetch(backend('/event/' + id), {
-    method: 'DELETE',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  if (res.status === 403) {
-    await updateData();
-    return;
-  } else if (res.status === 404) {
-    alert('Event not found');
-    return;
-  }
-  await updateData();
-};
 // returns true if session is active, returns false if session has expired
 export async function checkSession() {
   const res = await fetch(backend('/check-session'), {
@@ -73,22 +66,95 @@ export async function getEvent(id) {
     credentials: 'include',
     id: id,
   });
-  const event = await res.json();
+  let event = await res.json();
   if (res.status >= 400) {
     alert('ERROR: Could not get user.');
     return;
   }
+  if (event.members.length != 0) {
+    const res2 = await fetch(backend('/user?ids=' + event.members), {
+      method: 'GET',
+    });
+
+    const members = await res2.json();
+    let memberNames = [];
+    members.forEach((member) => {
+      memberNames.push(member.firstName + ' ' + member.lastName);
+    });
+    event.memberNames = memberNames;
+  }
   return event;
 }
+// updateData is the function frontend uses to refresh data with backend. Always pass in from UserDataProvider
+export const deleteEvent = async (id, updateData) => {
+  const res = await fetch(backend('/event/' + id), {
+    method: 'DELETE',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  if (res.status === 403) {
+    await updateData();
+    return;
+  } else if (res.status === 404) {
+    alert('Event not found');
+    return;
+  }
+  await updateData();
+};
 
+// This is for joining and unjoining events
+export const joinEvent = async (id, updateData) => {
+  const res = await fetch(backend('/event/' + id + '/subscribe'), {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    id: id,
+  });
+  if (res.status == 403) {
+    await updateData();
+    return;
+  } else if (res.status == 404) {
+    alert('Event not found');
+    return;
+  } else if (res.status == 409) {
+    alert('Already subscribed');
+    return;
+  }
+  await updateData();
+};
+
+export const leaveEvent = async (id, updateData) => {
+  const res = await fetch(backend('/event/' + id + '/unsubscribe'), {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    id: id,
+  });
+  if (res.status == 403) {
+    await updateData();
+    return;
+  } else if (res.status == 404) {
+    alert('Event not found');
+    return;
+  } else if (res.status == 409) {
+    alert('Already unsubscribed');
+    return;
+  }
+  await updateData();
+};
 //This gets a list of users from a list of ids
 export async function getUsers(ids) {
-  const res = await fetch(backend('/user'), {
+  const res = await fetch(backend('/user/?ids=' + ids), {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
-    ids: ids.join(','),
   });
 
   const users = await res.json();
@@ -106,7 +172,6 @@ export async function removeFriend(id, updateData) {
 export const getFriend = async (id) => {
   const res = await fetch(backend('/user/' + id), {
     method: 'GET',
-    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
     },
@@ -114,6 +179,18 @@ export const getFriend = async (id) => {
   const user = await res.json();
   if (res.status >= 400) {
     return;
+  }
+  if (user.friends.length != 0) {
+    const res2 = await fetch(backend('/user?ids=' + user.friends), {
+      method: 'GET',
+    });
+
+    const friends = await res2.json();
+    let friendNames = [];
+    friends.forEach((member) => {
+      friendNames.push(member.firstName + ' ' + member.lastName);
+    });
+    user.friendNames = friendNames;
   }
 
   return user;
@@ -134,3 +211,20 @@ export function formatDate(date_str) {
 
   return [year, month, day].join('-');
 }
+
+//Adapted from https://www.freecodecamp.org/news/how-to-add-search-to-frontend-app/
+export const searchFriendByName = async (inputData, setResult, setLoading) => {
+  setResult([]);
+  if (inputData === null || inputData === '') return;
+  setLoading(true);
+  const res = await fetch(backend('/user?username=' + inputData), {
+    method: 'GET',
+  });
+  if (res.status >= 400) {
+    alert('ERROR: Could not get user.');
+    return;
+  }
+  const users = await res.json();
+  setLoading(false);
+  setResult(users);
+};
