@@ -10,7 +10,6 @@ export default function CreateEvent() {
   let [title, setTitle] = useState('');
   let [date, setDate] = useState(Date.now());
   let [description, setDescription] = useState('');
-  let [location, setLocation] = useState('');
   let [time, setTime] = useState();
   const [location, setLocation] = useState('');
   const { updateData } = useContext(UserDataContext);
