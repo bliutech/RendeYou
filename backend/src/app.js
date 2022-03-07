@@ -279,8 +279,28 @@ app.delete("/event/:id([0-9a-f]{24})", checkAuth, async (req, res) => {
             hostedEvents: [{ _id: eventID }]
         }
     });
+
 });
 
+app.put("/event/:id([0-9a-f]{24})", checkAuth, async (req, res) => {
+    const eventID = req.params.id;
+    const updates = {};
+    for (const [key, value] of Object.entries(req.body)) {
+        if (value) {
+            updates[key] = value;
+        }
+    }
+    const event = await Event.findById(eventID).lean()
+    if (!event) {
+        res.sendStatus(404);
+        return;
+    }
+    await Event.findOneAndUpdate(
+        {_id: eventID},
+        updates,
+    );
+    res.sendStatus(200);
+});
 app.post("/event/:id([0-9a-f]{24})/subscribe", checkAuth, async (req, res) => {
     const userId = req.session.userId;
     const event = await Event.findById(req.params.id);
