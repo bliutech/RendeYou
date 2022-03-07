@@ -6,8 +6,7 @@ import backend from '../components/Util.js';
 
 export default function GetUser() {
     let { id } = useParams('');
-    document.title = id + '\'s Profile | RendeYou';
-    let [user, setUser] = useState({});
+    let [user, setUser] = useState(null);
     async function getUser(id)
     {
         const res = await fetch(backend('/user/' + id), {
@@ -17,31 +16,28 @@ export default function GetUser() {
             console.log(res.error);
             return;
         }
-        else {
-            console.log('Page found!');
-        }
         const curr_user = await res.json();
         setUser(curr_user);
     }
     useEffect(()=> {
         getUser(id);
-    }, []);
-
+    });
+    document.title = ((user !== null) ? (user.username + '\'s Profile | RendeYou') : ('User Not Found | RendeYou'));
     return (
     <>
         <div
         style={{
-            position: 'fixed',
-            bottom: '300px',
-            right: '600px',
+            position: 'static',
+            marginTop: '15%',
+            marginLeft: '40%',
+            marginRight: '30%',
             width: '300px',
             border: '3px solid #fc6a01',
             textAlign: 'center',
         }}
         >
         <h1>Profile Page</h1>
-        {/* { <ProfileCard user={user} /> } */}
-        <p>This is the profile page for {id}!</p>
+        {(user !== null) ? <ProfileCard user={user} /> : <p>{id} is not an existing user ID :(</p> }
         <Link to='/'>Home</Link>
         </div>
     </>
