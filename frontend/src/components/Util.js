@@ -143,7 +143,6 @@ export async function removeFriend(id, updateData) {
 export const getFriend = async (id) => {
   const res = await fetch(backend('/user/' + id), {
     method: 'GET',
-    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
     },

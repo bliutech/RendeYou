@@ -4,8 +4,6 @@ import '../index.css';
 import { Link } from 'react-router-dom';
 import { getEvent, getUsers } from '../components/Util';
 import EventCard from '../components/EventCard';
-import HostEventCard from '../components/HostEventCard';
-import JoinedEventCard from '../components/JoinedEventCard';
 
 import {
   deleteEvent,
@@ -27,12 +25,12 @@ export default function Meetings() {
   }, []);
 
   useEffect(() => {
-    getFriendEvents();
-    getHostedEvents();
-    getJoinedEvents();
+    if (user) {
+      getFriendEvents();
+      getHostedEvents();
+      getJoinedEvents();
+    }
   }, [user]);
-
-  console.log(user);
 
   const getHostedEvents = async () => {
     let tempEvents = [];
@@ -52,11 +50,13 @@ export default function Meetings() {
     }
     let events = [];
     for (let i = 0; i < friends.length; i++) {
-      for (let j = 0; j < friends[i].hostedEvents.length; j++) {
-        if (user.subscriptions.indexOf(friends[i].hostedEvents[j]) == -1) {
-          let addedEvent = await getEvent(friends[i].hostedEvents[j]);
-          addedEvent.hostUser = friends[i];
-          events.push(addedEvent);
+      if (friends[i]) {
+        for (let j = 0; j < friends[i].hostedEvents.length; j++) {
+          if (user.subscriptions.indexOf(friends[i].hostedEvents[j]) == -1) {
+            let addedEvent = await getEvent(friends[i].hostedEvents[j]);
+            addedEvent.hostUser = friends[i];
+            events.push(addedEvent);
+          }
         }
       }
     }
@@ -69,8 +69,10 @@ export default function Meetings() {
     for (let i = 0; i < ids.length; i++) {
       let addedEvent = await getEvent(ids[i]);
       let host = await getFriend(addedEvent.host);
-      addedEvent.hostUser = host;
-      events.push(addedEvent);
+      if (addedEvent) {
+        addedEvent.hostUser = host;
+        events.push(addedEvent);
+      }
     }
     console.log(events);
     setJoinedEvents(events);
@@ -96,7 +98,13 @@ export default function Meetings() {
       <div>
         {hostedEvents?.length != 0 ? (
           hostedEvents?.map((e) => {
-            return <HostEventCard event={e} deleteHandler={deleteHandler} />;
+            return (
+              <EventCard
+                event={e}
+                handler={deleteHandler}
+                handlerName={'Delete'}
+              />
+            );
           })
         ) : (
           <p>No Events</p>
@@ -106,7 +114,9 @@ export default function Meetings() {
       <div>
         {friendEvents.length != 0 ? (
           friendEvents.map((e) => {
-            return <EventCard event={e} joinHandler={joinHandler} />;
+            return (
+              <EventCard event={e} handler={joinHandler} handlerName={'Join'} />
+            );
           })
         ) : (
           <p>No Events</p>
@@ -116,7 +126,13 @@ export default function Meetings() {
       <div>
         {joinedEvents.length != 0 ? (
           joinedEvents.map((e) => {
-            return <JoinedEventCard event={e} leaveHandler={leaveHandler} />;
+            return (
+              <EventCard
+                event={e}
+                handler={leaveHandler}
+                handlerName={'Leave'}
+              />
+            );
           })
         ) : (
           <p>Join some events!</p>
