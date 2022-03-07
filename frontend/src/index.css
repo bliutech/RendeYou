@@ -1,6 +1,6 @@
 @font-face {
   font-family: "Istok Web";
-  src: url("https://fonts.google.com/specimen/Istok+Web?query=istok+web") 
+  src: url('./files/IstokWeb-Regular.ttf'); 
 }
 
 body {
