@@ -19,7 +19,7 @@ const ProfileCard = (props) => {
       <p>{props.user.username}</p>
       <br />
       <p>Friends</p>
-      <p>{props.user?.friendNames.join(', ')}</p>
+      <p>{props.user.friendNames?.join(', ')}</p>
     </>
   );
 };
