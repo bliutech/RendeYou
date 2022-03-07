@@ -16,23 +16,27 @@ export default function NavBar() {
         </Link>
         <ul>
           <li>
-            <Link to={isLoggedin ? '/profile' : '/login'}>
+            <Link to={isLoggedin ? '/profile' : '/about'}>
               {' '}
-              {isLoggedin ? 'Profile' : 'Login'}{' '}
+              {isLoggedin ? 'Profile' : 'About'}{' '}
             </Link>
           </li>
           <li>
-            <Link to={isLoggedin ? '/event/new' : '/register'}>
+            <Link to={isLoggedin ? '/event/new' : '/login'}>
               {' '}
-              {isLoggedin ? 'Event +' : 'Register'}{' '}
+              {isLoggedin ? 'Event +' : 'Login'}{' '}
             </Link>
           </li>
           <li>
-            <Link to='/friends'>
+            <Link to={isLoggedin ? '/friends' : '/register'}>
             {' '}
-            {isLoggedin ? 'Friends' : null}{' '}
+            {isLoggedin ? 'Friends' : 'Register'}{' '}
             </Link>
           </li>
+          <li>{' '}<br/></li>{' '}
+          <li>{' '}<br/></li>{' '}
+          <li>{' '}<br/></li>{' '}
+          <li>{' '}<br/></li>{' '}
           <li className='list-end'>
             <Link to='/logout'> {isLoggedin ? 'Logout' : null} </Link>
           </li>

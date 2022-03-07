@@ -6,17 +6,35 @@ import { UserDataContext } from '../context/UserDataProvider.js';
 
 export default function CreateEvent() {
   let [title, setTitle] = useState('');
-  let [date, setDate] = useState(Date.now());
+  let [date, setDate] = useState();
   let [description, setDescription] = useState('');
   let [location, setLocation] = useState('');
   let [time, setTime] = useState();
   const { updateData } = useContext(UserDataContext);
   const [err_msg, setErrMsg] = useState('');
 
+  // function getAsDate(day, time){
+  //     var hours = Number(time.match(/^(\d+)/)[1]);
+  //     var minutes = Number(time.match(/:(\d+)/)[1]);
+  //     var AMPM = time.match(/\s(.*)$/);
+  //     if(AMPM == "pm" && hours<12) hours = hours+12;
+  //     if(AMPM == "am" && hours==12) hours = hours-12;
+  //     var sHours = hours.toString();
+  //     var sMinutes = minutes.toString();
+  //     if(hours<10) sHours = "0" + sHours;
+  //     if(minutes<10) sMinutes = "0" + sMinutes;
+  //     time = sHours + ":" + sMinutes + ":00";
+  //     var d = new Date(day);
+  //     var n = d.toISOString().substring(0,10);
+  //     var newDate = new Date(n+"T"+time);
+  //     console.log(newDate);
+  //     return newDate;
+  // }
+
   async function handleSubmit() {
     const data = {
       title: title,
-      date: date,
+      date: date + time,
       description: description,
       location: location,
     };
@@ -28,6 +46,12 @@ export default function CreateEvent() {
       },
       body: JSON.stringify(data),
     });
+    if (res.status >= 400) {
+      alert("Event failed to create!");
+      console.log(res.error);
+      return;
+  }
+
     await updateData();
   }
 
@@ -36,7 +60,6 @@ export default function CreateEvent() {
         <form onSubmit={(e) => {
           e.preventDefault();
           handleSubmit();
-          console.log(date);
         }} >
       
         <h1> Create Event </h1>
@@ -45,8 +68,11 @@ export default function CreateEvent() {
         <input type='text' value={title} onChange={(a) => setTitle(a.target.value)} placeholder='Event Name' />
         
         <p> Date: </p>
-        <input type='date' value={formatDate(Date(date).toString())} onChange={(a) => setDate(Date.parse(formatDate(Date(a.target.value).toString())))} />
+        <input type='date' value={date} onChange={(a) => setDate(a.target.value)} />
         
+        <p> Time: </p>
+        <input type='time' value={time} onChange={(a) => setTime(a.target.value)} />
+
         <p> Description: </p>
         <textarea type='text' value={description} onChange={(a) => setDescription(a.target.value)} placeholder='Event Description' />
         
