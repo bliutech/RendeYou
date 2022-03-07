@@ -11,7 +11,12 @@ body {
 
 .content {
   margin-left: 150px;
-  padding-left: 20px;
   height: 100%;
   width: auto;
+}
+
+input 
+{
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
