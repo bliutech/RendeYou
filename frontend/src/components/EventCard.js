@@ -1,6 +1,7 @@
 import { getFriend } from './Util';
 import React from 'react';
 import classes from './EventCard.module.css';
+
 const EventCard = ({ event, handlerName, handler }) => {
   const date = new Date(event.date);
   const options = {
@@ -10,43 +11,33 @@ const EventCard = ({ event, handlerName, handler }) => {
     day: 'numeric',
   };
 
+  const formatted_time = date.toLocaleTimeString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+  const formatted_date = date.toLocaleDateString('en-US', options);
+
   return (
     <>
-      <div>
-        <tr>
-          <td>{event.title}</td>
-          <td>{event.hostUser.firstName + ' ' + event.hostUser.lastName}</td>
-        </tr>
-        <tr>
-          <td>
-            <p>{event.description}</p>
-          </td>
-          <td>
-            <tr>{date.toLocaleDateString('en-US', options)}</tr>
-            <tr>
-              {date.toLocaleTimeString('en-US', {
-                hour: '2-digit',
-                minute: '2-digit',
-              })}
-            </tr>
-          </td>
-        </tr>
-        <td>
-          <p>{event.location}</p>
-        </td>
-        <tr>
-          <td>
-            <button
-              className={classes.button}
-              onClick={async () => handler(event['id'])}
-            >
-              {handlerName}
-            </button>
-          </td>
-          <td>
-            <p>{event.memberNames?.join(', ')}</p>
-          </td>
-        </tr>
+      <div className={classes.eventCard}>
+        <h3>
+          <span className={classes.eventTitle}>{event.title}</span>
+          <span className={classes.eventHost}>
+            by {event.hostUser.firstName} {event.hostUser.lastName}
+          </span>
+        </h3>
+        <div>
+          <p><span className={classes.eventDetail}>When:</span> {formatted_time} on {formatted_date}</p>
+          <p><span className={classes.eventDetail}>Where:</span> {event.location}</p>
+          <p><span className={classes.eventDetail}>Description:</span> {event.description}</p>
+          <p><span className={classes.eventDetail}>Who's going:</span> {event.memberNames?.join(', ')}</p>
+          <button
+            className={classes.button}
+            onClick={async () => handler(event['id'])}
+          >
+            {handlerName}
+          </button>
+        </div>
       </div>
     </>
   );
