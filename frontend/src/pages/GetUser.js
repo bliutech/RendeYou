@@ -23,26 +23,15 @@ export default function GetUser() {
       ? user.username + "'s Profile | RendeYou"
       : 'User Not Found | RendeYou';
   return (
-    <>
-      <div
-        style={{
-          position: 'static',
-          marginTop: '15%',
-          marginLeft: '40%',
-          marginRight: '30%',
-          width: '300px',
-          border: '3px solid #fc6a01',
-          textAlign: 'center',
-        }}
-      >
-        <h1>Profile Page</h1>
+    <div className='content'>
+      <div className='profile'>
+        <h1 className='profile-center'>Profile Page</h1>
         {user !== null ? (
           <ProfileCard user={user} />
         ) : (
           <p>{id} is not an existing user ID :(</p>
         )}
-        <Link to='/'>Home</Link>
       </div>
-    </>
+    </div>
   );
 }
