@@ -12,8 +12,8 @@ const UserDataProvider = ({ children }) => {
     setUser(await getUserData());
   }, []);
   const updateData = async () => {
-    setisLoggedin(await checkSession());
     setUser(await getUserData());
+    setisLoggedin(await checkSession());
   };
   // const setUser = async (currUser) => {
   //   const res = await fetch(backend('/user/me'), {
