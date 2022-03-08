@@ -1,5 +1,6 @@
-import classes from './FriendsList.module.css';
 import { Link } from 'react-router-dom';
+import classes from './FriendCard.module.css';
+
 const FriendCard = ({ person, handler, handlerName }) => {
   return (
     <tr>
@@ -8,19 +9,19 @@ const FriendCard = ({ person, handler, handlerName }) => {
           <Link to={'/user/' + person.id}>
             <img
               className={classes.image}
-              src='https://reactnative.dev/img/tiny_logo.png'
-              alt='React Native Logo'
+              src='https://cdn.iconscout.com/icon/free/png-256/person-1767893-1502146.png'
+              alt='Profile Picture'
             />
           </Link>
           <div>
             <p className={classes.largebody}>
-              {person.firstName} {person.lastName}
+              {person.firstName} {person.lastName} ({person.username})
             </p>
             <p className={classes.bodytext}>{person.email}</p>
-            <button onClick={async () => handler(person.id)}>
+          </div>
+          <button onClick={async () => handler(person.id)} className={classes.button}>
               {handlerName}
             </button>
-          </div>
         </div>
       </td>
     </tr>
