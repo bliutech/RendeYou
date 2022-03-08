@@ -10,6 +10,7 @@ function backend(endpoint) {
 function PopUp() {
     const [dispList, updateDispList] = useState([]);
     const [err_msg, setErrMsg] = useState('');
+    const [signal, setSignal] = useState(0);
     // const [nextEvent, setNextEvent] = useState(" "); 
     // const [nextEventTime, setEventTime] = useState(Date.now());
     let nextEvent = " ";
@@ -76,13 +77,14 @@ function PopUp() {
             if (res.status >= 400) {  // Only error is 403 Forbidden - Not logged in
                 return;
             }
+            setSignal(Date.now() % 1000);
             console.log("Checking time... Next event: " + nextEventTime);
             console.log(nextEvent);
             if (Date.now() + 601000 > nextEventTime) {  // Not handling when event time is past now. 
-                alert(nextEvent + " is happening in less than 10 minutes!");
+                window.alert(nextEvent + " is happening in less than 10 minutes!");
             }
         }, 600000)  // Temporarily set to 10 minutes
-    }, []);
+    }, [signal]);
 
 
     return(
