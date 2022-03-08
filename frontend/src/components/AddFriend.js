@@ -56,7 +56,7 @@ const AddFriend = () => {
         />
       </form>
       <div>
-        {results && results.length
+        {(inputString !== '') ? (results && results.length
           ? results.map((person) => {
               return !user.friends.includes(person.id) ? (
                 <FriendCard
@@ -68,7 +68,7 @@ const AddFriend = () => {
                 ''
               );
             })
-          : ' '}
+          : 'No user matches that username.') : ' '}
       </div>
     </>
   );
