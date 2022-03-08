@@ -1,0 +1,46 @@
+.frame {
+    border-width: 4px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    margin: 3%;
+    padding: 5%;
+    width: 300px;
+    box-sizing: border-box;
+}
+.subitem {
+    margin: 2%;
+    align-self: flex-start;
+    justify-content: center;
+    display: block;
+}
+h1 {
+    font-family: sans-serif;
+    font-weight: bold;
+    flex-direction: column;
+    color: #FC6A01;
+    align-self: flex-start;
+}
+.largebody {
+    font-size: 20;
+    font-family: sans-serif;
+    font-weight: bold;
+    flex-direction: column;
+    align-self: flex-start;
+}
+.bodytext {
+    font-size: 20;
+    font-family: sans-serif;
+    padding: 5px; 
+    color: rgb(126, 125, 125);
+    border-radius: 8;
+    align-self: auto;
+}
+.bodytext2 {
+    font-size: 20;
+    font-family: sans-serif;
+    padding: 5px; 
+    color: rgb(126, 125, 125);
+    border-radius: 8;
+    align-self: flex-end;
+}
