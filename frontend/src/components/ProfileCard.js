@@ -9,13 +9,17 @@ const ProfileCard = (props) => {
         alt=''
         width='100px'
       />
+      <p>Name</p>
       <p>{props.user.firstName + ' ' + props.user.lastName}</p>
       <br />
+      <p>Email</p>
       <p>{props.user.email}</p>
       <br />
+      <p>Username</p>
       <p>{props.user.username}</p>
       <br />
-      <p>{props.user.friends.join(' ')}</p>
+      <p>Friends</p>
+      <p>{props.user.friendNames?.join(', ')}</p>
     </>
   );
 };

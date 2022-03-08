@@ -1,16 +1,31 @@
-.backdrop
+.this-backdrop
 {
     display: block;
     padding-top: 15px;
     padding-left: 15px;
-    padding-bottom: 10px;
-    border-radius: 30px;
+    padding-bottom: 15px;
+    border-radius: 50px;
+    width: 67%;
     float: left;
 }
 
-.form
+.this-form
 {
     float: right;
-    padding-right: 30px;
-    margin-top: 15%;
+    padding-right: 50px;
+    margin-top: 7%;
+}
+
+.center
+{
+    text-align: center;
+}
+
+.this-content
+{
+    margin-top: 3%;
+    margin-bottom: 3%;
+    margin-left: 150px;
+    height: 100%;
+    width: auto;
 }

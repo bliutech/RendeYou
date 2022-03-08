@@ -87,7 +87,7 @@ class RegisterForm extends React.Component {
           placeholder='Enter Password'
         />
         <br />
-        <input type='submit' value='Submit' />
+        <input type='submit' value='Submit' className={classes.button}/>
       </form>
     );
   }

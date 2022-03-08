@@ -1,43 +1,31 @@
 import React, { useContext, useState } from 'react';
 import backend, { checkSession, formatDate } from './Util.js';
 import { getUserData } from './Util.js';
+import GooglePlacesAutocomplete from 'react-google-autocomplete';
 import './CreateEvent.module.css';
 import { UserDataContext } from '../context/UserDataProvider.js';
+import LocationPicker from './LocationPicker.js';
+import classes from './CreateEvent.module.css';
 
 export default function CreateEvent() {
   let [title, setTitle] = useState('');
   let [date, setDate] = useState();
   let [description, setDescription] = useState('');
-  let [location, setLocation] = useState('');
   let [time, setTime] = useState();
+  const [location, setLocation] = useState('');
   const { updateData } = useContext(UserDataContext);
   const [err_msg, setErrMsg] = useState('');
 
-  // function getAsDate(day, time){
-  //     var hours = Number(time.match(/^(\d+)/)[1]);
-  //     var minutes = Number(time.match(/:(\d+)/)[1]);
-  //     var AMPM = time.match(/\s(.*)$/);
-  //     if(AMPM == "pm" && hours<12) hours = hours+12;
-  //     if(AMPM == "am" && hours==12) hours = hours-12;
-  //     var sHours = hours.toString();
-  //     var sMinutes = minutes.toString();
-  //     if(hours<10) sHours = "0" + sHours;
-  //     if(minutes<10) sMinutes = "0" + sMinutes;
-  //     time = sHours + ":" + sMinutes + ":00";
-  //     var d = new Date(day);
-  //     var n = d.toISOString().substring(0,10);
-  //     var newDate = new Date(n+"T"+time);
-  //     console.log(newDate);
-  //     return newDate;
-  // }
-
   async function handleSubmit() {
+    const curr_date = new Date(date + ' ' + time + ':00.000');
+    console.log(curr_date.getTime())
     const data = {
       title: title,
-      date: date + time,
+      date: curr_date.getTime(),
       description: description,
       location: location,
     };
+    console.log(data);
     const res = await fetch(backend('/event/new'), {
       method: 'POST',
       credentials: 'include',
@@ -50,38 +38,61 @@ export default function CreateEvent() {
       alert("Event failed to create!");
       console.log(res.error);
       return;
-  }
+    }
+    alert("Event created!");
 
     await updateData();
   }
 
   return (
     <div>
-        <form onSubmit={(e) => {
+      <form
+        onSubmit={(e) => {
           e.preventDefault();
           handleSubmit();
-        }} >
-      
+          console.log(date);
+        }}
+        className={classes.hereForm}
+      >
         <h1> Create Event </h1>
-        
         <p> Event Name: </p>
-        <input type='text' value={title} onChange={(a) => setTitle(a.target.value)} placeholder='Event Name' />
-        
+        <input
+          type='text'
+          value={title}
+          onChange={(a) => setTitle(a.target.value)}
+          placeholder='Event Name'
+          className={classes.hereInput}
+        />
         <p> Date: </p>
-        <input type='date' value={date} onChange={(a) => setDate(a.target.value)} />
-        
+        <input
+          type='date'
+          value={date}
+          onChange={(a) => setDate(a.target.value)}
+          className={classes.hereInput}
+        />
         <p> Time: </p>
-        <input type='time' value={time} onChange={(a) => setTime(a.target.value)} />
-
-        <p> Description: </p>
-        <textarea type='text' value={description} onChange={(a) => setDescription(a.target.value)} placeholder='Event Description' />
-        
+        <input
+          type='time'
+          value={time}
+          onChange={(a) =>
+            setTime(a.target.value)
+          }
+          className={classes.hereInput}
+        />
         <p> Location: </p>
-        <input type='text' value={location} onChange={(a) => setLocation(a.target.value)} placeholder='Event Location' />
+        <LocationPicker location={location} setLocation={setLocation} className={classes.hereInput}/>
+        <p> Description: </p>
+        <textarea
+          type='text'
+          value={description}
+          onChange={(a) => setDescription(a.target.value)}
+          placeholder='Event Description'
+          className={classes.hereInput}
+        />
 
         <br />
 
-        <input type='submit' value='Submit' />
+        <input type='submit' value='Submit' className={classes.hereButton}/>
       </form>
     </div>
   );
