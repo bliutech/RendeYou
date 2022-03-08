@@ -55,7 +55,7 @@ export default function Register() {
     <div className='content'>
       <img src={BackDrop} className='backdrop' />
       <div className='form'>
-        <h1> Register </h1>
+        <h1 className='center'> Register </h1>
         <p> Register your RendeYou account. </p>
         <RegisterForm onSubmit={handleSubmit} />
         <p>

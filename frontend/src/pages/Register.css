@@ -12,6 +12,17 @@
 .form
 {
     float: right;
-    padding-right: 40px;
-    margin-top: 7%;
+    padding-right: 50px;
+    margin-top: 3%;
+}
+
+.center
+{
+    text-align: center;
+}
+
+.content
+{
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
