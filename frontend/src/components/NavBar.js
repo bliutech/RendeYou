@@ -22,15 +22,15 @@ export default function NavBar() {
             </Link>
           </li>
           <li>
-            <Link to={isLoggedin ? '/event/new' : '/login'}>
+            <Link to={isLoggedin ? '/friends' : '/login'}>
               {' '}
-              {isLoggedin ? 'Event +' : 'Login'}{' '}
+              {isLoggedin ? 'Friends' : 'Login'}{' '}
             </Link>
           </li>
           <li>
-            <Link to={isLoggedin ? '/friends' : '/register'}>
+            <Link to={isLoggedin ? '/event/new' : '/register'}>
             {' '}
-            {isLoggedin ? 'Friends' : 'Register'}{' '}
+            {isLoggedin ? 'Create +' : 'Register'}{' '}
             </Link>
           </li>
           <li>{' '}<br/></li>{' '}
