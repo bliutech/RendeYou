@@ -1,47 +1,15 @@
-.item {
-    background-color: #fcf6f6;
-    border-width: 4px;
-    border-radius: 16px;
-    display: flex;
-    flex-direction: row;
-    margin: 3%;
-    padding: 5%;
-    width: 300px;
-    box-sizing: border-box;
+.scroll
+{
+    overflow-y: scroll;
 }
-.subitem {
-    background-color: #ffbd95;
-    padding: 1%;
-    align-self: center;
-    display: flex;
-    flex-direction: column;
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.scroll::-webkit-scrollbar {
+    display: none;
 }
-.largebody {
-    font-size: 20;
-    font-family: sans-serif;
-    font-weight: bold;
-    flex-direction: column;
-    align-self: flex-start;
-}
-.bodytext {
-    font-size: 10;
-    font-family: sans-serif;
-    padding: 2; 
-    color: rgb(126, 125, 125);
-    border-radius: 8;
-    align-self: flex-start;
-}
-.profile {
-    width: 50;
-    height: 50;
-    align-self: center;
-}
-.image {
-    width: 50px;
-    height: 50px;
-    border-radius: 100%;
-    align-self: center;
-}
-.pagesplit {
-    display: inline-block;
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+.scroll {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }

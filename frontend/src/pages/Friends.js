@@ -17,6 +17,7 @@ export default function Friends() {
       <div className='friends-left-container'>
         <h1> Your Friends </h1>
         <p> All of your friends on RendeYou! </p>
+        <br/>
         <FriendsList />
       </div>
       <div className='friends-right-container'>
