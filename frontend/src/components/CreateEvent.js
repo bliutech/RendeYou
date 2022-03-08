@@ -5,6 +5,7 @@ import GooglePlacesAutocomplete from 'react-google-autocomplete';
 import './CreateEvent.module.css';
 import { UserDataContext } from '../context/UserDataProvider.js';
 import LocationPicker from './LocationPicker.js';
+import classes from './CreateEvent.module.css';
 
 export default function CreateEvent() {
   let [title, setTitle] = useState('');
@@ -51,25 +52,24 @@ export default function CreateEvent() {
           handleSubmit();
           console.log(date);
         }}
+        className={classes.hereForm}
       >
-
         <h1> Create Event </h1>
-
         <p> Event Name: </p>
         <input
           type='text'
           value={title}
           onChange={(a) => setTitle(a.target.value)}
           placeholder='Event Name'
+          className={classes.hereInput}
         />
-
         <p> Date: </p>
         <input
           type='date'
           value={date}
           onChange={(a) => setDate(a.target.value)}
+          className={classes.hereInput}
         />
-
         <p> Time: </p>
         <input
           type='time'
@@ -77,21 +77,22 @@ export default function CreateEvent() {
           onChange={(a) =>
             setTime(a.target.value)
           }
+          className={classes.hereInput}
         />
-
+        <p> Location: </p>
+        <LocationPicker location={location} setLocation={setLocation} className={classes.hereInput}/>
         <p> Description: </p>
         <textarea
           type='text'
           value={description}
           onChange={(a) => setDescription(a.target.value)}
           placeholder='Event Description'
+          className={classes.hereInput}
         />
-        <p> Location: </p>
-        <LocationPicker location={location} setLocation={setLocation} />
 
         <br />
 
-        <input type='submit' value='Submit' />
+        <input type='submit' value='Submit' className={classes.hereButton}/>
       </form>
     </div>
   );
