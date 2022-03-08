@@ -66,9 +66,16 @@ export default function CreateEvent() {
         <p> Date: </p>
         <input
           type='date'
-          value={formatDate(Date(date).toString())}
+          value={date}
+          onChange={(a) => setDate(a.target.value)}
+        />
+
+        <p> Time: </p>
+        <input
+          type='time'
+          value={time}
           onChange={(a) =>
-            setDate(Date.parse(formatDate(Date(a.target.value).toString())))
+            setTime(a.target.value)
           }
         />
 

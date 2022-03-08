@@ -31,7 +31,7 @@ export const getUserData = async () => {
     },
   });
   const user = await res.json();
-  if (user.friends.length != 0) {
+  if (user.friends.length !== 0) {
     const res2 = await fetch(backend('/user?ids=' + user.friends), {
       method: 'GET',
     });
@@ -71,7 +71,7 @@ export async function getEvent(id) {
     alert('ERROR: Could not get user.');
     return;
   }
-  if (event.members.length != 0) {
+  if (event.members.length !== 0) {
     const res2 = await fetch(backend('/user?ids=' + event.members), {
       method: 'GET',
     });
@@ -114,13 +114,13 @@ export const joinEvent = async (id, updateData) => {
     },
     id: id,
   });
-  if (res.status == 403) {
+  if (res.status === 403) {
     await updateData();
     return;
-  } else if (res.status == 404) {
+  } else if (res.status === 404) {
     alert('Event not found');
     return;
-  } else if (res.status == 409) {
+  } else if (res.status === 409) {
     alert('Already subscribed');
     return;
   }
@@ -136,13 +136,13 @@ export const leaveEvent = async (id, updateData) => {
     },
     id: id,
   });
-  if (res.status == 403) {
+  if (res.status === 403) {
     await updateData();
     return;
-  } else if (res.status == 404) {
+  } else if (res.status === 404) {
     alert('Event not found');
     return;
-  } else if (res.status == 409) {
+  } else if (res.status === 409) {
     alert('Already unsubscribed');
     return;
   }
@@ -180,7 +180,7 @@ export const getFriend = async (id) => {
   if (res.status >= 400) {
     return;
   }
-  if (user.friends.length != 0) {
+  if (user.friends.length !== 0) {
     const res2 = await fetch(backend('/user?ids=' + user.friends), {
       method: 'GET',
     });
