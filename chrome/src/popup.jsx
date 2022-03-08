@@ -33,7 +33,19 @@ function PopUp() {
                 console.log("Failed to get event ID: " + eventList[i]);
                 continue;
             }
-            const event = await res2.json();
+            let event = await res2.json();
+            const date = new Date(event.date);
+            const options = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+            };
+            const datestr = date.toLocaleDateString('en-US', options) + " " + date.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+            });
+            event.date = datestr;
             console.log(event);
             dispEvents.push(event);
         }
@@ -41,16 +53,16 @@ function PopUp() {
         updateDispList(dispEvents);
     }, []);
     return(
-    <div>
+    <div className={classes.frame}>
         <h1>RendeYour Events</h1>
-        <p>{err_msg}</p>
+        <p className={classes.largebody}>{err_msg}</p>
         <>{
         dispList.map(
           event => {
             return (
-                <tr>
-                <td className={classes.bodytext}>{event.title} </td>
-                <td className={classes.bodytext}> {event.date}</td>
+                <tr className={classes.subitem}>
+                <td className={classes.bodytext}>{event.title}</td>
+                <td className={classes.bodytext2}>{event.date}</td>
               </tr>
             );
           }
