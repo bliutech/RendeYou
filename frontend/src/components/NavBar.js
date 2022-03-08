@@ -30,7 +30,7 @@ export default function NavBar() {
           <li>
             <Link to={isLoggedin ? '/event/new' : '/register'}>
             {' '}
-            {isLoggedin ? 'Create +' : 'Register'}{' '}
+            {isLoggedin ? 'Event +' : 'Register'}{' '}
             </Link>
           </li>
           <li>{' '}<br/></li>{' '}
