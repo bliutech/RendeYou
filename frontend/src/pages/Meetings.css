@@ -29,47 +29,42 @@
     padding: 20px;
 }
 
-.joined-events
-{
-    height: 25%;
+.right-container.hovered .events-window:not(.expanded) {
+    height: 0%;
+}
+
+/* Common props of joined-events and hosted-events */
+.events-window {
+    height: 30%;
     width: 80%;
-    top: 0px;
     overflow-y: scroll;
     background-color: white;
     padding: 20px;
     border-radius: 20px;
-    overflow: hidden;
+    transition: 0.2s;
+}
+
+.events-window.expanded {
+    height: 60%;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
-.joined-events::-webkit-scrollbar {
+.events-window::-webkit-scrollbar {
     display: none;
 }
   
   /* Hide scrollbar for IE, Edge and Firefox */
-.joined-events{
+.events-window {
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
+}
+
+.joined-events
+{
+    top: 0px;
 }
 
 .hosted-events
 {
-    height: 25%;
-    width: 80%;
     top: 30%;
-    overflow-y: scroll;
-    background-color: white;
-    padding: 20px;
-    border-radius: 20px;
-}
-
-/* Hide scrollbar for Chrome, Safari and Opera */
-.hosted-events::-webkit-scrollbar {
-    display: none;
-}
-  
-  /* Hide scrollbar for IE, Edge and Firefox */
-.hosted-events {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
 }
