@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import RegisterForm from '../components/RegisterForm.js';
-import backend from '../components/Util.js';
+import backend, { emailRegex } from '../components/Util.js';
 import { UserDataContext } from '../context/UserDataProvider.js';
 import { addUserData, getUserData } from '../components/Util.js';
 import '../index.css';
@@ -18,7 +18,15 @@ export default function Register() {
       username: uname,
       password: pass,
     };
+    if (firstName === '' || lastName === '' || email === '') {
+      alert('Fields are empty');
+      return;
+    }
 
+    if (!emailRegex.test(email)) {
+      alert('Enter Valid Email');
+      return;
+    }
     const otherData = {
       firstName: firstName,
       lastName: lastName,
@@ -35,14 +43,17 @@ export default function Register() {
       body: JSON.stringify(data),
     });
     const user = Object.assign({}, await res.json(), otherData);
-
+    if (user.error) {
+      alert(user.error);
+      return;
+    }
     addUserData(user);
     updateData();
   }
 
   return (
     <div className='content'>
-      <img src={BackDrop} className='backdrop'/>
+      <img src={BackDrop} className='backdrop' />
       <div className='form'>
         <h1> Register </h1>
         <p> Register your RendeYou account. </p>
