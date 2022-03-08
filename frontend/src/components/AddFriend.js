@@ -54,7 +54,6 @@ const AddFriend = () => {
             searchFriendByName(e.target.value, setResults, setLoading)
           }
         />
-        <input type='submit' value='Submit' />
       </form>
       <div>
         {results && results.length

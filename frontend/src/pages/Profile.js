@@ -14,10 +14,11 @@ export default function Profile() {
 
   return (
     <>
-      <div className='content profile'>
-        <h1>Profile Page</h1>
-        <ProfileCard user={user} />
-        <Link to='/'>Home</Link>
+      <div className='content'>
+        <div className='profile'>
+          <h1 className='profile-center'>Profile Page</h1>
+          <ProfileCard user={user} />
+        </div>
       </div>
     </>
   );
