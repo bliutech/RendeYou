@@ -40,7 +40,7 @@ const AddFriend = () => {
     updateData();
   }
   return (
-    <>
+    <div>
       <form>
         <legend>Search by Username</legend>
         <input
@@ -55,7 +55,7 @@ const AddFriend = () => {
           }
         />
       </form>
-      <div>
+      <div className={classes.newFriends}>
         {(inputString !== '') ? (results && results.length
           ? results.map((person) => {
               return !user.friends.includes(person.id) ? (
@@ -63,6 +63,7 @@ const AddFriend = () => {
                   person={person}
                   handler={handleAddFriend}
                   handlerName={'Add Friend'}
+                  className={classes.friendCard}
                 />
               ) : (
                 ''
@@ -70,7 +71,7 @@ const AddFriend = () => {
             })
           : 'No user matches that username.') : ' '}
       </div>
-    </>
+    </div>
   );
 };
 
