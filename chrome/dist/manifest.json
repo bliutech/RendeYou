@@ -3,5 +3,8 @@
     "description": "The chrome extension of RendeYou!",
     "version": "1.0",
     "manifest_version": 3,
-    "host_permissions": ["http://localhost:8000/*"]
+    "host_permissions": ["http://localhost:8000/*"],
+    "action": {
+        "default_popup": "popup.html"
+    }
 }

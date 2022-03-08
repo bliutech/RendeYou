@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { render } from "react-dom";
-import 'regenerator-runtime/runtime'
+import 'regenerator-runtime/runtime';
+import classes from "./popup.module.css";
 
 function backend(endpoint) {
     return 'http://localhost:8000' + endpoint;
@@ -15,7 +16,7 @@ function PopUp() {
             credentials: 'include',
         });
         if (res.status >= 400) {  // Only error is 403 Forbidden - Not logged in
-            setErrMsg("Login to receive notifications of your events!");
+            setErrMsg("Login to receive your events!");
             return;
         }
         let res_j = await res.json();
@@ -28,7 +29,7 @@ function PopUp() {
                 credentials: 'include',
                 id: eventList[i],
             });
-            if (res.status >= 400) {
+            if (res2.status >= 400) {
                 console.log("Failed to get event ID: " + eventList[i]);
                 continue;
             }
@@ -41,15 +42,15 @@ function PopUp() {
     }, []);
     return(
     <div>
-        <h1>RendeYou</h1>
+        <h1>RendeYour Events</h1>
         <p>{err_msg}</p>
         <>{
         dispList.map(
           event => {
             return (
                 <tr>
-                <td>{event.title} </td>
-                <td> {event.date}</td>
+                <td className={classes.bodytext}>{event.title} </td>
+                <td className={classes.bodytext}> {event.date}</td>
               </tr>
             );
           }

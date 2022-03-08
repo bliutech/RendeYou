@@ -12,7 +12,8 @@ module.exports = {
     filename: "[name].js",
   },
   module: {
-    rules: [{ 
+    rules: [
+      { 
         test: /\.(js|jsx)$/,
         exclude: /node_modules/, 
         use: {
@@ -21,7 +22,15 @@ module.exports = {
                 presets: ['@babel/preset-env', '@babel/preset-react'],
             }
         }
-    }],
+      },
+      {
+        test: /\.css$/i,
+        use: [
+          {loader: "style-loader"},
+          {loader: "css-loader"},
+        ]
+      },
+  ],
   },
   plugins: [
     new HtmlWebpackPlugin({
