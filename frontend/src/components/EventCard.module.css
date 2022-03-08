@@ -1,12 +1,13 @@
 .button {
-  font: inherit;
   padding: 0.5rem 1.5rem;
   cursor: pointer;
-  border-radius: 10px;
+  border: 2px solid #fc6a01;
+  border-radius: 5rem;
   background-color: #fc6a01;
   color: white;
   text-align: center;
-  margin: 0 1rem;
+  font: 700 1rem "Istok Web";
+  transition: 0.2s;
 }
 
 .button:hover {
