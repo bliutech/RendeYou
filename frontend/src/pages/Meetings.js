@@ -92,56 +92,61 @@ export default function Meetings() {
 
   return (
     <div className='content'>
-      <h1> Meetings </h1>
-      <p> Your RendeYou meetings! </p>
-      <h1>Hosted Events </h1>
-      <div>
-        {hostedEvents?.length != 0 ? (
-          hostedEvents?.map((e) => {
-            return (
-              <EventCard
-                event={e}
-                handler={deleteHandler}
-                handlerName={'Delete'}
-              />
-            );
-          })
-        ) : (
-          <p>No Events</p>
-        )}
+      <div className='event-feed'>
+        <h1> Your RendeYou Meetings! </h1>
+        <h1>Friend Events</h1>
+        <div>
+          {friendEvents.length != 0 ? (
+            friendEvents.map((e) => {
+              return (
+                <EventCard event={e} handler={joinHandler} handlerName={'Join'} />
+              );
+            })
+          ) : (
+            <p>No Events</p>
+          )}
+        </div>
       </div>
-      <h1>Friend Events</h1>
-      <div>
-        {friendEvents.length != 0 ? (
-          friendEvents.map((e) => {
-            return (
-              <EventCard event={e} handler={joinHandler} handlerName={'Join'} />
-            );
-          })
-        ) : (
-          <p>No Events</p>
-        )}
+
+      <div className='right-container'>
+        <h1>Joined Events</h1>
+        <div className='joined-events'>
+          <div>
+            {joinedEvents.length != 0 ? (
+              joinedEvents.map((e) => {
+                return (
+                  <EventCard
+                    event={e}
+                    handler={leaveHandler}
+                    handlerName={'Leave'}
+                  />
+                );
+              })
+            ) : (
+              <p>Join some events!</p>
+            )}
+          </div>
+        </div>
+        
+        <h1>Hosted Events </h1>
+        <div className='hosted-events'>
+          <div>
+            {hostedEvents?.length != 0 ? (
+              hostedEvents?.map((e) => {
+                return (
+                  <EventCard
+                    event={e}
+                    handler={deleteHandler}
+                    handlerName={'Delete'}
+                  />
+                );
+              })
+            ) : (
+              <p>No Events</p>
+            )}
+          </div>
+        </div>
       </div>
-      <h1>Joined Events</h1>
-      <div>
-        {joinedEvents.length != 0 ? (
-          joinedEvents.map((e) => {
-            return (
-              <EventCard
-                event={e}
-                handler={leaveHandler}
-                handlerName={'Leave'}
-              />
-            );
-          })
-        ) : (
-          <p>Join some events!</p>
-        )}
-      </div>
-      <div></div>
-      <Link to='/friends'>
-        <button>Friends List</button>
-      </Link>
     </div>
   );
 }
