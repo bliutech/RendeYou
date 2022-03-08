@@ -12,6 +12,16 @@ import {
 } from '../components/Util';
 import './Meetings.css';
 
+function entered(event) {
+  event.target.closest(".events-window").classList.add("expanded");
+  event.target.closest(".right-container").classList.add("hovered");
+}
+
+function left(event) {
+  event.target.closest(".events-window").classList.remove("expanded");
+  event.target.closest(".right-container").classList.remove("hovered");
+}
+
 export default function Meetings() {
   document.title = 'Meetings | RendeYou';
   const { user, setUser, updateData } = useContext(UserDataContext);
@@ -110,7 +120,7 @@ export default function Meetings() {
 
       <div className='right-container'>
         <h1>Joined Events</h1>
-        <div className='joined-events'>
+        <div className='events-window joined-events' onMouseEnter={entered} onMouseLeave={left}>
           <div>
             {joinedEvents.length != 0 ? (
               joinedEvents.map((e) => {
@@ -129,7 +139,7 @@ export default function Meetings() {
         </div>
         
         <h1>Hosted Events </h1>
-        <div className='hosted-events'>
+        <div className='events-window hosted-events' onMouseEnter={entered} onMouseLeave={left}>
           <div>
             {hostedEvents?.length != 0 ? (
               hostedEvents?.map((e) => {
