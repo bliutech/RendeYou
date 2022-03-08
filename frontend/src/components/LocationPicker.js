@@ -1,4 +1,5 @@
 import { usePlacesWidget } from 'react-google-autocomplete';
+import classes from './LocationPicker.module.css';
 
 const LocationPicker = ({ location, setLocation }) => {
   const { ref, autocompleteRef } = usePlacesWidget({
@@ -18,7 +19,8 @@ const LocationPicker = ({ location, setLocation }) => {
       ref={ref}
       value={location}
       onChange={(e) => setLocation(e.target.value)}
-    ></input>
+      className={classes.hereInput}
+    />
   );
 };
 

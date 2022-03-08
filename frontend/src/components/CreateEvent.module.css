@@ -1,36 +1,30 @@
-.button {
+.hereButton {
     font: inherit;
-    padding: 0.5rem 1.5rem;
     cursor: pointer;
-    border-radius: 4px;
-    background-color: #333333;
+    border-radius: 10px;
+    background-color: #fc6a01;
     color: white;
-    margin: 0 1rem;
-}
-
-.button:hover {
-    background-color: #202020;
-    border-color: #FC6A01;
-}
-
-.popup {
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-    border-radius: 6px;
-    background-color: #FC6A01;
-    padding: 1rem;
     text-align: center;
-    width: 30rem;
-    z-index: 10;
-    position: fixed;
-    top: 20vh;
-    left: calc(50% - 15rem);
-}
-
-.btn--alt {
-    background-color: #FC6A01;
-    color: black;
-}
-
-.btn--alt:hover {
-    background-color: #FC6A01;
+    margin-left: 22%;
+    margin-right: 25%;
+    width: 30%;
   }
+
+.hereButton:hover {
+    background-color: white;
+    color: black;
+    border-color: #fc6a01;
+}
+
+.hereInput
+{
+    border-radius: 3px;
+    width: 70%;
+    padding: 0px;
+}
+
+.hereForm
+{
+    margin-left: 30%;
+    margin-right: 20%;
+}
