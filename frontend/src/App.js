@@ -14,6 +14,7 @@ import { UserDataContext } from './context/UserDataProvider.js';
 import Friends from './pages/Friends.js';
 import GetUser from './pages/GetUser.js';
 import GetEvent from './pages/GetEvent.js';
+import Extras from './pages/Extras.js';
 
 function App() {
   const { isLoggedin, updateData } = useContext(UserDataContext);
@@ -29,6 +30,7 @@ function App() {
           <Route path='/' element={isLoggedin ? <Meetings /> : <Home />} />
           <Route path='/home' element={<Home />} />
           <Route path='/about' element={<About />} />
+          <Route path='/extras' element={<Extras />} />
           <Route path='/login' element={isLoggedin ? <Navigate to={'/'} /> : <Login />} />
           <Route path='/register' element={isLoggedin ? <Navigate to={'/'} /> : <Register />} />
           <Route path='/meetings' element={isLoggedin ? <Meetings /> : <Navigate to={'/'} />} />

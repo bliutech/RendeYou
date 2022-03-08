@@ -36,7 +36,12 @@ export default function NavBar() {
           <li>{' '}<br/></li>{' '}
           <li>{' '}<br/></li>{' '}
           <li>{' '}<br/></li>{' '}
-          <li>{' '}<br/></li>{' '}
+          <li>
+            <Link to='/extras'>
+            {' '}
+            {isLoggedin ? 'Extras' : ' '}{' '}
+            </Link>
+          </li>
           <li className='list-end'>
             <Link to='/logout'> {isLoggedin ? 'Logout' : null} </Link>
           </li>
