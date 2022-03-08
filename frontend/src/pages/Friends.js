@@ -2,9 +2,10 @@ import React from 'react';
 import '../index.css';
 import FriendsList from '../components/FriendsList';
 import AddFriend from '../components/AddFriend';
+import SuggestedFriends from '../components/SuggestedFriends';
 import { UserDataContext } from '../context/UserDataProvider';
 import { useContext, useEffect } from 'react';
-import classes from '../components/FriendsList.module.css'
+import classes from '../components/FriendsList.module.css';
 import './Friends.css';
 
 export default function Friends() {
@@ -20,6 +21,9 @@ export default function Friends() {
       <div className={classes.pagesplit}>
         <div>
           <FriendsList />
+        </div>
+        <div>
+          <SuggestedFriends />
         </div>
         <div>
           <AddFriend />
