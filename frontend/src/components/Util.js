@@ -217,7 +217,12 @@ export function formatDate(date_str) {
 }
 
 //Adapted from https://www.freecodecamp.org/news/how-to-add-search-to-frontend-app/
-export const searchFriendByName = async (inputData, setResult, setLoading) => {
+export const searchFriendByName = async (
+  inputData,
+  setResult,
+  setLoading,
+  user
+) => {
   setResult([]);
   inputData = inputData.trim();
   if (inputData === null || inputData === '') return;
@@ -248,6 +253,13 @@ export const searchFriendByName = async (inputData, setResult, setLoading) => {
 
   setLoading(false);
   setResult(users);
+};
+export const getUsersFromIds = async (ids) => {
+  const res = await fetch(backend('/user?ids=' + ids), {
+    method: 'GET',
+  });
+  const users = await res.json();
+  return users;
 };
 
 export const emailRegex =
