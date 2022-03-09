@@ -16,17 +16,20 @@ export default function Friends() {
   }, []);
   return (
     <div className='content'>
-      <h1> Your Friends </h1>
-      <p> All of your friends on RendeYou! </p>
-      <div className={classes.pagesplit}>
-        <div>
-          <FriendsList />
-        </div>
+      <div className='friends-left-container'>
+        <h1> Your Friends </h1>
+        <p> All of your friends on RendeYou! </p>
+        <br/>
+        <FriendsList />
+      </div>
+      <div className='friends-right-container'>
+        <h1>Add Friends</h1>
+        <p> Search for new friends on RendeYou! </p>
+        <br/>
+        <AddFriend />
+        <br/>
         <div>
           <SuggestedFriends />
-        </div>
-        <div>
-          <AddFriend />
         </div>
       </div>
     </div>

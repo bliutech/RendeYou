@@ -1,0 +1,22 @@
+.content
+{
+    padding-left: 20px;
+}
+
+.friends-left-container
+{
+    float: left;
+    border: black;
+    border-width: 5px 5px 5px 5px;
+    width: 40%;
+    padding-left: 20px;
+    padding-bottom: 50px;
+}
+
+.friends-right-container
+{
+    float: right;
+    width: 50%;
+    margin-right: 15%;
+    width: 30%;
+}

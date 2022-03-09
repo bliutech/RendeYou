@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { UserDataContext } from '../context/UserDataProvider';
-import classes from './FriendsList.module.css';
 import backend from './Util.js';
 import { getFriend, removeFriend } from './Util.js';
-import FriendCard from './FriendCard';
+import FriendCard from './FriendCard.js';
+import classes from './FriendsList.module.css';
 
 const FriendsList = () => {
   const [dispList, updateDispList] = useState([]);
@@ -43,7 +43,7 @@ const FriendsList = () => {
   if (dispList.length === 0) return <p>Damn you have no Friends</p>;
 
   return (
-    <>
+    <div className={classes.scroll}>
       {dispList.map((person) => {
         return (
           <FriendCard
@@ -53,7 +53,7 @@ const FriendsList = () => {
           />
         );
       })}
-    </>
+    </div>
   );
 };
 
