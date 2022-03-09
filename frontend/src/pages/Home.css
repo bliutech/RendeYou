@@ -2,7 +2,7 @@
 {
     background-color: #FC6A01;
     position: fixed;
-    width: 87%;
+    width: 100vw;
     height: 100%;
 }
 
@@ -11,15 +11,17 @@
     width: 50%;
 }
 
-.center {
+.home-center {
     display: block;
     align-items: center;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
+    font-size: 2rem;
+    color: white;
 }
 
 .vertical-center
 {
-    margin-top: 15%;
+    margin-top: 25vh;
 }

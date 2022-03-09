@@ -14,6 +14,11 @@ export default function Login(props) {
       username: uname,
       password: pass,
     };
+    if(uname === '' || pass === '')
+    {
+      alert('Fields are empty');
+      return;
+    }
     const res = await fetch(backend('/login'), {
       method: 'POST',
       credentials: 'include',
@@ -24,6 +29,8 @@ export default function Login(props) {
     });
     if (res.status >= 400) {
       setErrMsg(res.error);
+      alert('Incorrect username or password!');
+      return;
     } else {
       setErrMsg('');
     }

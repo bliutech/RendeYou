@@ -19,6 +19,10 @@ const ProfileCard = (props) => {
             <td><strong>Email</strong></td>
             <td>{props.user.email}</td>
           </tr>
+          <tr>
+            <td><strong>Friends</strong></td>
+            <td>{props.user.friends.length}</td>
+          </tr>
         </tbody>
       </table>
     </div>

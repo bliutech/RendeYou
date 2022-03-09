@@ -27,7 +27,7 @@ const sessionLifetime = 1000 * 60 * parseInt(process.env.SESSION_LIFETIME_MIN);
 // TODO: Currently allows requests from any origin - change before production!
 const corsOptions = { credentials: true };
 if (process.env.ENV == "dev") {
-    corsOptions.origin = "http://localhost:3000";
+    corsOptions.origin = ["http://localhost:3000", process.env.FRONTEND_IP];
 } else if (process.env.ENV == "production") {
     corsOptions.origin = process.env.FRONTEND_IP;
 }

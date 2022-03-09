@@ -15,8 +15,8 @@ export default function Home() {
 
   return (
     <div className='content home-page'>
-        <Link to={!(UserDataContext) ? '/' : '/login'} ><img src={Logo} className="logo-img center vertical-center" /></Link>
-        <p className='center'> The best place to rendez-vous with your friends! </p>
+        <Link to={!(UserDataContext) ? '/' : '/login'} ><img src={Logo} className="logo-img home-center vertical-center" /></Link>
+        <p className='home-center'> The best place to rendez-vous with your friends! </p>
     </div>
   );
 }

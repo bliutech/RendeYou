@@ -5,7 +5,6 @@ import { UserDataContext } from '../context/UserDataProvider';
 import FriendCard from './FriendCard';
 import classes from './AddFriend.module.css';
 
-
 const AddFriend = () => {
   // TODO: This force adds friend for both the requester and the target, which should go through a request system
   const [i_uname, updateName] = useState('');
@@ -17,20 +16,6 @@ const AddFriend = () => {
   const [loading, setLoading] = useState(false);
 
   async function handleAddFriend(id) {
-    // console.log('Submitting request.', uname);
-    // if (uname === '') {
-    //   alert('Invalid: username is empty.');
-    //   return;
-    // }
-    // // Fetch username from backend
-    // const res = await fetch(backend('/user?username=' + uname), {
-    //   method: 'GET',
-    // });
-    // const res_j = await res.json();
-    // if (res.status >= 400) {
-    //   alert('ERROR: Could not get user.');
-    //   return;
-    // }
     let f_list = user.friends;
     f_list.push(id);
     const newUser = {
@@ -39,6 +24,7 @@ const AddFriend = () => {
     await addUserData(newUser);
     updateData();
   }
+  
   return (
     <div>
       <form>
@@ -51,7 +37,7 @@ const AddFriend = () => {
             setInputString(name.target.value);
           }}
           onKeyUp={(e) =>
-            searchFriendByName(e.target.value, setResults, setLoading)
+            searchFriendByName(e.target.value, setResults, setLoading, user)
           }
         />
       </form>
@@ -66,10 +52,10 @@ const AddFriend = () => {
                   className={classes.friendCard}
                 />
               ) : (
-                ''
+                <p>You already follow {person.firstName} {person.lastName} ({person.username}).</p>
               );
             })
-          : 'No user matches that username.') : ' '}
+          : 'No user matches that search.') : ' '}
       </div>
     </div>
   );

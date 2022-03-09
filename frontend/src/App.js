@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home.js';
 import Login from './pages/Login.js';
 import Register from './pages/Register.js';
@@ -24,7 +24,7 @@ function App() {
   }, []);
   return (
     <>
-      <BrowserRouter>
+      <HashRouter>
         <NavBar />
         <Routes>
           <Route path='/' element={isLoggedin ? <Meetings /> : <Home />} />
@@ -42,7 +42,7 @@ function App() {
           <Route path='/event/:id' element={<GetEvent />} />
           <Route path='*' element={<Error404 />} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </>
   );
 }
