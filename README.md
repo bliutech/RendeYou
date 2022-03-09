@@ -94,5 +94,8 @@ npm start
 ```
 The frontend will be available on http://localhost:3000, which should appear in your browser automatically.
 
+### Chrome Extension
+After logging in, the Extras page contains the zip file for the chrome extension. Open chrome and navigate to `chrome://extensions`. Turn on developer mode at the top right of the screen, and click on Load Unpacked in the toolbar that should have just displayed. Navigate to the unzipped file and select the dist folder to load into Chrome.
+
 ## Authors
 _RendeYou_ was made as a project for **CS 35L** taught by Professor Paul Eggert at UCLA in Winter 2022. **Made by**: Benson Liu, Connor Pedersen, Jason Cheng, Ming Zhu, & Rishab Khurana.
