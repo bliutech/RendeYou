@@ -20,43 +20,82 @@ _RendeYou_ is a **MERN Stack** full stack web application that connects users wi
  - Express.js <img src="https://www.sohamkamani.com/static/65137ed3c844d05124dcfdab28263c21/38cea/express-routing-logo.png" alt="Express.js" height="30px">
  - MongoDB <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/MongoDB_Logo.png/1598px-MongoDB_Logo.png?20180423174357" alt="MongoDB" height="30px">
 
-## Setup
+## Backend Instructions
+### Setup
 To setup the dependencies for the backend server, run:
 ```
 cd backend
 npm install
 ```
-which should download a set of ```node_modules``` for the backend server.
+which should download a set of `node_modules` for the backend server.
 
-Backend Dependencies:
-- Express.js
-- MongooseDB
+Main backend dependencies:
+- Express.js - the web server library which powers everything
+- Mongoose - an object-document mapping library for MongoDB
 
+### Secrets
+Create a `.env` file in the backend folder with the following contents:
+```
+DB_URL=mongodb+srv://jason:ogrdmalus@cluster0.5dxdz.mongodb.net
+DB_NAME=RendeYou_test_<YOUR NAME HERE>
+SESSION_SECRET=abcd1234
+ENV=dev
+PORT=8000
+CHECK_PERIOD_MIN=120
+SESSION_LIFETIME_MIN=60
+```
+
+Important: write your name at the end of `DB_NAME` (e.g. I have `RendeYou_test_jason`). This way, we can have separate testing databases.
+
+The `SESSION_SECRET` value can be anything you want (for testing purposes). If you want to generate a proper secret key, run:
+```
+openssl rand -hex 64
+```
+
+This line:
+```
+ENV=dev
+```
+controls backend settings such as allowed frontend origins.
+
+### Running
+```
+cd backend
+npm start
+```
+The backend server will be available on http://localhost:8000. The root document will display a bare-bones testing page.
+
+## Frontend Instructions
+### Setup
 To setup the dependencies for the frontend application, run:
 ```
 cd frontend
 npm install
 ```
-which should download a set of ```node_modules``` for the backend server.
+which should download a set of `node_modules` for the backend server.
 
-Frontend Dependencies:
+Main frontend dependencies:
 - React.js
-- react-router-dom
+- react-router-dom - simulates paths for different pages
 
-## Running the App
-To start the backend server, run:
+### Configuration
+If you are testing the frontend with a local instance of the backend, run this command from the project root:
 ```
-cd backend
-npm start
+sed -i 's/ENV: "production"/ENV: "dev"/' frontend/src/settings.js
 ```
-which should appear on http://localhost:8000.
+This will ensure that the frontend is configured to use the local backend, instead of our hosted backend (which will not allow your local frontend to connect).
 
+
+### Running
 To start the frontend application, run:
 ```
 cd frontend
 npm start
 ```
-which should appear on http://localhost:3000.
+The frontend will be available on http://localhost:3000, which should appear in your browser automatically.
+
+### Chrome Extension
+After logging in, the Extras page contains the zip file for the chrome extension. Open chrome and navigate to `chrome://extensions`. Turn on developer mode at the top right of the screen, and click on Load Unpacked in the toolbar that should have just displayed. Navigate to the unzipped file and select the dist folder to load into Chrome.
 
 ## Authors
 _RendeYou_ was made as a project for **CS 35L** taught by Professor Paul Eggert at UCLA in Winter 2022. **Made by**: Benson Liu, Connor Pedersen, Jason Cheng, Ming Zhu, & Rishab Khurana.
