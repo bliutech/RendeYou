@@ -2,8 +2,10 @@ import { getFriend } from './Util';
 import React from 'react';
 import classes from './EventCard.module.css';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-const EventCard = ({ event, handlerName, handler }) => {
+const EventCardWithoutLink = ({ event, handlerName, handler }) => {
+  let navigate = useNavigate();
   const date = new Date(event.date);
   const options = {
     weekday: 'long',
@@ -21,14 +23,12 @@ const EventCard = ({ event, handlerName, handler }) => {
   return (
     <>
       <div className={classes.eventCard}>
-        <Link to={'/event/' + event.id}>
-          <h3>
-            <span className={classes.eventTitle}>{event.title}</span>
-            <span className={classes.eventHost}>
-              by {event.hostUser.firstName} {event.hostUser.lastName}
-            </span>
-          </h3>
-        </Link>
+        <h3>
+          <span className={classes.eventTitle}>{event.title}</span>
+          <span className={classes.eventHost}>
+            by {event.hostUser.firstName} {event.hostUser.lastName}
+          </span>
+        </h3>
         <div>
           <p>
             <span className={classes.eventDetail}>When:</span> {formatted_time}{' '}
@@ -47,7 +47,10 @@ const EventCard = ({ event, handlerName, handler }) => {
           </p>
           <button
             className={classes.button}
-            onClick={async () => handler(event['id'])}
+            onClick={() => {
+              handler();
+              navigate('/meetings');
+            }}
           >
             {handlerName}
           </button>
@@ -57,7 +60,7 @@ const EventCard = ({ event, handlerName, handler }) => {
   );
 };
 
-export default EventCard;
+export default EventCardWithoutLink;
 //TODO: make this adapt to users timezone
 //TODO: link host to profile
 //TODO: talk to backend about date format
