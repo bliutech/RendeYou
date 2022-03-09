@@ -45,15 +45,6 @@ const EventCardWithoutLink = ({ event, handlerName, handler }) => {
             <span className={classes.eventDetail}>Who's going:</span>{' '}
             {event.memberNames?.join(', ')}
           </p>
-          <button
-            className={classes.button}
-            onClick={() => {
-              handler();
-              navigate('/meetings');
-            }}
-          >
-            {handlerName}
-          </button>
         </div>
       </div>
     </>
