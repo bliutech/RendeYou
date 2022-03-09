@@ -48,7 +48,7 @@ export default function Login(props) {
         <p> Login to your RendeYou account. </p>
         <LoginForm onSubmit={handleSubmit}/>
         <p>
-          Don't have an account? Register <Link to='/register'>here</Link>.
+          Don't have an account? Register <Link to='/register' className='login-a'>here</Link>.
         </p>
       </div>
     </div>

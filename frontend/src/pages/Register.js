@@ -59,7 +59,7 @@ export default function Register() {
         <p> Register your RendeYou account. </p>
         <RegisterForm onSubmit={handleSubmit} />
         <p>
-          Already have an account? Login <Link to='/login'>here</Link>.
+          Already have an account? Login <Link to='/login' className='register-a'>here</Link>.
         </p>
       </div>
     </div>
