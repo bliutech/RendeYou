@@ -4,21 +4,30 @@ import classes from './FriendsList.module.css';
 import backend, { getUsersFromIds } from './Util.js';
 import { getFriend, removeFriend, addUserData } from './Util.js';
 import FriendCard from './FriendCard';
+import SuggestedFriendCard from './SuggestedFriendCard';
 
 const SuggestedFriends = () => {
   const [dispList, updateDispList] = useState([]);
   const { user, updateData } = useContext(UserDataContext);
   const [users, setUsers] = useState([]);
-  //  TODO: Test linking with backend by uncommenting the below code block
+
   useEffect(async () => {
     const IDList = user.friends;
 
-    //TODO: change this to user instead of user/[id] implementation when we figure it out
-    //I added this portion to make testing easier
     let friends = await getUsersFromIds(IDList);
     let friendsFriends = [];
     for (let i = 0; i < friends.length; i++) {
       let users = await getUsersFromIds(friends[i].friends);
+      for (let j = 0; j < users.length; j++) {
+        users[j].mutualFriend = [
+          friends[i].firstName +
+            ' ' +
+            friends[i].lastName +
+            ' (' +
+            friends[i].username +
+            ')',
+        ];
+      }
       friendsFriends = friendsFriends.concat(users);
     }
 
@@ -27,7 +36,10 @@ const SuggestedFriends = () => {
     friendsFriends = friendsFriends.filter((f, index) => {
       //Remove duplicates
       for (let i = 0; i < index; i++) {
-        if (f.username === friendsFriends[i].username) return false;
+        if (f.username === friendsFriends[i].username) {
+          friendsFriends[i].mutualFriend.push(f.mutualFriend);
+          return false;
+        }
       }
 
       if (f.username === user.username) return false;
@@ -96,7 +108,7 @@ const SuggestedFriends = () => {
       <h1>Suggested</h1>
       {dispList.map((person) => {
         return (
-          <FriendCard
+          <SuggestedFriendCard
             person={person}
             handler={handleAddFriend}
             handlerName={'Add'}
