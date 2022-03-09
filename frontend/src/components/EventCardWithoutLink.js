@@ -4,7 +4,7 @@ import classes from './EventCard.module.css';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
-const EventCardWithoutLink = ({ event, handlerName, handler }) => {
+const EventCardWithoutLink = ({ event }) => {
   let navigate = useNavigate();
   const date = new Date(event.date);
   const options = {

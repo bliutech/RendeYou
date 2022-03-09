@@ -1,29 +1,21 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import {
-  getEvent,
-  getFriend,
-  deleteEvent,
-  leaveEvent,
-  joinEvent,
-  getUserData,
-} from '../components/Util.js';
-import '../index.css';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import { getEvent, getFriend, deleteEvent, leaveEvent, joinEvent, getUserData } from '../components/Util.js';
 import EventCardWithoutLink from '../components/EventCardWithoutLink.js';
-import backend from '../components/Util.js';
 import { UserDataContext } from '../context/UserDataProvider.js';
 import './GetEvent.css';
+import '../index.css';
 
 export default function GetEvent() {
   let { id } = useParams('');
   let [event, setEvent] = useState(null);
+  let navigate = useNavigate();
 
-  const [handler, setHandler] = useState();
-  const [handlerName, setHandlerName] = useState();
-  const { updateData } = useContext(UserDataContext);
+  const { updateData, user } = useContext(UserDataContext);
 
   const deleteHandler = async () => {
     deleteEvent(id, updateData);
+    navigate('/');
   };
 
   const joinHandler = async () => {
@@ -33,6 +25,7 @@ export default function GetEvent() {
   const leaveHandler = async () => {
     leaveEvent(id, updateData);
   };
+
   const getEventStuff = async () => {
     let addedEvent = await getEvent(id);
     let host = await getFriend(addedEvent.host);
@@ -40,57 +33,26 @@ export default function GetEvent() {
     if (addedEvent) {
       addedEvent.hostUser = host;
     }
-
-    if (user.id === host.id) {
-      setEvent(addedEvent);
-      setHandler((id2) => deleteHandler(id2));
-      setHandlerName('Delete');
-      return;
-    }
-
-    for (let i = 0; i < user.subscriptions; i++) {
-      console.log(addedEvent.host);
-      if (user.subscriptions[i] === addedEvent.host) {
-        setEvent(addedEvent);
-        setHandler((id2) => leaveHandler(id2));
-        setHandlerName('Leave');
-        return;
-      }
-    }
     setEvent(addedEvent);
-    setHandler((id2) => joinHandler(id2));
-    setHandlerName('Join');
   };
 
   useEffect(async () => {
     await getEventStuff();
   }, []);
-  document.title =
-    event !== null
-      ? event.id + "'s Event | RendeYou"
-      : 'Event Not Found | RendeYou';
+
+  document.title = (event !== null ? event.title + " | RendeYou" : 'Event Not Found | RendeYou');
+  
   return (
     <>
-      <div
-        style={{
-          position: 'static',
-          marginTop: '15%',
-          marginLeft: '40%',
-          marginRight: '30%',
-          width: '300px',
-          border: '3px solid #fc6a01',
-          textAlign: 'center',
-        }}
-      >
+      <div className='event-content'>
         {event !== null ? (
-          <EventCardWithoutLink
-            event={event}
-            handler={() => handler}
-            handlerName={handlerName}
-          />
+          <EventCardWithoutLink event={event}/>
         ) : (
           <p>{id} is not an existing event ID :(</p>
         )}
+
+        {event !== null && user ? ((user.hostedEvents.includes(event.id) ?  <button onClick={async () => deleteHandler()} className='button'> Delete </button> : (!user.subscriptions.includes(event.id) ? <button onClick={async () => joinHandler()} className='button'> Join </button> : <button onClick={async () => leaveHandler()} className='button'> Leave </button>)))
+            : null}
       </div>
     </>
   );

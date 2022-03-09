@@ -21,14 +21,12 @@ const EventCard = ({ event, handlerName, handler }) => {
   return (
     <>
       <div className={classes.eventCard}>
-        <Link to={'/event/' + event.id}>
           <h3>
-            <span className={classes.eventTitle}>{event.title}</span>
+            <span className={classes.eventTitle}><Link to={'/event/' + event.id}>{event.title}</Link></span>
             <span className={classes.eventHost}>
               by {event.hostUser.firstName} {event.hostUser.lastName}
             </span>
           </h3>
-        </Link>
         <div>
           <p>
             <span className={classes.eventDetail}>When:</span> {formatted_time}{' '}
