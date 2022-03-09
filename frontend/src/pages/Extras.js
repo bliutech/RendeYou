@@ -3,6 +3,7 @@ import '../index.css';
 import { UserDataContext } from '../context/UserDataProvider';
 import { useContext, useEffect } from 'react';
 import './Extras.css';
+import ZipFile from '../files/RendeYourEvents.zip';
 
 export default function Extras() {
   const { updateData } = useContext(UserDataContext);
@@ -19,6 +20,7 @@ export default function Extras() {
       </p>
       <p>Enjoy a portable, simplistic list of all your events just a click away!</p>
       <p>Instructions: Open chrome and navigate to `chrome://extensions`. Turn on developer mode at the top right of the screen, and click on Load Unpacked in the toolbar that should have just displayed. Navigate to the unzipped file and select the dist folder to load into Chrome.</p>
+      <p>Download RendeYour Events <a href={ZipFile} className='this-a'>here</a>.</p>
     </div>
   );
 }

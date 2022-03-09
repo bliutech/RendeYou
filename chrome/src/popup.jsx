@@ -68,11 +68,13 @@ function PopUp() {
                 month: 'long',
                 day: 'numeric',
             };
-            const datestr = date.toLocaleDateString('en-US', options) + " " + date.toLocaleTimeString('en-US', {
+            const datestr = date.toLocaleDateString('en-US', options) + " ";
+            const timestr = date.toLocaleTimeString('en-US', {
                 hour: '2-digit',
                 minute: '2-digit',
             });
-            event.date = datestr;
+            event.datestr = datestr;
+            event.timestr = timestr;
             dispEvents.push(event);
         }
         updateDispList(dispEvents);
@@ -85,8 +87,6 @@ function PopUp() {
                 return;
             }
             setSignal(Date.now() % 1000);
-            console.log("Checking time... Next event: " + nextEventTime);
-            console.log(nextEvent);
             if (Date.now() + 601000 > nextEventTime) {  // Not handling when event time is past now. 
                 if (!notified) {
                     setNotification(nextEvent + " is happening in less than 10 minutes!");
@@ -134,24 +134,32 @@ function PopUp() {
         return(
         <div className={classes.frame}>
             <h1>RendeYour Events</h1>
-            <tr>
-            <td><p className={classes.largebody}>{err_msg}</p></td>
-            <td><button onClick={Logout} className={classes.buttonsmall}>Logout</button></td>
-            </tr>
-            <p>{notification}</p>
-            <>{
-            dispList.map(
-            event => {
-                return (
-                    <tr className={classes.subitem}>
-                    <td className={classes.bodytext}>{event.title}</td>
-                    <td className={classes.bodytext2}>{event.date}</td>
-                </tr>
-                );
-            }
-            )
-            }
-        </>
+            <table>
+                <tbody>
+                    <tr>
+                        <td><p className={classes.largebody}>{err_msg}</p></td>
+                        <td><button onClick={Logout} className={classes.buttonsmall}>Logout</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p className={classes.alert}>{notification}</p>
+            <table>
+                <tbody>
+                    {
+                        dispList.map(
+                        event => {
+                            return (
+                                <tr>
+                                    <td>{event.title}</td>
+                                    <td>{event.datestr}</td>
+                                    <td>{event.timestr}</td>
+                                </tr>
+                            );
+                        }
+                        )
+                    }
+                </tbody>
+            </table>
         </div>
         );
     } else {
@@ -166,6 +174,7 @@ function PopUp() {
           setUname("");
           setPass("");
         }}
+            className={classes.form}
         >
         <legend>Username</legend>
         <input
