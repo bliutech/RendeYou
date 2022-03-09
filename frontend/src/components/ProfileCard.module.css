@@ -1,0 +1,27 @@
+.profilePicture{
+    width: 30%;
+    margin-left: 35%;
+    margin-right: 35%;
+    border-width: 5px;
+    border: black;
+}
+
+.contentShape
+{
+    padding-left: 15%;
+    padding-right: 20%;
+}
+
+td
+{
+    padding: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+table
+{
+    margin-left: 12%;
+    margin-right: 12%;
+    width: 30%;
+}

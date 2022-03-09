@@ -1,0 +1,21 @@
+.profile
+{
+    margin-top: 10%;
+    margin-bottom: 15px;
+    margin-left: 25%;
+    margin-right: 20%;
+    width: 40%;
+    border: 3px solid #fc6a01;
+    border-radius: 20px;
+    text-align: 'center';
+    align-items: center;
+    padding: 20px;
+    padding-bottom: 30px;
+}
+
+.profile-center
+{
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}

@@ -19,9 +19,8 @@ export const addUserData = async (data) => {
     },
     body: JSON.stringify(data),
   });
-  const user = await res.json();
-  if (user.error) {
-    alert(user.error);
+  if (res.status >= 400) {
+    alert('Registration failed');
     return;
   }
 };

@@ -39,7 +39,6 @@ export default function GetEvent() {
         >
         <h1>Event Page</h1>
         {(event !== null) ? <EventCard event={event} /> : <p>{id} is not an existing event ID :(</p> }
-        <Link to='/'>Home</Link>
         </div>
     </>
     );

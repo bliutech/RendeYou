@@ -3,24 +3,25 @@ import classes from './ProfileCard.module.css';
 
 const ProfileCard = (props) => {
   return (
-    <>
-      <img
-        src='https://cdn.iconscout.com/icon/free/png-256/person-1767893-1502146.png'
-        alt=''
-        width='100px'
-      />
-      <p>Name</p>
-      <p>{props.user.firstName + ' ' + props.user.lastName}</p>
-      <br />
-      <p>Email</p>
-      <p>{props.user.email}</p>
-      <br />
-      <p>Username</p>
-      <p>{props.user.username}</p>
-      <br />
-      <p>Friends</p>
-      <p>{props.user.friendNames?.join(', ')}</p>
-    </>
+    <div className={classes.contentShape}>
+      <img src='https://cdn.iconscout.com/icon/free/png-256/person-1767893-1502146.png' alt='' className={classes.profilePicture}/>
+      <table>
+        <tbody>
+          <tr>
+            <td><strong>Name</strong></td>
+            <td>{props.user.firstName + ' ' + props.user.lastName}</td>
+          </tr>
+          <tr>
+            <td><strong>Username</strong></td>
+            <td>{props.user.username}</td>
+          </tr>
+          <tr>
+            <td><strong>Email</strong></td>
+            <td>{props.user.email}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   );
 };
 
