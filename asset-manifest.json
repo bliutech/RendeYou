@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.255cd5ae.css",
-    "main.js": "/static/js/main.48c53ad6.js",
+    "main.css": "/static/css/main.96c9e7e1.css",
+    "main.js": "/static/js/main.d18ed9fc.js",
     "static/media/rendez-vous.jpg": "/static/media/rendez-vous.a126aec4046624b28bf1.jpg",
     "static/media/IstokWeb-Regular.ttf": "/static/media/IstokWeb-Regular.50996525c2c1ba8165b1.ttf",
     "static/media/rendez-vous-2.jpg": "/static/media/rendez-vous-2.5fe8d3e58bece0786d7d.jpg",
@@ -9,11 +9,11 @@
     "static/media/rende-you-logo.svg": "/static/media/rende-you-logo.c69da5b11202606859a1945788d08bd0.svg",
     "index.html": "/index.html",
     "static/media/rende-you-icon.svg": "/static/media/rende-you-icon.91d3da1a45e2fe97b5a648f4422f4b38.svg",
-    "main.255cd5ae.css.map": "/static/css/main.255cd5ae.css.map",
-    "main.48c53ad6.js.map": "/static/js/main.48c53ad6.js.map"
+    "main.96c9e7e1.css.map": "/static/css/main.96c9e7e1.css.map",
+    "main.d18ed9fc.js.map": "/static/js/main.d18ed9fc.js.map"
   },
   "entrypoints": [
-    "static/css/main.255cd5ae.css",
-    "static/js/main.48c53ad6.js"
+    "static/css/main.96c9e7e1.css",
+    "static/js/main.d18ed9fc.js"
   ]
 }
