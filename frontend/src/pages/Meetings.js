@@ -13,13 +13,13 @@ import {
 import './Meetings.css';
 
 function entered(event) {
-  event.target.closest(".events-window").classList.add("expanded");
-  event.target.closest(".right-container").classList.add("hovered");
+  event.target.closest('.events-window').classList.add('expanded');
+  event.target.closest('.right-container').classList.add('hovered');
 }
 
 function left(event) {
-  event.target.closest(".events-window").classList.remove("expanded");
-  event.target.closest(".right-container").classList.remove("hovered");
+  event.target.closest('.events-window').classList.remove('expanded');
+  event.target.closest('.right-container').classList.remove('hovered');
 }
 
 export default function Meetings() {
@@ -84,7 +84,6 @@ export default function Meetings() {
         events.push(addedEvent);
       }
     }
-    console.log(events);
     setJoinedEvents(events);
   };
 
@@ -109,7 +108,11 @@ export default function Meetings() {
           {friendEvents.length != 0 ? (
             friendEvents.map((e) => {
               return (
-                <EventCard event={e} handler={joinHandler} handlerName={'Join'} />
+                <EventCard
+                  event={e}
+                  handler={joinHandler}
+                  handlerName={'Join'}
+                />
               );
             })
           ) : (
@@ -120,7 +123,11 @@ export default function Meetings() {
 
       <div className='right-container'>
         <h1>Joined Events</h1>
-        <div className='events-window joined-events' onMouseEnter={entered} onMouseLeave={left}>
+        <div
+          className='events-window joined-events'
+          onMouseEnter={entered}
+          onMouseLeave={left}
+        >
           <div>
             {joinedEvents.length != 0 ? (
               joinedEvents.map((e) => {
@@ -137,9 +144,13 @@ export default function Meetings() {
             )}
           </div>
         </div>
-        
+
         <h1>Hosted Events </h1>
-        <div className='events-window hosted-events' onMouseEnter={entered} onMouseLeave={left}>
+        <div
+          className='events-window hosted-events'
+          onMouseEnter={entered}
+          onMouseLeave={left}
+        >
           <div>
             {hostedEvents?.length != 0 ? (
               hostedEvents?.map((e) => {

@@ -17,8 +17,14 @@ const SuggestedFriendCard = ({ person, handler, handlerName }) => {
               {person.firstName} {person.lastName}
             </p>
             <p>{person.email}</p>
-            <p className={classes.mutualFriends}><strong>Mutual Friends: </strong>{person.mutualFriend.join(', ')}</p>
-            <button onClick={async () => handler(person.id)} className={classes.button}>
+            <p className={classes.mutualFriends}>
+              <strong>Mutual Friends: </strong>
+              {person.mutualFriend.join(', ')}
+            </p>
+            <button
+              onClick={async () => handler(person.id)}
+              className={classes.button}
+            >
               {handlerName}
             </button>
           </div>
