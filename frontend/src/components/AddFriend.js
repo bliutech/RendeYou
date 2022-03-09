@@ -24,6 +24,7 @@ const AddFriend = () => {
     await addUserData(newUser);
     updateData();
   }
+  
   return (
     <div>
       <form>
@@ -51,10 +52,10 @@ const AddFriend = () => {
                   className={classes.friendCard}
                 />
               ) : (
-                ''
+                <p>You already follow {person.firstName} {person.lastName} ({person.username}).</p>
               );
             })
-          : 'No user matches that username.') : ' '}
+          : 'No user matches that search.') : ' '}
       </div>
     </div>
   );

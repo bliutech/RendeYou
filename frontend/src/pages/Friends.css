@@ -15,8 +15,57 @@
 
 .friends-right-container
 {
+    height: 100%;
+    position: fixed;
+    top: 0px;
+    border: black;
+    border-width: 5px 5px 5px 5px;
     float: right;
-    width: 50%;
-    margin-right: 15%;
-    width: 30%;
+    padding: 20px;
+    padding-right: 3%;
+    width: 35%;
+    right: 0%;
+    box-shadow: -4px 4px 4px 0px #00000040;
+    background-color: #FC6A01;
+}
+
+.friends-right-container.hovered .friends-window:not(.expanded) {
+    height: 0%;
+}
+
+/* Common props of joined-events and hosted-events */
+.friends-window {
+    height: 30%;
+    width: 95%;
+    overflow-y: scroll;
+    background-color: white;
+    padding: 20px;
+    padding-right: 30px;
+    border-radius: 20px;
+    transition: 0.2s;
+}
+
+.friends-window.expanded {
+    height: 60%;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.friends-window::-webkit-scrollbar {
+    display: none;
+}
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+.friends-window {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.search-friends
+{
+    top: 0px;
+}
+
+.suggested-friends
+{
+    top: 50%;
 }

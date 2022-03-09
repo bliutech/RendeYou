@@ -1,4 +1,4 @@
-import classes from './FriendsList.module.css';
+import classes from './SuggestedFriendCard.module.css';
 import { Link } from 'react-router-dom';
 const SuggestedFriendCard = ({ person, handler, handlerName }) => {
   return (
@@ -8,7 +8,7 @@ const SuggestedFriendCard = ({ person, handler, handlerName }) => {
           <Link to={'/user/' + person.id}>
             <img
               className={classes.image}
-              src='https://reactnative.dev/img/tiny_logo.png'
+              src='https://cdn.iconscout.com/icon/free/png-256/person-1767893-1502146.png'
               alt='React Native Logo'
             />
           </Link>
@@ -16,9 +16,9 @@ const SuggestedFriendCard = ({ person, handler, handlerName }) => {
             <p className={classes.largebody}>
               {person.firstName} {person.lastName}
             </p>
-            <p className={classes.bodytext}>{person.email}</p>
-            <p>{'Mutual Friends: ' + person.mutualFriend.join(', ')}</p>
-            <button onClick={async () => handler(person.id)}>
+            <p>{person.email}</p>
+            <p className={classes.mutualFriends}><strong>Mutual Friends: </strong>{person.mutualFriend.join(', ')}</p>
+            <button onClick={async () => handler(person.id)} className={classes.button}>
               {handlerName}
             </button>
           </div>

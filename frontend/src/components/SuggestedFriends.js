@@ -105,7 +105,6 @@ const SuggestedFriends = () => {
 
   return (
     <>
-      <h1>Suggested</h1>
       {dispList.map((person) => {
         return (
           <SuggestedFriendCard
