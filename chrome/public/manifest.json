@@ -1,11 +1,16 @@
 {
     "name": "RendeYou for Chrome",
     "description": "The chrome extension of RendeYou!",
+    "icons": {
+            "16": "rende-you-icon.png",
+            "48" : "rende-you-icon.png"
+    },
     "version": "1.0",
     "manifest_version": 3,
-    "host_permissions": ["http://localhost:8000/*", "<all_urls>", "http://165.232.135.214:8000/*"],
+    "host_permissions": ["http://localhost:8000/*", "http://165.232.135.214:8000/*"],
     "permissions": ["cookies"],
     "action": {
+        "default_icon": "rende-you-icon.png",
         "default_popup": "popup.html"
     }
 }
