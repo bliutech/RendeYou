@@ -4,7 +4,7 @@ import 'regenerator-runtime/runtime';
 import classes from "./popup.module.css";
 
 function backend(endpoint) {
-    return 'http://localhost:8000' + endpoint;
+    return 'http://165.232.135.214:8000' + endpoint;
 }
 
 function PopUp() {
