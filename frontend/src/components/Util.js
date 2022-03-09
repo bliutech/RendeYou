@@ -2,8 +2,14 @@ import settings from '../settings';
 
 export default function backend(endpoint) {
   let ip;
-  if (settings.ENV === 'dev') ip = 'http://localhost:8000';
-  else if ((settings.ENV = 'production')) ip = settings.BACKEND_IP;
+  if (settings.ENV === 'dev')
+  {
+    ip = 'http://localhost:8000';
+  }
+  else if ((settings.ENV === 'production'))
+  {
+    ip = settings.BACKEND_IP;
+  }
 
   return ip + endpoint;
 }
