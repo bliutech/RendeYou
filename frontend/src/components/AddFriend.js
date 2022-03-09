@@ -36,7 +36,7 @@ const AddFriend = () => {
             setInputString(name.target.value);
           }}
           onKeyUp={(e) =>
-            searchFriendByName(e.target.value, setResults, setLoading)
+            searchFriendByName(e.target.value, setResults, setLoading, user)
           }
         />
       </form>

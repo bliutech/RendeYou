@@ -217,7 +217,12 @@ export function formatDate(date_str) {
 }
 
 //Adapted from https://www.freecodecamp.org/news/how-to-add-search-to-frontend-app/
-export const searchFriendByName = async (inputData, setResult, setLoading) => {
+export const searchFriendByName = async (
+  inputData,
+  setResult,
+  setLoading,
+  user
+) => {
   setResult([]);
   if (inputData === null || inputData === '') return;
   setLoading(true);
@@ -228,7 +233,10 @@ export const searchFriendByName = async (inputData, setResult, setLoading) => {
     alert('ERROR: Could not get user.');
     return;
   }
-  const users = await res.json();
+  let users = await res.json();
+  users = users.filter((a) => {
+    return a.username !== user.username;
+  });
   setLoading(false);
   setResult(users);
 };
