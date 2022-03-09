@@ -6,6 +6,7 @@ import './CreateEvent.module.css';
 import { UserDataContext } from '../context/UserDataProvider.js';
 import LocationPicker from './LocationPicker.js';
 import classes from './CreateEvent.module.css';
+import { useNavigate } from 'react-router-dom';
 
 export default function CreateEvent() {
   let [title, setTitle] = useState('');
@@ -15,6 +16,7 @@ export default function CreateEvent() {
   const [location, setLocation] = useState('');
   const { updateData } = useContext(UserDataContext);
   const [err_msg, setErrMsg] = useState('');
+  let navigate = useNavigate();
 
   async function handleSubmit() {
     const curr_date = new Date(date + ' ' + time + ':00.000');
@@ -39,9 +41,8 @@ export default function CreateEvent() {
       console.log(res.error);
       return;
     }
-    alert("Event created!");
-
     await updateData();
+    navigate('/');
   }
 
   return (
