@@ -25,7 +25,7 @@ export default function GetUser() {
     updateData();
   }
 
-  const deleteFriend = async (id) => {
+  const deleteFriend = async () => {
     await removeFriend(id);
     await updateData();
   };
