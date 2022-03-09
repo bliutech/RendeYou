@@ -15,6 +15,7 @@ function PopUp() {
     const [notified, setNotified] = useState(false);
     const [uname, setUname] = useState(""); 
     const [pass, setPass] = useState("");
+    const [notification, setNotification] = useState("");
     let nextEvent = " ";
     let nextEventTime = Date.now();
     let cookieVal = "";
@@ -86,11 +87,16 @@ function PopUp() {
             setSignal(Date.now() % 1000);
             console.log("Checking time... Next event: " + nextEventTime);
             console.log(nextEvent);
-            if (Date.now() + 601000 > nextEventTime && !notified) {  // Not handling when event time is past now. 
-                window.alert(nextEvent + " is happening in less than 10 minutes!");
-                setNotified(true);
+            if (Date.now() + 601000 > nextEventTime) {  // Not handling when event time is past now. 
+                if (!notified) {
+                    setNotification(nextEvent + " is happening in less than 10 minutes!");
+                    // window.alert(nextEvent + " is happening in less than 10 minutes!");
+                    setNotified(true);
+                } else {
+                    setNotification("");
+                }
             }
-        }, 10000)  // Refresh after 10 seconds
+        }, 30000)  // Refresh every 30 seconds
     }, [signal]);
 
 
@@ -110,8 +116,17 @@ function PopUp() {
         if (res.status >= 400) {
             setErrMsg(res.error);
         } else {
-            setSignal(Date.now() % 100);
+            setSignal(Date.now() % 100);  // Rerender
         }
+    }
+
+    async function Logout() {
+        const res = await fetch(backend('/logout'), {
+            method: 'POST',
+            credentials: 'include',
+        });
+        setErrMsg("Login to receive your events!");
+        setLogin(false);
     }
 
 
@@ -119,7 +134,11 @@ function PopUp() {
         return(
         <div className={classes.frame}>
             <h1>RendeYour Events</h1>
-            <p className={classes.largebody}>{err_msg}</p>
+            <tr>
+            <td><p className={classes.largebody}>{err_msg}</p></td>
+            <td><button onClick={Logout} className={classes.buttonsmall}>Logout</button></td>
+            </tr>
+            <p>{notification}</p>
             <>{
             dispList.map(
             event => {
@@ -142,8 +161,10 @@ function PopUp() {
         <p className={classes.largebody}>{err_msg}</p>
         <form
         onSubmit={(e) => {
-          e.preventDefault()
-          handleSubmit(uname, pass)
+          e.preventDefault();
+          handleSubmit(uname, pass);
+          setUname("");
+          setPass("");
         }}
         >
         <legend>Username</legend>

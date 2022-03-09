@@ -28,6 +28,14 @@ h1 {
     flex-direction: column;
     align-self: flex-start;
 }
+.alert {
+    font-size: 20;
+    font-family: sans-serif;
+    font-weight: bold;
+    color:#FC6A01;
+    flex-direction: column;
+    align-self: flex-start;
+}
 .bodytext {
     font-size: 20;
     font-family: sans-serif;
@@ -57,4 +65,14 @@ h1 {
     margin-right: 30%;
     margin-top: 5%;
     width: 50%;
+}
+.buttonsmall {
+    font: inherit;
+    padding: 0.5rem 1.5rem;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: #fc6a01;
+    color: white;
+    text-align: center;
+    margin: 0 1rem;
 }
