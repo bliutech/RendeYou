@@ -224,19 +224,33 @@ export const searchFriendByName = async (
   user
 ) => {
   setResult([]);
+  inputData = inputData.trim();
   if (inputData === null || inputData === '') return;
   setLoading(true);
-  const res = await fetch(backend('/user?username=' + inputData), {
-    method: 'GET',
-  });
-  if (res.status >= 400) {
-    alert('ERROR: Could not get user.');
-    return;
+
+  const words = inputData.split(/\s+/);
+
+  const promises = [];
+
+  if (words.length === 1) {
+    promises.push(fetch(backend("/user?username=" + words[0])));
+    promises.push(fetch(backend("/user?first=" + words[0])));
+    promises.push(fetch(backend("/user?last=" + words[0])));
+  } else if (words.length === 2) {
+    promises.push(fetch(backend("/user?first=" + words[0] + "&last=" + words[1])));
+  } else {
+    promises.push(fetch(backend("/user?first=" + words[0] + "&last=" + words[1] + "&username=" + words[2])));
   }
-  let users = await res.json();
-  users = users.filter((a) => {
-    return a.username !== user.username;
+
+  const resArray = await Promise.all(promises);
+
+  const jsonArray = await Promise.all(resArray.map(res => res.json()));
+
+  // .filter removes duplicates (e.g. Richard and rmsussy matches twice)
+  const users = jsonArray.reduce((prev, curr) => prev.concat(curr)).filter((user, idx, arr) => {
+    return arr.findIndex(userr => userr.id === user.id) === idx
   });
+
   setLoading(false);
   setResult(users);
 };
