@@ -6,6 +6,7 @@ import {
   deleteEvent,
   leaveEvent,
   joinEvent,
+  getUserData,
 } from '../components/Util.js';
 import '../index.css';
 import EventCardWithoutLink from '../components/EventCardWithoutLink.js';
@@ -19,7 +20,7 @@ export default function GetEvent() {
 
   const [handler, setHandler] = useState();
   const [handlerName, setHandlerName] = useState();
-  const { user, updateData } = useContext(UserDataContext);
+  const { updateData } = useContext(UserDataContext);
 
   const deleteHandler = async () => {
     deleteEvent(id, updateData);
@@ -35,27 +36,29 @@ export default function GetEvent() {
   const getEventStuff = async () => {
     let addedEvent = await getEvent(id);
     let host = await getFriend(addedEvent.host);
+    let user = await getUserData();
     if (addedEvent) {
       addedEvent.hostUser = host;
     }
 
     if (user.id === host.id) {
       setEvent(addedEvent);
-      setHandler(deleteHandler);
+      setHandler((id2) => deleteHandler(id2));
       setHandlerName('Delete');
       return;
     }
 
     for (let i = 0; i < user.subscriptions; i++) {
-      if (user.subscriptions[i] === addedEvent.id) {
+      console.log(addedEvent.host);
+      if (user.subscriptions[i] === addedEvent.host) {
         setEvent(addedEvent);
-        setHandler(leaveHandler);
+        setHandler((id2) => leaveHandler(id2));
         setHandlerName('Leave');
         return;
       }
     }
     setEvent(addedEvent);
-    setHandler(joinHandler);
+    setHandler((id2) => joinHandler(id2));
     setHandlerName('Join');
   };
 
