@@ -4,7 +4,7 @@ import 'regenerator-runtime/runtime';
 import classes from "./popup.module.css";
 
 function backend(endpoint) {
-    return 'http://165.232.135.214:8000' + endpoint;
+    return 'https://jcfp.site/app/rendeyou/' + endpoint;
 }
 
 function PopUp() {
@@ -19,12 +19,7 @@ function PopUp() {
     let nextEvent = " ";
     let nextEventTime = Date.now();
     let cookieVal = "";
-    console.log("Initial time: " + Date.now());
     useEffect(async () => {
-        chrome.cookies.get({"url": "http://165.232.135.214:8000", "name": "connect.sid"}, (cookie) => {
-            console.log(cookie);
-            cookieVal = cookie.value;
-        });
         const res = await fetch(backend('/user/me'), {
             method: 'GET',
             credentials: 'include',
@@ -85,8 +80,6 @@ function PopUp() {
                 return;
             }
             setSignal(Date.now() % 1000);
-            console.log("Checking time... Next event: " + nextEventTime);
-            console.log(nextEvent);
             if (Date.now() + 601000 > nextEventTime) {  // Not handling when event time is past now. 
                 if (!notified) {
                     setNotification(nextEvent + " is happening in less than 10 minutes!");
@@ -96,7 +89,7 @@ function PopUp() {
                     setNotification("");
                 }
             }
-        }, 30000)  // Refresh every 30 seconds
+        }, 10000)  // Refresh every 10 seconds
     }, [signal]);
 
 

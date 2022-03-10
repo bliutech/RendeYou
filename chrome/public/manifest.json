@@ -3,7 +3,7 @@
     "description": "The chrome extension of RendeYou!",
     "version": "1.0",
     "manifest_version": 3,
-    "host_permissions": ["http://localhost:8000/*", "<all_urls>", "http://165.232.135.214:8000/*"],
+    "host_permissions": ["http://localhost:8000/*", "https://jcfp.site/app/rendeyou/*", "http://165.232.135.214:8000/*"],
     "permissions": ["cookies"],
     "action": {
         "default_popup": "popup.html"
