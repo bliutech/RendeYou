@@ -107,6 +107,8 @@ npm start
 ```
 The frontend will be available on http://localhost:3000, which should appear in your browser automatically.
 
+**Note:** Running this web app on Safari is undefined behavior.
+
 ### Chrome Extension Instruction
 The Extras page ([https://rendeyou.bliu.tech/#/extras](https://rendeyou.bliu.tech/#/extras)) contains the zip file for the Chrome extension. Open Chrome and navigate to `chrome://extensions`. Turn on developer mode at the top right of the screen, and click on "Load Unpacked" in the toolbar that should have just displayed. Navigate inside the "Load Unpacked" navigation filesystem to you unzipped file fo the extension and select the ```dist``` folder inside to load into Chrome. If you click on your Chrome extensions, the RendeYou extension should be there for you to login and use.
 
