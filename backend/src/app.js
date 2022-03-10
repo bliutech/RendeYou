@@ -43,7 +43,11 @@ app.use(session({
     saveUninitialized: true,
     resave: false,
     rolling: true,
-    cookie: { maxAge: sessionLifetime },
+    cookie: {
+        maxAge: sessionLifetime,
+        sameSite: "none",
+        secure: true
+    },
     store: new MemoryStore({ checkPeriod: checkPeriod })
 }));
 
