@@ -43,9 +43,9 @@ app.use(session({
     saveUninitialized: true,
     resave: false,
     rolling: true,
+    proxy: true,
     cookie: {
         maxAge: sessionLifetime,
-        sameSite: "none",
         secure: true
     },
     store: new MemoryStore({ checkPeriod: checkPeriod })
