@@ -26,9 +26,9 @@ const sessionLifetime = 1000 * 60 * parseInt(process.env.SESSION_LIFETIME_MIN);
 // Allow CORS
 // TODO: Currently allows requests from any origin - change before production!
 const corsOptions = { credentials: true };
-if (process.env.ENV == "dev") {
-    corsOptions.origin = ["http://localhost:3000", process.env.FRONTEND_IP];
-} else if (process.env.ENV == "production") {
+if (process.env.ENV === "dev") {
+    corsOptions.origin = "http://localhost:3000";
+} else if (process.env.ENV === "production") {
     corsOptions.origin = process.env.FRONTEND_IP;
 }
 app.use(cors(corsOptions));
@@ -38,18 +38,23 @@ app.use(express.json());
 
 // Use session manager
 // TODO: Install a session store like connect-mongodb-session before production!
-app.use(session({
+
+const sessionOptions = {
     secret: process.env.SESSION_SECRET,
     saveUninitialized: true,
     resave: false,
     rolling: true,
-    proxy: true,
-    cookie: {
-        maxAge: sessionLifetime,
-        secure: true
-    },
+    cookie: { maxAge: sessionLifetime },
     store: new MemoryStore({ checkPeriod: checkPeriod })
-}));
+};
+
+if (process.env.ENV === "production") {
+    sessionOptions.proxy = true;
+    sessionOptions.cookie.sameSite = "none";
+    sessionOptions.cookie.secure = true;
+}
+
+app.use(session(sessionOptions));
 
 //==============================================================================
 // API routes
