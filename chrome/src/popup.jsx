@@ -18,7 +18,6 @@ function PopUp() {
     const [notification, setNotification] = useState("");
     let nextEvent = " ";
     let nextEventTime = Date.now();
-    let cookieVal = "";
     useEffect(async () => {
         const res = await fetch(backend('/user/me'), {
             method: 'GET',
@@ -81,9 +80,9 @@ function PopUp() {
             if (res.status >= 400) {  // Only error is 403 Forbidden - Not logged in
                 return;
             }
-            setSignal(Date.now() % 1000);
+            // setSignal(Date.now() % 1000);
             if (Date.now() + 601000 > nextEventTime) {  // Not handling when event time is past now. 
-                if (!notified) {
+                if (!notified && nextEvent != " ") {
                     setNotification(nextEvent + " is happening in less than 10 minutes!");
                     // window.alert(nextEvent + " is happening in less than 10 minutes!");
                     setNotified(true);
