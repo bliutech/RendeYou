@@ -81,10 +81,9 @@ function PopUp() {
                 return;
             }
             // setSignal(Date.now() % 1000);
-            if (Date.now() + 601000 > nextEventTime) {  // Not handling when event time is past now. 
+            if (Date.now() + 601000 > nextEventTime && nextEventTime > Date.now()) {  // When next event is within 10 minutes
                 if (!notified && nextEvent != " ") {
                     setNotification(nextEvent + " is happening in less than 10 minutes!");
-                    // window.alert(nextEvent + " is happening in less than 10 minutes!");
                     setNotified(true);
                 } else {
                     setNotification("");
