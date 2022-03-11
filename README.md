@@ -16,14 +16,10 @@ To check a currently deployed version of RendeYou, please visit [https://rendeyo
 
 ## Features
 
-- Friending Other Users
-The app allows users to add friends, and those friends' events will automatically appear on the user's home page. This allows users to not be inundated with irrelevant events from strangers.
-- Notifications
-We created a Chrome extension to our app that users can optionally install. It pushes notifications through the browser, so the user can be notified of events even while away from our site.
-- Location Suggestions
-On our event creation page, we used an input widget which integrates with Google Maps to suggest specific addresses based on the user's input to make it easier to write locations.
-- Friend Suggestions
-Our app displays a list of the user's friends' friends to make it easier to make connections. Once you have at least one friend, finding new friends becomes a simple matter of clicking some buttons instead of manually typing their username into the search bar.
+- **Friending Other Users:** The app allows users to add friends, and those friends' events will automatically appear on the user's home page. This allows users to not be inundated with irrelevant events from strangers.
+- **Notifications:** We created a Chrome extension to our app that users can optionally install. It pushes notifications through the browser, so the user can be notified of events even while away from our site.
+- **Location Suggestions:** On our event creation page, we used an input widget which integrates with Google Maps to suggest specific addresses based on the user's input to make it easier to write locations.
+- **Friend Suggestions:** Our app displays a list of the user's friends' friends to make it easier to make connections. Once you have at least one friend, finding new friends becomes a simple matter of clicking some buttons instead of manually typing their username into the search bar.
 
 ## Technologies
  - Javascript <img src="https://seeklogo.com/images/J/javascript-logo-8892AEFCAC-seeklogo.com.png" alt="javascript" width="30px">
